@@ -2,8 +2,8 @@
 
 Welcome! These are:
 
-* my 2015 solutions in C#, constructed with JetBrains Rider
-* my 2021 solutions in C# 10, constructed with JetBrains Rider EAP.
+- my 2015 solutions in C#, constructed with JetBrains Rider
+- my 2021 solutions in C# 10, constructed with JetBrains Rider EAP.
 
 ### 2015 Goals
 
