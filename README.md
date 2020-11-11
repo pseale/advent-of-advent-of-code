@@ -56,3 +56,9 @@ Advent of Code 2020 is imminent! Prepare ye the way!
   - [✔]Clarifying rule: I may choose any of the 2018 problems, and I may choose to solve one or both stars. It's not my fault if I declare vendetta against some of the more frustrating "fun puzzles".
   - [✔🟡🟡🟡🟡]Do something different!
   - [✔✔✔✔✔]Code golf is garbage (❌⛳❌). Let's not do code golf.
+
+## Reflecting on estimation
+
+- Day 01
+  _ Estimate: 5 minutes
+  _ Actual: 30 minutes
