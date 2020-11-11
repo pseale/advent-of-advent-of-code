@@ -351,3 +351,6 @@ MigrationBackup/
 
 # mergetool artifacts
 .orig
+
+# I don't care about your JavaScript dependencies
+package-lock.json
