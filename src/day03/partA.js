@@ -1,14 +1,35 @@
 // p5.js sketch
 // https://editor.p5js.org/livecoding/sketches/AFr8QFxq8
-let hasDrawn = false;
-
-const size = 50;
+const canvasSize = 800;
+const size = canvasSize / 8;
 const borderSize = size * 0.2;
 const halfOfBorderSize = borderSize / 2.0;
 const verticalPixelAdjustmentForTextBecauseP5JsIsJustALittleWonky = -3;
 
-function setup() {
-  createCanvas(800, 800);
+let fabricClaims;
+let overlaps;
+let columns;
+
+function oneTimeSetup() {
+  fabricClaims = parse(`#1 @ 1,3: 4x4
+#2 @ 3,1: 4x4
+#3 @ 5,5: 2x2`);
+  overlaps = detectOverlapsIn(fabricClaims);
+  
+  // just for drawing
+  columns = buildColumns()
+}
+
+function buildColumns() {
+  c = []
+  
+  const numberOfColumns = 51;
+  const columnSize = canvasSize / numberOfColumns;
+  for (const column of range(0, numberOfColumns + 1)) { // two columns are partially drawn
+    c = c.concat(255, 0, 0);
+  }
+  
+  return c;
 }
 
 function getSquares(x, y, width, height) {
@@ -103,18 +124,35 @@ function drawOverlaps(overlaps) {
   }  
 }
 
-function draw() {
-  drawOnce();
+function columnIsHalfwayOnLeftSide(columnStart, columnSize) {
+  return columnStart + columnSize > canvasSize && columnStart < canvasSize;
 }
 
-function drawOnce() {
-  if (hasDrawn) return;
-  hasDrawn = true;
-    background(0, 50, 50);
-  const fabricClaims = parse(`#1 @ 1,3: 4x4
-#2 @ 3,1: 4x4
-#3 @ 5,5: 2x2`);
+function drawBackground(offset) {
+  const columnSize = canvasSize / columns.length;
+    // console.log(columns)
+  for (const column of range(0, columns.length)) {
+    fill(columns[column]);
+    const columnStart = (column - 1) * columnSize + offset;
+    if (columnIsHalfwayOnLeftSide(columnStart, columnSize)) {
+      rect(columnStart - canvasSize, 0, columnSize, canvasSize);
+    }
+    rect(columnStart % canvasSize, 0, columnSize, canvasSize);
+  }
+}
+
+// p5 native functions
+function setup() {
+  oneTimeSetup();
+  createCanvas(800, 800);
+}
+
+let tick = 0;
+function draw() {
+  tick++;
+  drawBackground(tick);
   drawFabricClaims(fabricClaims);
   // drawFabricClaims(parse("#123 @ 3,2: 5x4"));
-  drawOverlaps(detectOverlapsIn(fabricClaims))
+  drawOverlaps(overlaps)
 }
+
