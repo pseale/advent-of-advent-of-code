@@ -1,4 +1,5 @@
 // p5.js sketch
+// https://editor.p5js.org/livecoding/sketches/AFr8QFxq8
 const size = 50;
 const borderSize = size * 0.2;
 const halfOfBorderSize = borderSize / 2.0;
