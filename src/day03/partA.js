@@ -1,5 +1,7 @@
 // p5.js sketch
 // https://editor.p5js.org/livecoding/sketches/AFr8QFxq8
+let hasDrawn = false;
+
 const size = 50;
 const borderSize = size * 0.2;
 const halfOfBorderSize = borderSize / 2.0;
@@ -7,6 +9,16 @@ const verticalPixelAdjustmentForTextBecauseP5JsIsJustALittleWonky = -3;
 
 function setup() {
   createCanvas(800, 800);
+}
+
+function getSquares(x, y, width, height) {
+  squares = []
+  for (const i of range(x, width)) {
+    for (const j of range(y, height)) {
+      squares = squares.concat({x: i, y: j});
+    }
+  }
+  return squares;
 }
 
 function parse(lines) {
@@ -23,18 +35,61 @@ function parse(lines) {
       x,
       y,
       width,
-      height
+      height,
+      squares: getSquares(x, y, width, height)
     }
   });
 }
 
 function drawFabricClaims(fabricClaims) {
-  fill(255);
-  stroke(0,255,255);
-  strokeWeight(borderSize);
   for (const fabricClaim of fabricClaims) {
+    // draw white background for this rectangle
+    // draw bold and strong border
+    fill(255);
+    stroke(0);
+    strokeWeight(0);
+    rect(fabricClaim.x*size, fabricClaim.y*size, fabricClaim.width*size, fabricClaim.height*size);
+    
+    // draw pips in each square
+    for (const square of fabricClaim.squares) {
+      writeGlyph('·', color(200, 255, 255), square);
+    }
+    
+    // draw bold and strong border
+    fill(255, 0);
+    stroke(0,255,255);
+    strokeWeight(borderSize);
     rect(fabricClaim.x*size, fabricClaim.y*size, fabricClaim.width*size, fabricClaim.height*size);
   }
+}
+
+// thank you StackOverflow https://stackoverflow.com/a/19506234
+function range(start, count) {
+  return Array.apply(0, Array(count))
+    .map((element, index) => index + start);
+}
+
+function getOverlaps(a, b) {
+  return a.squares.filter(aSquare => b.squares.some(bSquare => bSquare.x === aSquare.x &&  bSquare.y === aSquare.y))
+}
+
+function detectOverlapsIn(fabricClaims) {
+  overlaps = []
+  for (const i of range(0, fabricClaims.length)) {
+    for (const j of range(i + 1, Math.max(0, fabricClaims.length - i - 1))) {
+      overlaps = overlaps.concat(getOverlaps(fabricClaims[i], fabricClaims[j]));
+    }
+  }
+  return overlaps;
+}
+
+function writeGlyph(glyph, fillColor, square) {
+    textAlign(CENTER, CENTER);
+    textSize(size * .8);
+  
+    strokeWeight(0);
+    fill(fillColor);
+    text(glyph, square.x * size + halfOfBorderSize, square.y * size + halfOfBorderSize + verticalPixelAdjustmentForTextBecauseP5JsIsJustALittleWonky, size, size);
 }
 
 function drawOverlaps(overlaps) {
@@ -44,20 +99,22 @@ function drawOverlaps(overlaps) {
     strokeWeight(borderSize);
     rect(overlap.x*size, overlap.y*size, size, size);
     
-    textAlign(CENTER, CENTER);
-    textSize(size * .8);
-    strokeWeight(0);
-    fill(255,0,255);
-    text('✕', overlap.x * size + halfOfBorderSize, overlap.y * size + halfOfBorderSize + verticalPixelAdjustmentForTextBecauseP5JsIsJustALittleWonky, size, size);
+    writeGlyph('✕', color(255,0,255), overlap);
   }  
 }
 
 function draw() {
-  background(0, 50, 50);
-  drawFabricClaims(parse(`#1 @ 1,3: 4x4
+  drawOnce();
+}
+
+function drawOnce() {
+  if (hasDrawn) return;
+  hasDrawn = true;
+    background(0, 50, 50);
+  const fabricClaims = parse(`#1 @ 1,3: 4x4
 #2 @ 3,1: 4x4
-#3 @ 5,5: 2x2`));
+#3 @ 5,5: 2x2`);
+  drawFabricClaims(fabricClaims);
   // drawFabricClaims(parse("#123 @ 3,2: 5x4"));
-  drawOverlaps([{x:3, y:3}, {x:3, y:4}, {x:4, y:3}, {x:4, y:4}])
-  
+  drawOverlaps(detectOverlapsIn(fabricClaims))
 }
