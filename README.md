@@ -28,5 +28,6 @@ Nobody is good at estimation. Even me, superman. I've logged my estimates that p
     * Actual: 4 minutes
 * Day 03 (heavy visualization)
     * Estimate: 1 hour?
-    * Actual: 2 hours and counting
+    * Actual: 4 hours and counting
     * Unexpected landmine: honestly, I had no idea what I was even going to build. So 🤷‍♀️.
+    * Unexpected landmine: major bug with part A solution (the bug having nothing to do with visualization)
