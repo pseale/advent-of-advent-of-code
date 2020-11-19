@@ -1,3 +1,4 @@
+# I cheated and stole this off the internet.
 with open('input.txt', 'r') as f:
     start = 0
     for line in f:

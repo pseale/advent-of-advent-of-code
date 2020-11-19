@@ -1,3 +1,4 @@
+# I cheated and stole this off the internet.
 with open('input.txt') as f:
     lines = f.readlines()
 
