@@ -1,118 +1,125 @@
 // p5.js sketch
 // https://editor.p5js.org/livecoding/sketches/AFr8QFxq8
 
-const useMassiveDataset = false;
-
 let fabricClaims;
 let overlaps;
-let columns;
 
 function oneTimeSetup() {
   if (useMassiveDataset) {
     fabricClaims = parse(partALines);
   } else {
-//     fabricClaims = parse(`#1 @ 1,3: 4x4
-// #2 @ 3,1: 4x4
-// #3 @ 5,5: 2x2`); 
+    //     fabricClaims = parse(`#1 @ 1,3: 4x4
+    // #2 @ 3,1: 4x4
+    // #3 @ 5,5: 2x2`);
     fabricClaims = parse(`#1 @ 1,3: 4x4
 #2 @ 4,1: 4x4
-#3 @ 5,5: 2x2`); 
+#3 @ 5,5: 2x2`);
   }
   overlaps = detectOverlapsIn(fabricClaims);
   console.log(`overlaps:     ${overlaps.length}`);
-  
-  // just for drawing
-  columns = buildColumns()
-}
-
-function buildColumns() {
-  c = []
-  
-  const numberOfColumns = 15;
-  for (const column of range(0, numberOfColumns + 1)) { // two columns are partially drawn
-    const alpha = .10;
-    c = c.concat([`rgba(255, 255, 0, ${alpha})`, `rgba(0, 255, 255, ${alpha})`, `rgba(255, 0, 255, ${alpha})`]);
-  }
-  
-  return c;
 }
 
 function getSquares(x, y, width, height) {
-  squares = []
+  squares = [];
   for (const i of range(x, width)) {
     for (const j of range(y, height)) {
-      squares = squares.concat({x: i, y: j});
+      squares = squares.concat({ x: i, y: j });
     }
   }
   return squares;
 }
 
 function parse(linesString) {
-  let lines = linesString.split('\n').map(x => x.trim());
-  
-  return lines.filter(line => line).map(line => {
-    // sample line: #123 @ 3,2: 5x4
-    const words = line.split(' ');
-    const x = parseInt(words[2].split(/[,:]/)[0]);
-    const y = parseInt(words[2].split(/[,:]/)[1]);
+  let lines = linesString.split("\n").map((x) => x.trim());
 
-    const width = parseInt(words[3].split('x')[0]);
-    const height = parseInt(words[3].split('x')[1]);
-    
-    return {
-      x,
-      y,
-      width,
-      height,
-      squares: getSquares(x, y, width, height)
-    }
-  });
+  return lines
+    .filter((line) => line)
+    .map((line) => {
+      // sample line: #123 @ 3,2: 5x4
+      const words = line.split(" ");
+      const x = parseInt(words[2].split(/[,:]/)[0]);
+      const y = parseInt(words[2].split(/[,:]/)[1]);
+
+      const width = parseInt(words[3].split("x")[0]);
+      const height = parseInt(words[3].split("x")[1]);
+
+      return {
+        x,
+        y,
+        width,
+        height,
+        squares: getSquares(x, y, width, height),
+      };
+    });
 }
 
 // thank you StackOverflow https://stackoverflow.com/a/19506234
 function range(start, count) {
-  return Array.apply(0, Array(count))
-    .map((element, index) => index + start);
+  return Array.apply(0, Array(count)).map((element, index) => index + start);
 }
 
 function getOverlaps(a, b) {
-  return a.squares.filter(aSquare => b.squares.some(bSquare => bSquare.x === aSquare.x &&  bSquare.y === aSquare.y))
+  return a.squares.filter((aSquare) =>
+    b.squares.some(
+      (bSquare) => bSquare.x === aSquare.x && bSquare.y === aSquare.y
+    )
+  );
 }
 
 // I wrote this myself, but I wish I had just used lodash's _.union()
 function union(a, b) {
-    bMinusA = b.filter(x => !a.some(y => y.x === x.x && y.y === x.y));
-    return a.concat(bMinusA);
+  bMinusA = b.filter((x) => !a.some((y) => y.x === x.x && y.y === x.y));
+  return a.concat(bMinusA);
 }
 
 function containsOverlap(a, b) {
-    let aMinX = a.x;
-    let aMinY = a.y;
-    let aMaxX = a.x + a.width;
-    let aMaxY = a.y + a.height;
-    let bMinX = b.x;
-    let bMinY = b.y;
-    let bMaxX = b.x + b.width;
-    let bMaxY = b.y + b.height;
-    const insideHorizontally = (bMinX > aMinX && bMinX < aMaxX) || (bMaxX > aMinX && bMaxX < aMaxX);
-    const insideVertically = (bMinY > aMinY && bMinY < aMaxY) || (bMaxY > aMinY && bMaxY < aMaxY);
-    return insideHorizontally && insideVertically;
+  let aMinX = a.x;
+  let aMinY = a.y;
+  let aMaxX = a.x + a.width;
+  let aMaxY = a.y + a.height;
+  let bMinX = b.x;
+  let bMinY = b.y;
+  let bMaxX = b.x + b.width;
+  let bMaxY = b.y + b.height;
+  const insideHorizontally =
+    (bMinX > aMinX && bMinX < aMaxX) || (bMaxX > aMinX && bMaxX < aMaxX);
+  const insideVertically =
+    (bMinY > aMinY && bMinY < aMaxY) || (bMaxY > aMinY && bMaxY < aMaxY);
+  return insideHorizontally && insideVertically;
 }
 
 function detectOverlapsIn(fabricClaims) {
-  let overlaps = []
-  for (const i of range(0, fabricClaims.length)) {
-    for (const j of range(i + 1, Math.max(0, fabricClaims.length - i - 1))) {
-      if (containsOverlap(fabricClaims[i], fabricClaims[j])) {
-          console.log(`checking ${i} against ${j}`)
-          overlaps = union(overlaps, getOverlaps(fabricClaims[i], fabricClaims[j]));
+  let s = {};
+  for (let fabricClaim of fabricClaims) {
+    for (let square of fabricClaim.squares) {
+      const squareId = getSquareId(square);
+      if (squareId in s) {
+        s[squareId] += 1;
+      } else {
+        s[squareId] = 1;
       }
     }
   }
-  return overlaps;
+
+  return Object.keys(s).filter((x) => s[x] > 1);
 }
 
+function getSquareId(square) {
+  return `${square.x},${square.y}`;
+}
 
+function oneTimeSetup(useMassiveDataset) {
+  if (useMassiveDataset) {
+    fabricClaims = parse(partALines);
+  } else {
+    fabricClaims = parse(`#1 @ 1,3: 4x4
+#2 @ 3,1: 4x4
+#3 @ 5,5: 2x2`);
+  }
+
+  overlaps = detectOverlapsIn(fabricClaims);
+  console.log(`Part A:      ${overlaps.length}      conflict squares`);
+}
 
 const partALines = `#1 @ 509,796: 18x15
 #2 @ 724,606: 23x15
@@ -1523,25 +1530,3 @@ const partALines = `#1 @ 509,796: 18x15
 #1407 @ 749,350: 26x15
 #1408 @ 8,147: 25x21
 #1409 @ 16,529: 15x23`;
-
-function attemptToSolvePartAAgain() {
-    let s = {};
-    fabricClaims = parse(partALines);
-    for (let fabricClaim of fabricClaims) {
-        for (let square of fabricClaim.squares) {
-            const squareId = `${square.x},${square.y}`;
-            if (squareId in s) {
-                s[squareId] += 1;
-            } else {
-                s[squareId] = 1;
-            }
-        }
-    }
-
-    console.log('finished calculating');
-    const oversubscribedSquares = Object.keys(s).filter(x => s[x] > 1);
-    console.log(`${Object.keys(s).length}      total squares`)
-    console.log(`${oversubscribedSquares.length}      conflict squares`)
-}
-// oneTimeSetup();
-attemptToSolvePartAAgain();
