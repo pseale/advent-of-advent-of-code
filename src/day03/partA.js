@@ -1,6 +1,14 @@
 // p5.js sketch
 // https://editor.p5js.org/livecoding/sketches/AFr8QFxq8
 
+// day 3 - DID NOT FINISH. I have an answer that ALMOST works, but doesn't work for
+// cross-shaped rectangle intersections. So part B is not finished.
+//
+// How appropriate for Advent!
+//
+// Since this isn't finished, uh, don't look at it. HERE BE GARBAGE (or
+// dragons--made of GARBAGE! HERE BE GARBAGE DRAGONS)
+
 let fabricClaims;
 let overlaps;
 
@@ -37,6 +45,9 @@ function parse(linesString) {
     .map((line) => {
       // sample line: #123 @ 3,2: 5x4
       const words = line.split(" ");
+
+      const id = parseInt(words[0].replace("#", ""));
+
       const x = parseInt(words[2].split(/[,:]/)[0]);
       const y = parseInt(words[2].split(/[,:]/)[1]);
 
@@ -44,6 +55,7 @@ function parse(linesString) {
       const height = parseInt(words[3].split("x")[1]);
 
       return {
+        id,
         x,
         y,
         width,
@@ -72,21 +84,64 @@ function union(a, b) {
   return a.concat(bMinusA);
 }
 
-function containsOverlap(a, b) {
-  let aMinX = a.x;
-  let aMinY = a.y;
-  let aMaxX = a.x + a.width;
-  let aMaxY = a.y + a.height;
-  let bMinX = b.x;
-  let bMinY = b.y;
-  let bMaxX = b.x + b.width;
-  let bMaxY = b.y + b.height;
-  const insideHorizontally =
-    (bMinX > aMinX && bMinX < aMaxX) || (bMaxX > aMinX && bMaxX < aMaxX);
-  const insideVertically =
-    (bMinY > aMinY && bMinY < aMaxY) || (bMaxY > aMinY && bMaxY < aMaxY);
-  return insideHorizontally && insideVertically;
+function valueInRange(value, min, max) {
+  return value >= min && value <= max;
 }
+
+function detectOverlaps(a, b) {
+  const xOverlap =
+    valueInRange(a.x, b.x, b.x + b.width) ||
+    valueInRange(b.x, a.x, a.x + a.width);
+
+  const yOverlap =
+    valueInRange(a.y, b.y, b.y + b.height) ||
+    valueInRange(b.y, a.y, a.y + a.height);
+
+  return xOverlap && yOverlap;
+}
+
+function test(unparsedInputA, unparsedInputB, expected) {
+  const a = parse(unparsedInputA)[0];
+  const b = parse(unparsedInputB)[0];
+
+  const actual = detectOverlaps(a, b);
+  console.log(
+    expected === actual ? "OK" : "FAIL",
+    unparsedInputA,
+    unparsedInputB,
+    `expected: ${expected}  actual: ${actual}`
+  );
+}
+
+function runTests() {
+  test("#1 @ 1,3: 4x4", "#2 @ 4,1: 4x4", true);
+  test("#2 @ 4,1: 4x4", "#1 @ 1,3: 4x4", true);
+
+  test("#1 @ 1,1: 4x4", "#2 @ 1,1: 1x1", true);
+  test("#1 @ 1,1: 4x4", "#2 @ 4,1: 1x1", true);
+  test("#1 @ 1,1: 4x4", "#2 @ 4,4: 1x1", true);
+  test("#1 @ 1,1: 4x4", "#2 @ 1,4: 1x1", true);
+
+  test("#1 @ 1,1: 4x4", "#2 @ 2,2: 1x1", true);
+
+  test("#1 @ 2,2: 4x4", "#2 @ 1,1: 6x6", true);
+
+  test("#1 @ 1,1: 10x10", "#2 @ 1,2: 10x1", true);
+
+  // test a cross-like situation:
+  //      **
+  //      **
+  // ************
+  // ************
+  //      **
+  //      **
+  //      **
+  //      **
+  //      **
+  //      **
+  test("#1 @ 8,1: 10x2", "#2 @ 1,3: 2x10", true);
+}
+runTests();
 
 function detectOverlapsIn(fabricClaims) {
   let s = {};
@@ -108,6 +163,23 @@ function getSquareId(square) {
   return `${square.x},${square.y}`;
 }
 
+function identifyConflicts(fabricClaims) {
+  let o = [];
+
+  for (let i = 0; i < fabricClaims.length; i++) {
+    const a = fabricClaims[i];
+    for (let j = i + 1; j < fabricClaims.length; j++) {
+      const b = fabricClaims[j];
+      if (detectOverlaps(a, b)) {
+        o.push(a.id);
+        o.push(b.id);
+      }
+    }
+  }
+
+  return o;
+}
+
 function oneTimeSetup(useMassiveDataset) {
   if (useMassiveDataset) {
     fabricClaims = parse(partALines);
@@ -119,6 +191,16 @@ function oneTimeSetup(useMassiveDataset) {
 
   overlaps = detectOverlapsIn(fabricClaims);
   console.log(`Part A:      ${overlaps.length}      conflict squares`);
+
+  let conflictingFabricClaims = identifyConflicts(fabricClaims);
+  const conflictFreeFabricClaims = fabricClaims
+    .map((x) => x.id)
+    .filter((x) => !conflictingFabricClaims.includes(x));
+  console.log(
+    `Part B:      ${conflictFreeFabricClaims.join(
+      ","
+    )}      is the ID for the conflict-free fabric claim`
+  );
 }
 
 const partALines = `#1 @ 509,796: 18x15
