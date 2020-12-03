@@ -17,7 +17,7 @@ module.exports.isPasswordValid = function (input) {
     }
   }
 
-  return input.policy.atLeast <= hits && hits <= input.policy.atMost;
+  return input.policy.firstNumber <= hits && hits <= input.policy.secondNumber;
 };
 
 module.exports.parse = function (text) {
@@ -33,8 +33,8 @@ module.exports.parse = function (text) {
     results.push({
       policy: {
         letter: parts[2],
-        atLeast: parseInt(parts[0]),
-        atMost: parseInt(parts[1]),
+        firstNumber: parseInt(parts[0]),
+        secondNumber: parseInt(parts[1]),
       },
       password: parts[4],
     });
