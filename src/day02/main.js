@@ -1,14 +1,14 @@
 module.exports.solvePartA = function (passwords) {
   let valid = 0;
   for (let i = 0; i < passwords.length; i++) {
-    if (this.isPasswordValid(passwords[i])) {
+    if (this.isPasswordValidForSledRentalPlaceDownTheRoad(passwords[i])) {
       valid++;
     }
   }
   return valid;
 };
 
-module.exports.isPasswordValid = function (input) {
+module.exports.isPasswordValidForSledRentalPlaceDownTheRoad = function (input) {
   let hits = 0;
 
   for (let i = 0; i < input.password.length; i++) {
