@@ -23,24 +23,60 @@ describe("parsing", () => {
 
 describe("(Part A) Sled rental place down the road's password rules", () => {
   test("all password rules", () => {
-    expect(main.isPasswordValid(main.parse("1-3 a: a")[0])).toBe(true);
-    expect(main.isPasswordValid(main.parse("1-3 a: aa")[0])).toBe(true);
-    expect(main.isPasswordValid(main.parse("1-3 a: aaa")[0])).toBe(true);
+    expect(
+      main.isPasswordValidForSledRentalPlaceDownTheRoad(
+        main.parse("1-3 a: a")[0]
+      )
+    ).toBe(true);
+    expect(
+      main.isPasswordValidForSledRentalPlaceDownTheRoad(
+        main.parse("1-3 a: aa")[0]
+      )
+    ).toBe(true);
+    expect(
+      main.isPasswordValidForSledRentalPlaceDownTheRoad(
+        main.parse("1-3 a: aaa")[0]
+      )
+    ).toBe(true);
 
-    expect(main.isPasswordValid(main.parse("2-3 a: abcde")[0])).toBe(false);
-    expect(main.isPasswordValid(main.parse("1-3 a: aabacade")[0])).toBe(false);
-    expect(main.isPasswordValid(main.parse("1-3 a: bcde")[0])).toBe(false);
+    expect(
+      main.isPasswordValidForSledRentalPlaceDownTheRoad(
+        main.parse("2-3 a: abcde")[0]
+      )
+    ).toBe(false);
+    expect(
+      main.isPasswordValidForSledRentalPlaceDownTheRoad(
+        main.parse("1-3 a: aabacade")[0]
+      )
+    ).toBe(false);
+    expect(
+      main.isPasswordValidForSledRentalPlaceDownTheRoad(
+        main.parse("1-3 a: bcde")[0]
+      )
+    ).toBe(false);
   });
 
   test("example given", () => {
-    expect(main.isPasswordValid(main.parse("1-3 a: abcde")[0])).toBe(true);
-    expect(main.isPasswordValid(main.parse("1-3 b: cdefg")[0])).toBe(false);
-    expect(main.isPasswordValid(main.parse("2-9 c: ccccccccc")[0])).toBe(true);
+    expect(
+      main.isPasswordValidForSledRentalPlaceDownTheRoad(
+        main.parse("1-3 a: abcde")[0]
+      )
+    ).toBe(true);
+    expect(
+      main.isPasswordValidForSledRentalPlaceDownTheRoad(
+        main.parse("1-3 b: cdefg")[0]
+      )
+    ).toBe(false);
+    expect(
+      main.isPasswordValidForSledRentalPlaceDownTheRoad(
+        main.parse("2-9 c: ccccccccc")[0]
+      )
+    ).toBe(true);
   });
 });
 
 describe("outside-in test", () => {
-  test("sample input", () => {
+  test("(Part A) sample input", () => {
     const sampleInput = "1-3 a: abcde\n1-3 b: cdefg\n2-9 c: ccccccccc";
     expect(main.solvePartA(main.parse(sampleInput))).toBe(2);
   });
