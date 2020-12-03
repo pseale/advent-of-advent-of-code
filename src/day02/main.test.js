@@ -23,7 +23,6 @@ describe("parsing", () => {
 
 describe("password rules", () => {
   test("all password rules", () => {
-    debugger;
     expect(main.isPasswordValid(main.parse("1-3 a: a")[0])).toBe(true);
     expect(main.isPasswordValid(main.parse("1-3 a: aa")[0])).toBe(true);
     expect(main.isPasswordValid(main.parse("1-3 a: aaa")[0])).toBe(true);
