@@ -8,8 +8,8 @@ describe("parsing", () => {
     // Assert
     expect(result.policy).not.toBeNull();
     expect(result.policy.letter).toBe("a");
-    expect(result.policy.atLeast).toBe(1);
-    expect(result.policy.atMost).toBe(3);
+    expect(result.policy.firstNumber).toBe(1);
+    expect(result.policy.secondNumber).toBe(3);
 
     expect(result.password).toBe("abcde");
   });
@@ -21,7 +21,7 @@ describe("parsing", () => {
   });
 });
 
-describe("password rules", () => {
+describe("(Part A) Sled rental place down the road's password rules", () => {
   test("all password rules", () => {
     expect(main.isPasswordValid(main.parse("1-3 a: a")[0])).toBe(true);
     expect(main.isPasswordValid(main.parse("1-3 a: aa")[0])).toBe(true);
