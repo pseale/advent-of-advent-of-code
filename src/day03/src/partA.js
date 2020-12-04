@@ -1,4 +1,4 @@
-module.exports.parse = function (input) {
+function parse(input) {
   const lines = input
     .split("\n")
     .map((x) => x.trim())
@@ -12,9 +12,9 @@ module.exports.parse = function (input) {
 
     return line;
   });
-};
+}
 
-module.exports.howManyTreesDidWeHit = function (forest) {
+function howManyTreesDidWeHit(forest) {
   let hits = 0;
   for (let row = 0; row < forest.length; row++) {
     if (forest[row][row * 3] === "#") {
@@ -22,4 +22,11 @@ module.exports.howManyTreesDidWeHit = function (forest) {
     }
   }
   return hits;
-};
+}
+module.exports.parse = parse;
+module.exports.howManyTreesDidWeHit = howManyTreesDidWeHit;
+const fs = require("fs");
+const text = fs.readFileSync("./input.txt", "utf8");
+const forest = parse(text);
+
+console.log(`Part A solution: ${this.howManyTreesDidWeHit(forest)}`);
