@@ -13,8 +13,14 @@ function parse(input) {
     return line;
   });
 }
-function howManyTreesDidWeHit() {
-  return 999999;
+function howManyTreesDidWeHit(forest) {
+  let hits = 0;
+  for (let row = 0; row < forest.length; row++) {
+    if (forest[row][row * 3] === "#") {
+      hits++;
+    }
+  }
+  return hits;
 }
 const sampleInput = `..##.......
 #...#...#..
