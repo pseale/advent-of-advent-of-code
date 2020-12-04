@@ -12,3 +12,4 @@ const text = fs.readFileSync(filename, "utf8");
 const input = main.parse(text);
 
 console.log(`Part A solution: ${main.solvePartA(input)}`);
+console.log(`Part B solution: ${main.solvePartB(input)}`);

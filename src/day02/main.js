@@ -8,6 +8,29 @@ module.exports.solvePartA = function (passwords) {
   return valid;
 };
 
+module.exports.isPasswordValid = function (input) {
+  let hits = 0;
+
+  if (input.password[input.policy.firstNumber - 1] === input.policy.letter) {
+    hits++;
+  }
+  if (input.password[input.policy.secondNumber - 1] === input.policy.letter) {
+    hits++;
+  }
+
+  return hits === 1;
+};
+
+module.exports.solvePartB = function (passwords) {
+  let valid = 0;
+  for (let i = 0; i < passwords.length; i++) {
+    if (this.isPasswordValid(passwords[i])) {
+      valid++;
+    }
+  }
+  return valid;
+};
+
 module.exports.isPasswordValidForSledRentalPlaceDownTheRoad = function (input) {
   let hits = 0;
 
