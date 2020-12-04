@@ -75,9 +75,22 @@ describe("(Part A) Sled rental place down the road's password rules", () => {
   });
 });
 
+describe("(Part B) password rules", () => {
+  test("example given", () => {
+    expect(main.isPasswordValid(main.parse("1-3 a: abcde")[0])).toBe(true);
+    expect(main.isPasswordValid(main.parse("1-3 b: cdefg")[0])).toBe(false);
+    expect(main.isPasswordValid(main.parse("2-9 c: ccccccccc")[0])).toBe(false);
+  });
+});
+
 describe("outside-in test", () => {
   test("(Part A) sample input", () => {
     const sampleInput = "1-3 a: abcde\n1-3 b: cdefg\n2-9 c: ccccccccc";
     expect(main.solvePartA(main.parse(sampleInput))).toBe(2);
+  });
+
+  test("(Part B) sample input", () => {
+    const sampleInput = "1-3 a: abcde\n1-3 b: cdefg\n2-9 c: ccccccccc";
+    expect(main.solvePartB(main.parse(sampleInput))).toBe(1);
   });
 });
