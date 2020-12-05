@@ -14,7 +14,60 @@ function parse() {
   });
 }
 
-module.exports = function getInputs() {
+const slopes = [
+  { right: 1, down: 1 },
+  { right: 3, down: 1 },
+  { right: 5, down: 1 },
+  { right: 7, down: 1 },
+  { right: 1, down: 2 },
+];
+
+function getSlopeKey(slope) {
+  `right-${slope.right}-down-${slope.down}`;
+}
+function findCollisions(forest) {
+  const collisions = [];
+
+  slopes.forEach((slope) => {
+    const maxRow = forest.length;
+
+    // get every coordinate in the forest for this route
+    let i = 0;
+    for (let row = 0; row < maxRow; row += slope.down) {
+      const col = i * slope.right;
+      // if there is a tree at this coordinate, 💥
+      if (forest[row][col] === "#") {
+        collisions.push({
+          row,
+          col,
+          slope: getSlopeKey(slope),
+        });
+      }
+
+      i++;
+    }
+  });
+
+  return collisions;
+}
+
+function solvePartB(collisions) {
+  const slopeTotals = {};
+
+  collisions.forEach((collision) => {
+    if (slopeTotals[collision.slope] === undefined) {
+      slopeTotals[collision.slope] = 1;
+    } else {
+      slopeTotals[collision.slope]++;
+    }
+  });
+
+  return Object.values(slopeTotals).reduce(
+    (runningTotal, value) => (runningTotal = runningTotal * value)
+  );
+}
+
+function getInputs() {
   // get stuff from the outside world
   const forest = parse(input);
   const trees = [];
@@ -25,12 +78,20 @@ module.exports = function getInputs() {
       }
     }
   }
+
+  const collisions = findCollisions(forest);
+
+  const partBSolution = solvePartB(collisions);
+
   return {
     forest,
     trees,
-    collisions: [{ row: 1, col: 3 }],
+    collisions,
+    partBSolution,
   };
-};
+}
+
+module.exports = getInputs;
 
 const input = `........#.............#........
 ...#....#...#....#.............

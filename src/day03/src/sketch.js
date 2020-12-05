@@ -54,6 +54,17 @@ let sketch = (p5) => {
     drawGlyph(p5, p5.random(grassGlyphs), row, col);
   }
 
+  function drawPartBSolution(p5) {
+    const megaExplosionSize = 400;
+    p5.textSize(megaExplosionSize);
+    p5.text("💥", width / 2, megaExplosionSize * 0.85);
+    p5.fill(p5.color(255));
+    p5.textSize(megaExplosionSize / 4);
+    p5.stroke(p5.color(0));
+    p5.strokeWeight(10);
+    p5.text(inputs.partBSolution, width / 2, megaExplosionSize * 0.75);
+  }
+
   let hasDrawn = false;
   p5.draw = () => {
     if (hasDrawn) return;
@@ -81,6 +92,8 @@ let sketch = (p5) => {
       inputs.trees.forEach((tree) => {
         drawGlyph(p5, "🌲", tree.row, tree.col);
       });
+
+      drawPartBSolution(p5);
     }
   };
 };
