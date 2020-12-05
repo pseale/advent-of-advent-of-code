@@ -4,9 +4,10 @@ function parse() {
     .map((x) => x.trim())
     .filter((x) => x !== "");
 
+  const multipleIArrivedAtViaMath = 74;
   return lines.map((x) => {
     let line = "";
-    for (let i = 0; i < 32; i++) {
+    for (let i = 0; i < multipleIArrivedAtViaMath; i++) {
       line += x;
     }
 
@@ -25,6 +26,7 @@ const slopes = [
 function getSlopeKey(slope) {
   `right-${slope.right}-down-${slope.down}`;
 }
+
 function findCollisions(forest) {
   const collisions = [];
 
