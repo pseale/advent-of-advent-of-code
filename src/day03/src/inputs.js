@@ -16,8 +16,19 @@ function parse() {
 
 module.exports = function getInputs() {
   // get stuff from the outside world
+  const forest = parse(input);
+  const trees = [];
+  for (let row = 0; row < forest.length; row++) {
+    for (let col = 0; col < forest[row].length; col++) {
+      if (forest[row][col] === "#") {
+        trees.push({ row, col });
+      }
+    }
+  }
   return {
-    forest: parse(input),
+    forest,
+    trees,
+    collisions: [{ row: 1, col: 3 }],
   };
 };
 
