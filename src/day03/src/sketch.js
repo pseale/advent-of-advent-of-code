@@ -59,19 +59,19 @@ let sketch = (p5) => {
     for (let row = 0; row < rowsToDraw; row++) {
       for (let col = 0; col < inputs.forest[row].length; col++) {
         if (
-          inputs.collisions.some(
-            (collision) => collision.row === row && collision.col === col
-          )
+          !inputs.trees.some((tree) => tree.row === row && tree.col === col)
         ) {
-          drawGlyph(p5, "💥", row, col);
-        }
-
-        if (inputs.trees.some((tree) => tree.row === row && tree.col === col)) {
-          drawGlyph(p5, "🌲", row, col);
-        } else {
           drawGrass(p5, row, col);
         }
       }
+
+      inputs.collisions.forEach((collision) => {
+        drawGlyph(p5, "💥", collision.row, collision.col);
+      });
+
+      inputs.trees.forEach((tree) => {
+        drawGlyph(p5, "🌲", tree.row, tree.col);
+      });
     }
   };
 };
