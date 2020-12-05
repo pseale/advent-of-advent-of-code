@@ -13,7 +13,7 @@ let sketch = (p5) => {
     p5.createCanvas(width, height);
   };
 
-  const cellWidth = 15;
+  const cellWidth = 36;
   const cellHeight = cellWidth * 2.2;
   function drawGlyph(p5, glyph, row, col) {
     if (glyph === "💥") {
@@ -72,8 +72,11 @@ let sketch = (p5) => {
     p5.background(0);
     p5.fill(0, 100, 0);
 
-    // draw enough rows to fill the screen ONLY
-    const rowsToDraw = Math.ceil(height / cellHeight);
+    // draw enough rows to fill the screen ONLY, OR as many rows as we have
+    const rowsToDraw = Math.min(
+      Math.ceil(height / cellHeight),
+      inputs.forest.length
+    );
     // draw enough columns to fill the screen ONLY
     const columnsToDraw = Math.ceil(width / cellWidth); // inputs.forest.length;
 
