@@ -19,7 +19,22 @@ let sketch = (p5) => {
 
     const margin = cellWidth;
 
-    p5.text(glyph, margin + col * cellWidth, margin + row * cellHeight);
+    if (glyph === "💥") {
+      const glyphSize = cellWidth * 2 * 2.5;
+      p5.textSize(glyphSize);
+      p5.text(
+        glyph,
+        cellWidth + col * cellWidth,
+        cellHeight + row * cellHeight + glyphSize * 0.1
+      );
+    } else {
+      p5.textSize(cellWidth * 1.5);
+      p5.text(
+        glyph,
+        cellWidth + col * cellWidth,
+        cellHeight + row * cellHeight
+      );
+    }
   }
 
   const grassGlyphs = [".", ".", ".", ".", ",", '"', "'", "`", ";"];
@@ -39,21 +54,25 @@ let sketch = (p5) => {
     p5.textAlign(p5.CENTER, p5.CENTER);
     p5.background(0);
     p5.fill(0, 100, 0);
-    p5.textSize(20);
 
-    for (let row = 0; row < inputs.forest.length; row++) {
+    const rowsToDraw = 2; // inputs.forest.length;
+    for (let row = 0; row < rowsToDraw; row++) {
       for (let col = 0; col < inputs.forest[row].length; col++) {
         if (
-          !inputs.trees.some((tree) => tree.row === row && tree.col === col)
+          inputs.collisions.some(
+            (collision) => collision.row === row && collision.col === col
+          )
         ) {
+          drawGlyph(p5, "💥", row, col);
+        }
+
+        if (inputs.trees.some((tree) => tree.row === row && tree.col === col)) {
+          drawGlyph(p5, "🌲", row, col);
+        } else {
           drawGrass(p5, row, col);
         }
       }
     }
-
-    inputs.trees.forEach((tree) => {
-      drawGlyph(p5, "🌲", tree.row, tree.col);
-    });
   };
 };
 
