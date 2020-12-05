@@ -15,15 +15,12 @@ let sketch = (p5) => {
 
   p5.draw = () => {
     // p5.clear();
-    p5.fill(
-      p5.color(150 + p5.random(100), 150 + p5.random(100), 150 + p5.random(100))
-    );
-    p5.rect(
-      p5.random(width - 50),
-      p5.random(height - 50),
-      p5.random(50),
-      p5.random(50)
-    );
+    p5.textFont("monospace");
+    p5.background(0);
+    p5.fill(0, 100, 0);
+    p5.textSize(25);
+    const forestEmojiText = inputs.forest.join("\n").replaceAll("#", "🌲");
+    p5.text(forestEmojiText, 0, 0);
   };
 };
 
