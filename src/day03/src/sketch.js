@@ -13,12 +13,9 @@ let sketch = (p5) => {
     p5.createCanvas(width, height);
   };
 
+  const cellWidth = 15;
+  const cellHeight = cellWidth * 2.2;
   function drawGlyph(p5, glyph, row, col) {
-    const cellWidth = 15;
-    const cellHeight = cellWidth * 2.2;
-
-    const margin = cellWidth;
-
     if (glyph === "💥") {
       const glyphSize = cellWidth * 2 * 2.5;
       p5.textSize(glyphSize);
@@ -75,9 +72,13 @@ let sketch = (p5) => {
     p5.background(0);
     p5.fill(0, 100, 0);
 
-    const rowsToDraw = 2; // inputs.forest.length;
+    // draw enough rows to fill the screen ONLY
+    const rowsToDraw = Math.ceil(height / cellHeight);
+    // draw enough columns to fill the screen ONLY
+    const columnsToDraw = Math.ceil(width / cellWidth); // inputs.forest.length;
+
     for (let row = 0; row < rowsToDraw; row++) {
-      for (let col = 0; col < inputs.forest[row].length; col++) {
+      for (let col = 0; col < columnsToDraw; col++) {
         if (
           !inputs.trees.some((tree) => tree.row === row && tree.col === col)
         ) {
@@ -85,12 +86,17 @@ let sketch = (p5) => {
         }
       }
 
-      inputs.collisions.forEach((collision) => {
-        drawGlyph(p5, "💥", collision.row, collision.col);
+      inputs.trees.forEach((tree) => {
+        if (tree.col <= columnsToDraw && tree.row <= rowsToDraw) {
+          drawGlyph(p5, "🌲", tree.row, tree.col);
+        }
       });
 
-      inputs.trees.forEach((tree) => {
-        drawGlyph(p5, "🌲", tree.row, tree.col);
+      inputs.collisions.forEach((collision) => {
+        if (collision.col <= columnsToDraw && collision.row <= rowsToDraw) {
+          drawGlyph(p5, "💥", collision.row, collision.col);
+          drawGlyph(p5, "🎄", collision.row, collision.col);
+        }
       });
 
       drawPartBSolution(p5);
