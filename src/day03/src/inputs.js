@@ -64,10 +64,16 @@ function solvePartB(collisions) {
     (runningTotal, value) => (runningTotal = runningTotal * value)
   );
 }
+function convertBooleanValue(urlParams, key) {
+  const value = urlParams.get(key);
+  return String(value).toLocaleLowerCase() === "true";
+}
 
 function getInputs() {
   // get stuff from the outside world
-  const forest = parse(sampleInput);
+  const urlParams = new URLSearchParams(window.location.search);
+  const useRealData = convertBooleanValue(urlParams, "useRealData");
+  const forest = parse(useRealData ? realInput : sampleInput);
   const trees = [];
   for (let row = 0; row < forest.length; row++) {
     for (let col = 0; col < forest[row].length; col++) {
@@ -86,6 +92,7 @@ function getInputs() {
     trees,
     collisions,
     partBSolution,
+    useRealData,
   };
 }
 

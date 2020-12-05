@@ -13,8 +13,8 @@ let sketch = (p5) => {
     p5.createCanvas(width, height);
   };
 
-  const cellWidth = 36;
-  const cellHeight = cellWidth * 2.2;
+  let cellWidth = 36;
+  let cellHeight = cellWidth * 2.2;
   function drawGlyph(p5, glyph, row, col) {
     if (glyph === "💥") {
       const glyphSize = cellWidth * 2 * 2.5;
@@ -66,7 +66,10 @@ let sketch = (p5) => {
   p5.draw = () => {
     if (hasDrawn) return;
     hasDrawn = true;
-    // p5.clear();
+
+    cellWidth = inputs.useRealData ? 5 : 36;
+    cellHeight = cellWidth * 2.2;
+
     p5.textFont("monospace");
     p5.textAlign(p5.CENTER, p5.CENTER);
     p5.background(0);
