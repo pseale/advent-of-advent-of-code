@@ -37,11 +37,20 @@ let sketch = (p5) => {
     }
   }
 
-  const grassGlyphs = [".", ".", ".", ".", ",", '"', "'", "`", ";"];
+  const grassGlyphs = [".", ".", ".", ".", ",", '"', "'", ";"];
+  const grassColors = [
+    "rgb(0,200,0)",
+    "rgb(0,200,0)",
+    "rgb(0,200,0)",
+    "rgb(0,150,0)",
+    "rgb(0,150,0)",
+    "rgb(0,150,0)",
+    "rgb(0,100,0)",
+    "rgb(150,150,0)",
+    "rgb(100,100,100)",
+  ];
   function drawGrass(p5, row, col) {
-    const color =
-      p5.random() > 0.2 ? p5.color(0, 100, 0) : p5.color(200, 200, 0);
-    p5.fill(color);
+    p5.fill(p5.random(grassColors));
     drawGlyph(p5, p5.random(grassGlyphs), row, col);
   }
 
