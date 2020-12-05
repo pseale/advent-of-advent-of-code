@@ -1,4 +1,4 @@
 const sketch = require("./sketch");
-const getInputs = require("./inputs");
+const inputs = require("./inputs");
 
-sketch.init(getInputs(p5));
+sketch.init(inputs.getInputs(p5));

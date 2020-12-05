@@ -1,4 +1,4 @@
-function parse() {
+function parse(input) {
   const lines = input
     .split("\n")
     .map((x) => x.trim())
@@ -23,10 +23,6 @@ const slopes = [
   { right: 1, down: 2 },
 ];
 
-function getSlopeKey(slope) {
-  `right-${slope.right}-down-${slope.down}`;
-}
-
 function findCollisions(forest) {
   const collisions = [];
 
@@ -42,7 +38,7 @@ function findCollisions(forest) {
         collisions.push({
           row,
           col,
-          slope: getSlopeKey(slope),
+          slope: `right-${slope.right}-down-${slope.down}`,
         });
       }
 
@@ -93,7 +89,10 @@ function getInputs() {
   };
 }
 
-module.exports = getInputs;
+module.exports.getInputs = getInputs;
+module.exports.solvePartB = solvePartB;
+module.exports.parse = parse;
+module.exports.findCollisions = findCollisions;
 
 const input = `........#.............#........
 ...#....#...#....#.............
