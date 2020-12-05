@@ -67,7 +67,7 @@ function solvePartB(collisions) {
 
 function getInputs() {
   // get stuff from the outside world
-  const forest = parse(input);
+  const forest = parse(sampleInput);
   const trees = [];
   for (let row = 0; row < forest.length; row++) {
     for (let col = 0; col < forest[row].length; col++) {
@@ -94,7 +94,19 @@ module.exports.solvePartB = solvePartB;
 module.exports.parse = parse;
 module.exports.findCollisions = findCollisions;
 
-const input = `........#.............#........
+const sampleInput = `..##.......
+#...#...#..
+.#....#..#.
+..#.#...#.#
+.#...##..#.
+..#.##.....
+.#.#.#....#
+.#........#
+#.##...#...
+#...##....#
+.#..#...#.#`;
+
+const realInput = `........#.............#........
 ...#....#...#....#.............
 .#..#...#............#.....#..#
 ..#......#..##............###..
