@@ -30,12 +30,13 @@ let sketch = (p5) => {
     const maxRows = Math.ceil(height / rowSize);
     p5.fill(0);
     for (let row = 0; row < maxRows; row += 5) {
-      p5.rect(0, (tick % (rowSize * 5)) + row * rowSize, width, rowSize);
+      p5.rect(0, (tick % (rowSize * 5)) + row * rowSize, width * 2, rowSize * 4);
     }
     p5.textAlign(p5.CENTER, p5.CENTER);
 
     p5.textSize(height / 7);
     p5.fill(255);
+    p5.stroke(0);
     p5.text("‍️✅a", width / 2, height * 0.9);
     p5.textSize(height / 2);
     p5.text(person, width / 2, height / 2);
