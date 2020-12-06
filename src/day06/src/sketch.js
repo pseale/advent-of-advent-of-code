@@ -19,24 +19,8 @@ let sketch = (p5) => {
   p5.draw = () => {
     tick++;
 
-    p5.clear();
-    p5.noStroke();
-    p5.noFill();
-    // rectMode CENTER means that we are now drawing rectangles ??? relative to the center of the canvas??? I think? anyway, delete this and stuff changes
-    p5.rectMode(p5.CENTER);
-    p5.textSize(height * 0.6);
-    p5.noStroke();
-    p5.noFill();
-    const rowSize = 5;
-    const maxRows = Math.ceil(height / rowSize);
-    p5.fill(0);
-    for (let row = 0; row < maxRows; row += 5) {
-      p5.rect(0, (tick % (rowSize * 5)) + row * rowSize, width * 2, rowSize * 4);
-    }
-    p5.textAlign(p5.CENTER, p5.CENTER);
-
-    p5.fill(255);
-    p5.stroke(0);
+    prepareToDraw(p5);
+    drawBars(p5, tick);
 
     drawRotatingJazz(p5, tick);
 
@@ -50,6 +34,30 @@ module.exports.init = function init(i) {
   new p5module(sketch);
   // ~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~
 };
+function drawBars(p5, tick) {
+  const rowSize = 5;
+  const maxRows = Math.ceil(height / rowSize);
+  p5.fill(0);
+  for (let row = 0; row < maxRows; row += 5) {
+    p5.rect(0, (tick % (rowSize * 5)) + row * rowSize, width * 2, rowSize * 4);
+  }
+  p5.textAlign(p5.CENTER, p5.CENTER);
+
+  p5.fill(255);
+  p5.stroke(0);
+}
+
+function prepareToDraw(p5) {
+  p5.clear();
+  p5.noStroke();
+  p5.noFill();
+  // rectMode CENTER means that we are now drawing rectangles ??? relative to the center of the canvas??? I think? anyway, delete this and stuff changes
+  p5.rectMode(p5.CENTER);
+  p5.textSize(height * 0.6);
+  p5.noStroke();
+  p5.noFill();
+}
+
 function drawQuestionnaireSubject(p5, person) {
   p5.textSize(height / 7);
   p5.text("‍️✅", width / 2, height * 0.9);
