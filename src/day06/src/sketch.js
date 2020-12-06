@@ -67,8 +67,9 @@ function drawQuestionnaireSubject(p5, person) {
 
 function drawRotatingJazz(p5, tick) {
   p5.translate(width / 2, height * 0.9);
-  p5.rotate(-0.5 * p5.radians(tick));
+
   p5.textSize(height * 0.9);
+  p5.rotate(-0.5 * p5.radians(tick));
   p5.text("💥", 0, 0);
   p5.rotate(0.5 * p5.radians(tick));
 
@@ -76,5 +77,11 @@ function drawRotatingJazz(p5, tick) {
   p5.rotate(p5.radians(tick * 9));
   p5.text("💥", 0, 0);
   p5.rotate(-p5.radians(tick * 9));
+
+  p5.textSize(height * 0.3);
+  p5.rotate(-p5.radians(tick * 15));
+  p5.text("💥", 0, 0);
+  p5.rotate(p5.radians(tick * 15));
+
   p5.translate(-width / 2, -height * 0.9);
 }
