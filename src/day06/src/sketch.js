@@ -13,9 +13,32 @@ let sketch = (p5) => {
     p5.createCanvas(width, height);
   };
 
+  let tick = 0;
+  const people = ["🧙‍♂️", "👹", "🐸", "🎃"];
+  const person = p5.random(people);
   p5.draw = () => {
-    p5.fill(p5.color(150 + p5.random(100), 150 + p5.random(100), 150 + p5.random(100)));
-    p5.rect(p5.random(width - 50), p5.random(height - 50), p5.random(50), p5.random(50));
+    tick++;
+
+    p5.clear();
+    p5.noStroke();
+    p5.noFill();
+    p5.rectMode(p5.CENTER);
+    p5.textSize(height * 0.6);
+    p5.noStroke();
+    p5.noFill();
+    const rowSize = 5;
+    const maxRows = Math.ceil(height / rowSize);
+    p5.fill(0);
+    for (let row = 0; row < maxRows; row += 5) {
+      p5.rect(0, (tick % (rowSize * 5)) + row * rowSize, width, rowSize);
+    }
+    p5.textAlign(p5.CENTER, p5.CENTER);
+
+    p5.textSize(height / 7);
+    p5.fill(255);
+    p5.text("‍️✅a", width / 2, height * 0.9);
+    p5.textSize(height / 2);
+    p5.text(person, width / 2, height / 2);
   };
 };
 
