@@ -34,10 +34,22 @@ let sketch = (p5) => {
     }
     p5.textAlign(p5.CENTER, p5.CENTER);
 
-    p5.textSize(height / 7);
     p5.fill(255);
     p5.stroke(0);
-    p5.text("‍️✅a", width / 2, height * 0.9);
+
+    p5.translate(width / 2, height * 0.9);
+    p5.rotate(-0.5 * p5.radians(tick));
+    p5.textSize(height * 0.9);
+    p5.text("💥", 0, 0);
+    p5.rotate(0.5 * p5.radians(tick));
+
+    p5.textSize(height * 0.7);
+    p5.rotate(p5.radians(tick * 9));
+    p5.text("💥", 0, 0);
+    p5.rotate(-p5.radians(tick * 9));
+    p5.translate(-width / 2, -height * 0.9);
+    p5.textSize(height / 7);
+    p5.text("‍️✅", width / 2, height * 0.9);
     p5.textSize(height / 2);
     p5.text(person, width / 2, height / 2);
   };
