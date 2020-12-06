@@ -153,7 +153,7 @@ describe("(Part B)", () => {
     const result = solvePartB(realData);
 
     // Assert
-    expect(result).toBe(260);
+    expect(result).toBe(153);
   });
 });
 
