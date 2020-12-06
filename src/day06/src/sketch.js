@@ -22,6 +22,7 @@ let sketch = (p5) => {
     p5.clear();
     p5.noStroke();
     p5.noFill();
+    // rectMode CENTER means that we are now drawing rectangles ??? relative to the center of the canvas??? I think? anyway, delete this and stuff changes
     p5.rectMode(p5.CENTER);
     p5.textSize(height * 0.6);
     p5.noStroke();
@@ -37,21 +38,9 @@ let sketch = (p5) => {
     p5.fill(255);
     p5.stroke(0);
 
-    p5.translate(width / 2, height * 0.9);
-    p5.rotate(-0.5 * p5.radians(tick));
-    p5.textSize(height * 0.9);
-    p5.text("💥", 0, 0);
-    p5.rotate(0.5 * p5.radians(tick));
+    drawRotatingJazz(p5, tick);
 
-    p5.textSize(height * 0.7);
-    p5.rotate(p5.radians(tick * 9));
-    p5.text("💥", 0, 0);
-    p5.rotate(-p5.radians(tick * 9));
-    p5.translate(-width / 2, -height * 0.9);
-    p5.textSize(height / 7);
-    p5.text("‍️✅", width / 2, height * 0.9);
-    p5.textSize(height / 2);
-    p5.text(person, width / 2, height / 2);
+    drawQuestionnaireSubject(p5, person);
   };
 };
 
@@ -61,3 +50,23 @@ module.exports.init = function init(i) {
   new p5module(sketch);
   // ~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~
 };
+function drawQuestionnaireSubject(p5, person) {
+  p5.textSize(height / 7);
+  p5.text("‍️✅", width / 2, height * 0.9);
+  p5.textSize(height / 2);
+  p5.text(person, width / 2, height / 2);
+}
+
+function drawRotatingJazz(p5, tick) {
+  p5.translate(width / 2, height * 0.9);
+  p5.rotate(-0.5 * p5.radians(tick));
+  p5.textSize(height * 0.9);
+  p5.text("💥", 0, 0);
+  p5.rotate(0.5 * p5.radians(tick));
+
+  p5.textSize(height * 0.7);
+  p5.rotate(p5.radians(tick * 9));
+  p5.text("💥", 0, 0);
+  p5.rotate(-p5.radians(tick * 9));
+  p5.translate(-width / 2, -height * 0.9);
+}
