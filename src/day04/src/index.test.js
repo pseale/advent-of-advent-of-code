@@ -3,33 +3,102 @@ function isPresent(value) {
 }
 
 function hasRequiredFields(passport) {
-  if (!isPresent(passport.byr)) return false;
-  if (!isPresent(passport.iyr)) return false;
-  if (!isPresent(passport.eyr)) return false;
-  if (!isPresent(passport.hgt)) return false;
-  if (!isPresent(passport.hcl)) return false;
-  if (!isPresent(passport.ecl)) return false;
-  if (!isPresent(passport.pid)) return false;
+  if (!isPresent(passport.birthYear)) return false;
+  if (!isPresent(passport.issueYear)) return false;
+  if (!isPresent(passport.expirationYear)) return false;
+  if (!isPresent(passport.height)) return false;
+  if (!isPresent(passport.hairColor)) return false;
+  if (!isPresent(passport.eyeColor)) return false;
+  if (!isPresent(passport.passportId)) return false;
   return true;
+}
+
+function getField(fields, key) {
+  const matchingFields = fields.filter((x) => x.key === key);
+  if (matchingFields.length === 0) return null;
+
+  return matchingFields[0].value;
 }
 
 function parse(input) {
   const passportStrings = input.split("\n\n"); // double-newline == 1 empty line
   return passportStrings.map((passportString) => {
-    const fields = passportString.split(/\s+/);
+    const fields = passportString.split(/\s+/).map((x) => {
+      return {
+        key: x.split(":")[0],
+        value: x.split(":")[1],
+      };
+    });
     const passport = {};
-    for (field of fields) {
-      const keyValuePair = field.split(":");
-      passport[keyValuePair[0]] = keyValuePair[1];
-    }
+
+    if (getField(fields, "byr") !== null)
+      passport.birthYear = parseInt(getField(fields, "byr"));
+    if (getField(fields, "iyr") !== null)
+      passport.issueYear = parseInt(getField(fields, "iyr"));
+    if (getField(fields, "eyr") !== null)
+      passport.expirationYear = parseInt(getField(fields, "eyr"));
+    if (getField(fields, "hgt") !== null)
+      passport.height = {
+        unit: getField(fields, "hgt").substr(getField(fields, "hgt").length - 2),
+        height: parseInt(getField(fields, "hgt")),
+      };
+    if (getField(fields, "hcl") !== null) passport.hairColor = getField(fields, "hcl");
+    if (getField(fields, "ecl") !== null) passport.eyeColor = getField(fields, "ecl");
+    if (getField(fields, "pid") !== null) passport.passportId = getField(fields, "pid");
+    if (getField(fields, "cid") !== null) passport.countryId = getField(fields, "cid");
 
     return passport;
   });
 }
 
+function isValid(passport) {
+  if (!passport.birthYear || passport.birthYear < 1920 || passport.birthYear > 2002)
+    return false;
+
+  if (!passport.issueYear || passport.issueYear < 2010 || passport.issueYear > 2020)
+    return false;
+
+  if (
+    !passport.expirationYear ||
+    passport.expirationYear < 2020 ||
+    passport.expirationYear > 2030
+  )
+    return false;
+
+  if (!passport.height) return false;
+  if (passport.height.unit !== "cm" && passport.height.unit !== "in") return false;
+  if (
+    passport.height.unit === "cm" &&
+    (passport.height.height < 150 || passport.height.height > 193)
+  )
+    return false;
+  if (
+    passport.height.unit === "in" &&
+    (passport.height.height < 59 || passport.height.height > 76)
+  )
+    return false;
+
+  const hairColorRegex = /^#[\da-fA-F]{6}$/;
+  if (!passport.hairColor || !hairColorRegex.test(passport.hairColor)) return false;
+
+  const validEyeColors = ["amb", "blu", "brn", "gry", "grn", "hzl", "oth"];
+  if (!passport.eyeColor || !validEyeColors.some((x) => x === passport.eyeColor))
+    return false;
+
+  const passportIdRegex = /^\d{9}$/;
+  if (!passport.passportId || !passportIdRegex.test(passport.passportId)) return false;
+
+  return true;
+}
 function checkRequiredFields(passports) {
   passports.forEach((passport) => {
     passport.hasRequiredFields = hasRequiredFields(passport);
+  });
+}
+
+function checkValidity(passports) {
+  passports.forEach((passport) => {
+    passport.valid = isValid(passport);
   });
 }
 
@@ -38,6 +107,13 @@ function solvePartA(input) {
   checkRequiredFields(passports);
 
   return passports.filter((x) => x.hasRequiredFields).length;
+}
+
+function solvePartB(input) {
+  const passports = parse(input);
+  checkRequiredFields(passports);
+  checkValidity(passports);
+  return passports.filter((x) => x.hasRequiredFields && x.valid).length;
 }
 
 describe("(Part A)", () => {
@@ -57,6 +133,30 @@ describe("(Part A)", () => {
   });
 });
 
+describe("(Part B)", () => {
+  test("sample data: invalid passports", () => {
+    // Arrange + Act
+    const result = solvePartB(partBInvalidPassportsInput);
+
+    // Assert
+    expect(result).toBe(0);
+  });
+  test("sample data: valid passports", () => {
+    // Arrange + Act
+    const result = solvePartB(partBValidPassportsInput);
+
+    // Assert
+    expect(result).toBe(4);
+  });
+  test("real data", () => {
+    // Arrange + Act
+    const result = solvePartB(realData);
+
+    // Assert
+    expect(result).toBe(260);
+  });
+});
+
 const sampleData = `ecl:gry pid:860033327 eyr:2020 hcl:#fffffd
 byr:1937 iyr:2017 cid:147 hgt:183cm
 
@@ -70,6 +170,33 @@ hgt:179cm
 
 hcl:#cfa07d eyr:2025 pid:166559648
 iyr:2011 ecl:brn hgt:59in`;
+
+const partBInvalidPassportsInput = `eyr:1972 cid:100
+hcl:#18171d ecl:amb hgt:170 pid:186cm iyr:2018 byr:1926
+
+iyr:2019
+hcl:#602927 eyr:1967 hgt:170cm
+ecl:grn pid:012533040 byr:1946
+
+hcl:dab227 iyr:2012
+ecl:brn hgt:182cm pid:021572410 eyr:2020 byr:1992 cid:277
+
+hgt:59cm ecl:zzz
+eyr:2038 hcl:74454a iyr:2023
+pid:3556412378 byr:2007`;
+
+const partBValidPassportsInput = `pid:087499704 hgt:74in ecl:grn iyr:2012 eyr:2030 byr:1980
+hcl:#623a2f
+
+eyr:2029 ecl:blu cid:129 byr:1989
+iyr:2014 pid:896056539 hcl:#a97842 hgt:165cm
+
+hcl:#888785
+hgt:164cm byr:2001 iyr:2015 cid:88
+pid:545766238 ecl:hzl
+eyr:2022
+
+iyr:2010 hgt:158cm hcl:#b6652a ecl:blu byr:1944 eyr:2021 pid:093154719`;
 
 const realData = `eyr:2021 hgt:168cm hcl:#fffffd pid:180778832 byr:1923 ecl:amb iyr:2019 cid:241
 
