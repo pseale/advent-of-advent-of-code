@@ -13,6 +13,30 @@ function getRatedJoltagesFor(joltage) {
 function solvePartA(adapters) {
   adapters.sort((x, y) => x - y);
 
+  let jumpsOfOne = 0;
+  let jumpsOfThree = 0;
+
+  let adapter = 0;
+  // start with 0
+  while (adapter < adapters[adapters.length - 1]) {
+    if (adapters.includes(adapter + 1)) {
+      jumpsOfOne++;
+      adapter += 1;
+    } else if (adapters.includes(adapter + 3)) {
+      jumpsOfThree++;
+      adapter += 3;
+    } else {
+      throw "we should never be here in Part A";
+    }
+  }
+
+  jumpsOfThree += 1; // count the final jump of 3
+  return jumpsOfOne * jumpsOfThree;
+}
+
+function solvePartACombinatorialUnnecessaryWhoops(adapters) {
+  adapters.sort((x, y) => x - y);
+
   // start with 0
   let adapter = 0;
 
@@ -121,7 +145,7 @@ describe("(Part A)", () => {
     const result = solvePartA(adapters);
 
     // Assert
-    expect(result).toBe(7 * 5);
+    expect(result).toBe(1690);
   });
 });
 
