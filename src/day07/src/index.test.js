@@ -50,7 +50,7 @@ function parse(input) {
 
 function recordParentsFor(graph) {
   for (const bagName in graph) {
-    for (let childNode of graph[bagName.children]) {
+    for (let childNode of graph[bagName].children) {
       const node = graph[childNode.bagName];
       node.parents.push(bagName);
     }
@@ -58,8 +58,23 @@ function recordParentsFor(graph) {
   return graph;
 }
 
+// count how many parents are here
+function traverse(node, graph, alreadyVisited) {
+  alreadyVisited.push(node.bagName);
+
+  const newParents = node.parents.filter((parent) => !alreadyVisited.includes(parent));
+  let count = 1;
+  for (let parent of newParents) {
+    count += traverse(graph[parent], graph, alreadyVisited);
+  }
+
+  return count;
+}
+
 function solvePartA(graph) {
-  return -1;
+  const shinyGoldNode = graph["shiny gold"];
+
+  return traverse(shinyGoldNode, graph, []) - 1;
 }
 
 describe("(Part A)", () => {
@@ -108,7 +123,9 @@ describe("parse", () => {
   test("parsing nodes with parents", () => {
     // Arrange
     const input = `dark orange bags contain 3 bright white bags, 4 muted yellow bags.
-  bright white bags contain 1 shiny gold bag.`;
+  bright white bags contain 1 shiny gold bag.
+  shiny gold bags contain no other bags.
+  muted yellow bags contain no other bags.`;
 
     // Act
     const graph = parse(input);
