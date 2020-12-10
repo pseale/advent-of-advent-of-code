@@ -115,6 +115,42 @@ dotted black bags contain no other bags.`;
   });
 });
 
+function countChildren(node, graph) {
+  let count = 0;
+
+  for (let child of node.children) {
+    const childNode = graph[child.bagName];
+    count += child.quantity * (1 + countChildren(childNode, graph));
+  }
+
+  return count;
+}
+
+function solvePartB(graph) {
+  const shinyGold = graph["shiny gold"];
+  return countChildren(shinyGold, graph);
+}
+
+describe("Part B", () => {
+  test("sample data", () => {
+    // Arrange
+    const input = `shiny gold bags contain 2 dark red bags.
+    dark red bags contain 2 dark orange bags.
+    dark orange bags contain 2 dark yellow bags.
+    dark yellow bags contain 2 dark green bags.
+    dark green bags contain 2 dark blue bags.
+    dark blue bags contain 2 dark violet bags.
+    dark violet bags contain no other bags.`;
+    const graph = parse(input);
+
+    // Act
+    const result = solvePartB(graph);
+
+    // Assert
+    expect(result).toBe(126);
+  });
+});
+
 describe("parse", () => {
   test("parsing node with no children", () => {
     // Arrange
