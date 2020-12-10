@@ -2,7 +2,8 @@
   "name": "home",
   "scripts": {
     "test": "jest",
-    "test:debug:windows": "node --inspect-brk node_modules/jest/bin/jest.js --runInBand"
+    "test:debug:windows": "node --inspect-brk node_modules/jest/bin/jest.js --runInBand",
+    "watch:tests": "jest --watch"
   },
   "author": "",
   "license": "Apache-2.0",
