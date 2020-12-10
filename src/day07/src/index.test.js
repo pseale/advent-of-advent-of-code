@@ -1,3 +1,19 @@
+// e.g.
+//       dark orange bags contain 3 bright white bags, 4 muted yellow bags.
+function parseOutChildren(line) {
+  const parent = `${line.split(" ")[0]} ${line.split(" ")[1]}`;
+
+  const allChildren = line.split("contain ")[1];
+  const childrenStrings = allChildren
+    .replace(".", "")
+    .split(",")
+    .map((x) => x.trim());
+  return childrenStrings.map((childString) => {
+    const words = childString.split(" ");
+    return { quantity: parseInt(words[0]), bagName: `${words[1]} ${words[2]}`, parent };
+  });
+}
+
 function parse(input) {
   const lines = input
     .split("\n")
@@ -19,18 +35,9 @@ function parse(input) {
         throw `duplicate bag found: ${bagName}`;
       }
     } else if (/contain \d+/.test(line)) {
-      const children = line
-        .split("contain ")[1]
-        .replace(".", "")
-        .split(",")
-        .map((x) => x.trim())
-        .split(" ")
-        .map((x) => {
-          return { quantity: parseInt(x[0]), bagName: `${x[1]} ${x[2]}` };
-        });
       graph[bagName] = {
         bagName,
-        children,
+        children: parseOutChildren(line),
       };
     } else {
       throw `Invalid input: ${line}`;
@@ -91,5 +98,18 @@ describe("parse", () => {
     const dottedBlack = graph["dotted black"];
     expect(dottedBlack.children.length).toBe(0);
     expect(dottedBlack.parents.length).toBe(0);
+  });
+
+  test("parsing nodes with parents", () => {
+    // Arrange
+    const input = `dark orange bags contain 3 bright white bags, 4 muted yellow bags.
+  bright white bags contain 1 shiny gold bag.`;
+
+    // Act
+    const graph = parse(input);
+
+    // Assert
+    const brightWhite = graph["bright white"];
+    expect(brightWhite.parents).toStrictEqual(["dark orange"]);
   });
 });
