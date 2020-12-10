@@ -149,6 +149,17 @@ describe("Part B", () => {
     // Assert
     expect(result).toBe(126);
   });
+
+  test("real data", () => {
+    // Arrange
+    const graph = parse(realData);
+
+    // Act
+    const result = solvePartB(graph);
+
+    // Assert
+    expect(result).toBe(158730);
+  });
 });
 
 describe("parse", () => {
