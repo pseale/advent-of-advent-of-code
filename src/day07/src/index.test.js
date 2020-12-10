@@ -59,16 +59,21 @@ function recordParentsFor(graph) {
 }
 
 // count how many parents are here
-function traverse(node, graph, alreadyVisited) {
+function traverseNode(node, graph, alreadyVisited) {
   alreadyVisited.push(node.bagName);
 
   const newParents = node.parents.filter((parent) => !alreadyVisited.includes(parent));
-  let count = 1;
   for (let parent of newParents) {
-    count += traverse(graph[parent], graph, alreadyVisited);
+    traverseNode(graph[parent], graph, alreadyVisited);
   }
+}
 
-  return count;
+function traverse(node, graph) {
+  const alreadyVisited = [];
+
+  traverseNode(node, graph, alreadyVisited);
+
+  return alreadyVisited.length;
 }
 
 function solvePartA(graph) {
