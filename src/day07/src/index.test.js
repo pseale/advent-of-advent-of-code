@@ -60,10 +60,11 @@ function recordParentsFor(graph) {
 
 // count how many parents are here
 function traverseNode(node, graph, alreadyVisited) {
+  if (alreadyVisited.includes(node.bagName)) return;
+
   alreadyVisited.push(node.bagName);
 
-  const newParents = node.parents.filter((parent) => !alreadyVisited.includes(parent));
-  for (let parent of newParents) {
+  for (let parent of node.parents) {
     traverseNode(graph[parent], graph, alreadyVisited);
   }
 }
@@ -148,6 +149,35 @@ describe("parse", () => {
     // Assert
     const brightWhite = graph["bright white"];
     expect(brightWhite.parents).toStrictEqual(["dark orange"]);
+  });
+});
+
+describe("traversing", () => {
+  test("no parents", () => {
+    // Arrange
+    const graph = parse(`dotted black bags contain no other bags.`);
+    const dottedBlack = graph["dotted black"];
+
+    // Act
+    const count = traverse(dottedBlack, graph);
+
+    // Assert
+    expect(count).toBe(1);
+  });
+
+  test("diamond dependencies", () => {
+    // Arrange
+    const graph = parse(`shiny gold bags contain no other bags.
+ULTIMATE GRANDMA bags contain 3 PARENT ONE bags, 4 PARENT TWO bags.
+PARENT ONE bags contain 3 shiny gold bags.
+PARENT TWO bags contain 3 shiny gold bags.`);
+    const shinyGold = graph["shiny gold"];
+
+    // Act
+    const count = traverse(shinyGold, graph);
+
+    // Assert
+    expect(count).toBe(4);
   });
 });
 
