@@ -30,6 +30,7 @@ function parse(input) {
         graph[bagName] = {
           bagName,
           children: [],
+          parents: [],
         };
       } else {
         throw `duplicate bag found: ${bagName}`;
@@ -38,6 +39,7 @@ function parse(input) {
       graph[bagName] = {
         bagName,
         children: parseOutChildren(line),
+        parents: [],
       };
     } else {
       throw `Invalid input: ${line}`;
@@ -48,7 +50,10 @@ function parse(input) {
 
 function recordParentsFor(graph) {
   for (const bagName in graph) {
-    graph[bagName].parents = [];
+    for (let childNode of graph[bagName.children]) {
+      const node = graph[childNode.bagName];
+      node.parents.push(bagName);
+    }
   }
   return graph;
 }
