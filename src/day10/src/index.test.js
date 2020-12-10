@@ -6,8 +6,9 @@ function parse(input) {
     .filter((x) => x);
 }
 
+// why did they do joltage - 3, it makes no sense
 function getRatedJoltagesFor(joltage) {
-  return [joltage + 1, joltage + 2, joltage + 3, joltage - 3];
+  return [joltage + 1, joltage + 2, joltage + 3];
 }
 
 function solvePartA(adapters) {
@@ -34,44 +35,24 @@ function solvePartA(adapters) {
   return jumpsOfOne * jumpsOfThree;
 }
 
-function solvePartACombinatorialUnnecessaryWhoops(adapters) {
-  adapters.sort((x, y) => x - y);
-
-  // start with 0
-  let adapter = 0;
-
-  // get all combinations of adapters that "work with" each other
-  const combinationsToTry = [{ joltage: adapter, chained: [] }];
-
-  while (true) {
-    if (combinationsToTry.length === 0)
-      throw "We were unable to find how to use all adapters";
-
-    const combinationToTry = combinationsToTry.shift();
-    if (combinationToTry.chained.length === adapters.length) {
-      const jumpsOfThree = combinationToTry.chained.filter((x) => x.jump === 3).length;
-      const jumpsOfOne = combinationToTry.chained.filter((x) => x.jump === 1).length;
-      return jumpsOfOne * (jumpsOfThree + 1);
-    }
-
-    for (let joltage of getRatedJoltagesFor(combinationToTry.joltage)) {
-      if (
-        adapters.includes(joltage) &&
-        !combinationToTry.chained.map((x) => x.maleAdapter).includes(joltage)
-      ) {
-        const chained = combinationToTry.chained.concat({
-          maleAdapter: combinationToTry.joltage,
-          femaleAdapter: joltage,
-          jump: Math.abs(joltage - combinationToTry.joltage),
-        });
-        combinationsToTry.push({ joltage, chained });
-      }
-    }
-  }
-  // if you match every single adapter, return early (i.e. don't keep calculating once you figure it out)
-
-  return 0;
+function immediateCombinations(adapter, adapters) {
+  let combinations = 0;
+  if (adapters.includes(adapter + 1)) combinations++;
+  if (adapters.includes(adapter + 2)) combinations++;
+  if (adapters.includes(adapter + 3)) combinations++;
+  return combinations;
 }
+
+// TODO: cry, then when done, solve this problem
+function solvePartB(adapters) {
+  console.log("crying emoji");
+  adapters.concat(0).sort((x, y) => x - y);
+  const maxJoltage = adapters.sort()[adapters.length - 1];
+  adapters.concat(maxJoltage + 3);
+
+  return -111111111111;
+}
+
 describe("(Part A)", () => {
   test("sample data", () => {
     // Arrange
@@ -146,6 +127,83 @@ describe("(Part A)", () => {
 
     // Assert
     expect(result).toBe(1690);
+  });
+});
+
+describe("(Part B)", () => {
+  test("sample data", () => {
+    // Arrange
+    const adapters = parse(`16
+10
+15
+5
+1
+11
+7
+19
+6
+12
+4`);
+
+    // Act
+    const result = solvePartB(adapters);
+
+    // Assert
+    expect(result).toBe(8);
+  });
+
+  test("larger sample data", () => {
+    // Arrange
+    const adapters = parse(`
+28
+33
+18
+42
+31
+14
+46
+20
+48
+47
+24
+23
+49
+45
+19
+38
+39
+11
+1
+32
+25
+35
+8
+17
+7
+9
+4
+2
+34
+10
+3
+`);
+
+    // Act
+    const result = solvePartB(adapters);
+
+    // Assert
+    expect(result).toBe(-1); // no idea what this should be yet
+  });
+
+  test("real data", () => {
+    // Arrange
+    const adapters = parse(realData);
+
+    // Act
+    const result = solvePartB(adapters);
+
+    // Assert
+    expect(result).toBe(-1);
   });
 });
 
