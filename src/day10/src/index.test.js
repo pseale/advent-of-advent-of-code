@@ -35,22 +35,31 @@ function solvePartA(adapters) {
   return jumpsOfOne * jumpsOfThree;
 }
 
-function immediateCombinations(adapter, adapters) {
-  let combinations = 0;
-  if (adapters.includes(adapter + 1)) combinations++;
-  if (adapters.includes(adapter + 2)) combinations++;
-  if (adapters.includes(adapter + 3)) combinations++;
-  return combinations;
+// See, I knew this problem wasn't about programming, but math :/
+// https://brilliant.org/wiki/tribonacci-sequence/
+const tribonacciSequence = [1, 1, 2, 4, 7, 13, 24, 44, 81, 149];
+function getTribonacci(num) {
+  if (num > tribonacciSequence.length)
+    throw `Can't calculate tribonacci number for ${num}`;
+
+  return tribonacciSequence[num - 1];
 }
 
-// TODO: cry, then when done, solve this problem
 function solvePartB(adapters) {
-  console.log("crying emoji");
-  adapters.concat(0).sort((x, y) => x - y);
-  const maxJoltage = adapters.sort()[adapters.length - 1];
-  adapters.concat(maxJoltage + 3);
+  const maxJoltage = adapters.sort((x, y) => x - y)[adapters.length - 1];
+  const a = adapters.concat([0, maxJoltage + 3]).sort((x, y) => x - y);
 
-  return -111111111111;
+  let multiplier = 1;
+  let currentRun = 1;
+  for (let joltage of a) {
+    if (adapters.includes(joltage + 1)) {
+      currentRun++;
+    } else {
+      multiplier *= getTribonacci(currentRun);
+      currentRun = 1;
+    }
+  }
+  return multiplier;
 }
 
 describe("(Part A)", () => {
@@ -192,7 +201,7 @@ describe("(Part B)", () => {
     const result = solvePartB(adapters);
 
     // Assert
-    expect(result).toBe(-1); // no idea what this should be yet
+    expect(result).toBe(19208);
   });
 
   test("real data", () => {
@@ -203,7 +212,7 @@ describe("(Part B)", () => {
     const result = solvePartB(adapters);
 
     // Assert
-    expect(result).toBe(-1);
+    expect(result).toBe(5289227976704);
   });
 });
 
