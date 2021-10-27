@@ -8,7 +8,7 @@ namespace Day02
     {
         public static void Main(string[] args)
         {
-            var input = File.ReadAllText("input-part-a.txt");
+            var input = File.ReadAllText("input.txt");
             var partA = SolvePartA(input);
             Console.WriteLine($"Square feet of wrapping paper: {partA}");
 

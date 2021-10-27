@@ -8,7 +8,7 @@ namespace Day03
     {
         static void Main(string[] args)
         {
-            var input = File.ReadAllText("input-part-a.txt");
+            var input = File.ReadAllText("input.txt");
             int partA = SolvePartA(input);
             Console.WriteLine($"Houses receiving at least one present: {partA}");
 
