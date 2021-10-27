@@ -53,7 +53,6 @@ namespace Day02
             var presents = Parse(input);
 
             return presents.Sum(x => CalculateFeetOfRibbonFor(x));
-
         }
 
         private static int CalculateFeetOfRibbonFor(Present present)
