@@ -17,8 +17,22 @@ namespace Day01
                 if (c == '(') floor++;
                 if (c == ')') floor--;
             }
+
+            Console.WriteLine($"Part A: Floor: {floor}");
             
-            Console.WriteLine($"Floor: {floor}");
+            int partBFloor = 0;
+            for (int position = 1; position <= input.Length; position++)
+            {
+                var c = input[position - 1];
+                if (c == '(') partBFloor++;
+                if (c == ')') partBFloor--;
+
+                if (partBFloor < 0)
+                {
+                    Console.WriteLine($"Part B: Position: {position}");
+                    return;
+                }
+            }
         }
     }
 }
