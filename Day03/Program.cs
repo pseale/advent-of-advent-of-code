@@ -13,7 +13,7 @@ namespace Day03
             Console.WriteLine($"Houses receiving at least one present: {partA}");
 
             int partB = SolvePartB(input);
-            Console.WriteLine($"Houses receiving at least one present with Santa+Robo-Santa: {partA}");
+            Console.WriteLine($"Houses receiving at least one present with Santa+Robo-Santa: {partB}");
         }
 
         public static int SolvePartA(string input)
