@@ -12,10 +12,23 @@ namespace Day04
             string input = "ckczppom";
 
             int partA = SolvePartA(input);
-            Console.WriteLine($"Hash is: {partA}");
+            Console.WriteLine($"00000 Hash is: {partA}");
+
+            int partB = SolvePartB(input);
+            Console.WriteLine($"000000 Hash is: {partB}");
         }
 
         public static int SolvePartA(string input)
+        {
+            return CalculateHash(input, "00000");
+        }
+
+        public static int SolvePartB(string input)
+        {
+            return CalculateHash(input, "000000");
+        }
+
+        private static int CalculateHash(string input, string prefix)
         {
             using (var hasher = MD5.Create())
             {
@@ -23,7 +36,7 @@ namespace Day04
                 {
                     var data = hasher.ComputeHash(ASCIIEncoding.ASCII.GetBytes(input + i));
                     var hexadecimal = BitConverter.ToString(data).Replace("-", "");
-                    if (hexadecimal.StartsWith("00000"))
+                    if (hexadecimal.StartsWith(prefix))
                         return i;
                 }
             }

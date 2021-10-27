@@ -12,6 +12,5 @@ namespace AOAOC.Tests
             Assert.AreEqual(609043, Program.SolvePartA("abcdef"));
             Assert.AreEqual(1048970, Program.SolvePartA("pqrstuv"));
         }
-
     }
 }
