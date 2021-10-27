@@ -16,5 +16,15 @@ namespace AOAOC.Tests
             Assert.AreEqual(0, Program.SolvePartA("haegwjzuvuyypxyu"));
             Assert.AreEqual(0, Program.SolvePartA("dvszwmarrgswjxmb"));
         }
+
+        [Test]
+        public void PartB()
+        {
+            Assert.AreEqual(1, Program.SolvePartB("qjhvhtzxzqqjkmpb"));
+            Assert.AreEqual(1, Program.SolvePartB("xxyxx"));
+
+            Assert.AreEqual(0, Program.SolvePartB("uurcxstgmygtbstg"));
+            Assert.AreEqual(0, Program.SolvePartB("ieodomkazucvgmuy"));
+        }
     }
 }

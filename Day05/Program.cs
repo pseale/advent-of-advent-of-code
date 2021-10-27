@@ -10,7 +10,16 @@ namespace Day05
         {
             var input = File.ReadAllText("input.txt");
             int partA = SolvePartA(input);
-            Console.WriteLine($"Nice strings: {partA}");
+            Console.WriteLine($"Nice strings (legacy model): {partA}");
+
+            int partB = SolvePartB(input);
+            Console.WriteLine($"Nice strings (better model): {partB}");
+
+        }
+
+        public static int SolvePartB(string input)
+        {
+            return 0;
         }
 
         public static int SolvePartA(string input)
