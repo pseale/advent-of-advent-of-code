@@ -14,7 +14,7 @@ namespace Day01
             var partA = SolvePartA(input);
 
             Console.WriteLine($"Part A: Floor: {partA}");
-            
+
             var partB = SolvePartB(input);
 
             Console.WriteLine($"Part B: Position: {partB}");

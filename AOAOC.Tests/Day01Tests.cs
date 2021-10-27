@@ -10,15 +10,15 @@ namespace AOAOC.Tests
         {
             Assert.AreEqual(0, Program.SolvePartA("(())"));
             Assert.AreEqual(0, Program.SolvePartA("()()"));
-            
+
             Assert.AreEqual(3, Program.SolvePartA("((("));
             Assert.AreEqual(3, Program.SolvePartA("(()(()("));
 
             Assert.AreEqual(3, Program.SolvePartA("))((((("));
-            
+
             Assert.AreEqual(-1, Program.SolvePartA("())"));
             Assert.AreEqual(-1, Program.SolvePartA("))("));
-            
+
             Assert.AreEqual(-3, Program.SolvePartA(")))"));
             Assert.AreEqual(-3, Program.SolvePartA(")())())"));
         }
