@@ -11,10 +11,10 @@ namespace AOAOC.Tests
         {
             Assert.AreEqual(58, Program.SolvePartA("2x3x4"));
 
-            Assert.AreEqual(42, Program.SolvePartA("1x1x10"));
+            Assert.AreEqual(43, Program.SolvePartA("1x1x10"));
 
             // test multiple lines, plus blank lines
-            Assert.AreEqual(42 + 58, Program.SolvePartA("1x1x10\r\n2x3x4\r\n"));
+            Assert.AreEqual(43 + 58, Program.SolvePartA("1x1x10\r\n2x3x4\r\n"));
         }
     }
 }
