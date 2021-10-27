@@ -6,13 +6,15 @@ namespace Day05
 {
     public static class Program
     {
-        static void Main(string[] args)
+        private static readonly char[] Vowels = {'a', 'e', 'i', 'o', 'u'};
+
+        private static void Main(string[] args)
         {
             var input = File.ReadAllText("input.txt");
-            int partA = SolvePartA(input);
+            var partA = SolvePartA(input);
             Console.WriteLine($"Nice strings (legacy model): {partA}");
 
-            int partB = SolvePartB(input);
+            var partB = SolvePartB(input);
             Console.WriteLine($"Nice strings (better model): {partB}");
         }
 
@@ -27,8 +29,6 @@ namespace Day05
                 .Count();
         }
 
-        private static readonly char[] Vowels = new[] {'a', 'e', 'i', 'o', 'u'};
-
         private static bool HasThreeVowels(string @string)
         {
             // ReSharper disable once ReplaceWithSingleCallToCount
@@ -37,11 +37,9 @@ namespace Day05
 
         private static bool LetterAppearsTwiceInARow(string @string)
         {
-            for (int i = 0; i < @string.Length - 1; i++)
-            {
+            for (var i = 0; i < @string.Length - 1; i++)
                 if (@string[i] == @string[i + 1])
                     return true;
-            }
 
             return false;
         }
@@ -69,7 +67,7 @@ namespace Day05
         // I am aware this is inefficient
         private static bool HasPairWithoutOverlapping(string @string)
         {
-            for (int i = 0; i < @string.Length - 1; i++)
+            for (var i = 0; i < @string.Length - 1; i++)
             {
                 var pair = @string.Substring(i, 2);
                 var remaining = @string.Substring(i + 2);
@@ -82,7 +80,7 @@ namespace Day05
 
         private static bool HasLetterSandwich(string @string)
         {
-            for (int i = 0; i < @string.Length - 2; i++)
+            for (var i = 0; i < @string.Length - 2; i++)
             {
                 var bread1 = @string[i];
                 // filling can be any letter

@@ -6,13 +6,13 @@ namespace Day03
 {
     public static class Program
     {
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             var input = File.ReadAllText("input.txt");
-            int partA = SolvePartA(input);
+            var partA = SolvePartA(input);
             Console.WriteLine($"Houses receiving at least one present: {partA}");
 
-            int partB = SolvePartB(input);
+            var partB = SolvePartB(input);
             Console.WriteLine($"Houses receiving at least one present with Santa+Robo-Santa: {partB}");
         }
 
@@ -20,8 +20,8 @@ namespace Day03
         {
             var visited = new HashSet<Location>();
 
-            int x = 0;
-            int y = 0;
+            var x = 0;
+            var y = 0;
             visited.Add(new Location(x, y));
 
             var moves = input.Trim().ToCharArray();
@@ -50,10 +50,10 @@ namespace Day03
             visited.Add(santaLocation);
 
             var moves = input.Trim().ToCharArray();
-            for (int i = 0; i < moves.Length; i += 2)
+            for (var i = 0; i < moves.Length; i += 2)
             {
                 santaLocation = Move(santaLocation, moves[i]);
-                roboSantaLocation = Move(roboSantaLocation, moves[i+1]);
+                roboSantaLocation = Move(roboSantaLocation, moves[i + 1]);
 
                 visited.Add(santaLocation);
                 visited.Add(roboSantaLocation);
@@ -68,7 +68,7 @@ namespace Day03
             if (move == '>') return new Location(location.X + 1, location.Y);
             if (move == 'v') return new Location(location.X, location.Y + 1);
             if (move == '^') return new Location(location.X, location.Y - 1);
-            else throw new Exception($"Invalid input: '{move}'");
+            throw new Exception($"Invalid input: '{move}'");
         }
 
         public record Location(int X, int Y);
