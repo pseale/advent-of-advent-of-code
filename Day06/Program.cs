@@ -10,33 +10,32 @@ namespace Day06
         {
             var input = File.ReadAllText("input.txt");
             var partA = SolvePartA(input);
-            Console.WriteLine($"Lit lights: {partA}");
+            Console.WriteLine($"Lit lights (mistranslated): {partA}");
+
+            var partB = SolvePartB(input);
+            Console.WriteLine($"Total brightness: {partB}");
         }
 
         public static int SolvePartA(string input)
         {
             var lights = new bool[1000, 1000];
 
-            var lines = input
-                .Split("\n")
-                .Select(x => x.Trim())
-                .Where(x => !string.IsNullOrWhiteSpace(x))
-                .ToArray();
+            var lines = ParseInput(input);
 
             foreach (var line in lines)
             {
                 var words = line.Split(" ");
                 if (line.StartsWith("toggle"))
                 {
-                    Toggle(lights, ParsePoint(words[1]), ParsePoint(words[3]));
+                    Do(lights, ParsePoint(words[1]), ParsePoint(words[3]), isLit => !isLit);
                 }
                 else if (line.StartsWith("turn on"))
                 {
-                    TurnOn(lights, ParsePoint(words[2]), ParsePoint(words[4]));
+                    Do(lights, ParsePoint(words[2]), ParsePoint(words[4]), _ => true);
                 }
                 else if (line.StartsWith("turn off"))
                 {
-                    TurnOff(lights, ParsePoint(words[2]), ParsePoint(words[4]));
+                    Do(lights, ParsePoint(words[2]), ParsePoint(words[4]), _ => false);
                 }
                 else
                 {
@@ -56,23 +55,56 @@ namespace Day06
             return lit;
         }
 
-        private static void Toggle(bool[,] lights, Point topLeft, Point bottomRight)
+        public static int SolvePartB(string input)
         {
-            Do(lights, topLeft, bottomRight, (bool isLit) => !isLit);
+            var lights = new int[1000, 1000];
+
+            var lines = ParseInput(input);
+
+            foreach (var line in lines)
+            {
+                var words = line.Split(" ");
+                if (line.StartsWith("toggle"))
+                {
+                    Do(lights, ParsePoint(words[1]), ParsePoint(words[3]), current => current + 2);
+                }
+                else if (line.StartsWith("turn on"))
+                {
+                    Do(lights, ParsePoint(words[2]), ParsePoint(words[4]), current => current + 1);
+                }
+                else if (line.StartsWith("turn off"))
+                {
+                    Do(lights, ParsePoint(words[2]), ParsePoint(words[4]), current => current > 0 ? current - 1 : 0);
+                }
+                else
+                {
+                    throw new Exception($"Invalid input: '{line}'");
+                }
+            }
+
+            int brightness = 0;
+            for (int y = 0; y < 1000; y++)
+            {
+                for (int x = 0; x < 1000; x++)
+                {
+                    brightness += lights[x, y];
+                }
+            }
+            return brightness;
         }
 
-        private static void TurnOn(bool[,] lights, Point topLeft, Point bottomRight)
+        private static string[] ParseInput(string input)
         {
-            Do(lights, topLeft, bottomRight, (bool _) => true);
-        }
-
-        private static void TurnOff(bool[,] lights, Point topLeft, Point bottomRight)
-        {
-            Do(lights, topLeft, bottomRight, (bool _) => false);
+            var lines = input
+                .Split("\n")
+                .Select(x => x.Trim())
+                .Where(x => !string.IsNullOrWhiteSpace(x))
+                .ToArray();
+            return lines;
         }
 
         // is this a little too much abstraction? OR TOO LITTLE 🤔
-        private static void Do(bool[,] lights, Point topLeft, Point bottomRight, Func<bool, bool> func)
+        private static void Do<T>(T[,] lights, Point topLeft, Point bottomRight, Func<T, T> func)
         {
             for (int y = topLeft.Y; y <= bottomRight.Y; y++)
             {

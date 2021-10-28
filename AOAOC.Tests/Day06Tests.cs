@@ -30,5 +30,20 @@ namespace AOAOC.Tests
             // test 'turn off'
             Assert.AreEqual(0, Program.SolvePartA("turn on 0,0 through 0,0\nturn off 0,0 through 0,0"));
         }
+
+        [Test]
+        public void PartB()
+        {
+            // assume ranges still work from Part A
+
+            // test 'toggle'
+            Assert.AreEqual(2 + 2, Program.SolvePartB("toggle 0,0 through 0,0\ntoggle 0,0 through 0,0"));
+
+            // test 'turn on'
+            Assert.AreEqual(1 + 1, Program.SolvePartB("turn on 0,0 through 0,0\nturn on 0,0 through 0,0"));
+
+            // test 'turn off'
+            Assert.AreEqual(1 + 1 - 1, Program.SolvePartB("turn on 0,0 through 0,0\nturn on 0,0 through 0,0\nturn off 0,0 through 0,0"));
+        }
     }
 }
