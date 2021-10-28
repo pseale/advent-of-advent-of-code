@@ -14,9 +14,9 @@ namespace Day07
             Console.WriteLine($"Signal provided to wire a: {partA["a"]}");
         }
 
-        public static Dictionary<string, int> SolvePartA(string input)
+        public static Dictionary<string, UInt16> SolvePartA(string input)
         {
-            return new Dictionary<string, int>();
+            return new Dictionary<string, UInt16>();
         }
     }
 }
