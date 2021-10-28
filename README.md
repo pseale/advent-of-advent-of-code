@@ -1,0 +1,29 @@
+# Advent of Code, 2015
+
+Welcome! These are my solutions in C#, constructed in JetBrains Rider.
+
+### Goals
+
+- Become comfortable with JetBrains Rider, and harvest my keybinds once I am comfortable
+- Familiarize myself with C# 9.0 (.NET Core 5.0) - in practical terms, this means records
+- Familiarize myself with Advent of Code problems and get enough experience to be able to metaphorically 'hum along to the tune' - in practical terms, this means
+  - Project structure
+    - each day is its own console app
+    - one big test project with end-to-end tests that are (if feasible) direct copies of the example problems
+  - Settle on 'parse non-empty lines from input.txt into string[]'
+  - Solve PartA and PartB without trying to modify the existing PartA code - this approach allows for code reuse, but doesn't require it
+
+### Apologies
+
+This is not an exhaustive list. I have many things of which to be sorrowful.
+
+- Usually I'll make an inline apology comment, especially if I'm making a particularly intense (intensely unnecessary, and possibly harmful) abstraction. The best example so far is `Day06`'s `Do<T>(Func<T,T>)`. Just know that I won't subject a team to this kind of thing.
+- I am not trying for efficiency. E.g. `Day05`'s `HasPairWithoutOverlapping()` - I'm aware that my implementation is VERY inefficient.
+
+### Complaints about Rider
+
+These are mostly small nitpicks:
+
+- 2021-10-27: A Prettier-style Cleanup on Save is not available. I've become addicted to autoformatting from VS Code. I don't remember to run Cleanup manually, and I don't want to add a git hook. VS Code does this correctly--copy them!
+- Window management is awkward. I've bound a keystroke to `Hide All Tool Windows`, but I think it should be easier? Honestly, I don't understand what the 'docked/undocked' toggle does. It seems to do nothing. So chalk this one up to general confusion.
+- I know I'm in the Complaints section, but I must give Rider kudos for being fast. Kudos JetBrains, kudos.

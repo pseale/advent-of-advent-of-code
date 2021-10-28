@@ -115,7 +115,6 @@ namespace Day06
             }
         }
 
-
         private static Point ParsePoint(string coordinates)
         {
             var split = coordinates.Split(",");
