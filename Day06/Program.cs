@@ -58,36 +58,31 @@ namespace Day06
 
         private static void Toggle(bool[,] lights, Point topLeft, Point bottomRight)
         {
-            for (int y = topLeft.Y; y <= bottomRight.Y; y++)
-            {
-                for (int x = topLeft.X; x <= bottomRight.X; x++)
-                {
-                    lights[x, y] = !lights[x, y];
-                }
-            }
+            Do(lights, topLeft, bottomRight, (bool isLit) => !isLit);
         }
 
         private static void TurnOn(bool[,] lights, Point topLeft, Point bottomRight)
         {
-            for (int y = topLeft.Y; y <= bottomRight.Y; y++)
-            {
-                for (int x = topLeft.X; x <= bottomRight.X; x++)
-                {
-                    lights[x, y] = true;
-                }
-            }
+            Do(lights, topLeft, bottomRight, (bool _) => true);
         }
 
         private static void TurnOff(bool[,] lights, Point topLeft, Point bottomRight)
+        {
+            Do(lights, topLeft, bottomRight, (bool _) => false);
+        }
+
+        // is this a little too much abstraction? OR TOO LITTLE 🤔
+        private static void Do(bool[,] lights, Point topLeft, Point bottomRight, Func<bool, bool> func)
         {
             for (int y = topLeft.Y; y <= bottomRight.Y; y++)
             {
                 for (int x = topLeft.X; x <= bottomRight.X; x++)
                 {
-                    lights[x, y] = false;
+                    lights[x, y] = func(lights[x, y]);
                 }
             }
         }
+
 
         private static Point ParsePoint(string coordinates)
         {
