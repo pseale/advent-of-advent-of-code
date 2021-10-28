@@ -30,5 +30,18 @@ namespace AOAOC.Tests
             Assert.AreEqual(456, wires["y"]);
         }
 
+        [Test]
+        public void PartASecretRequirementsFromInput()
+        {
+            var input = @"123 -> x
+                x -> y";
+
+            var wires = Program.SolvePartA(input);
+
+            Assert.AreEqual(123, wires["x"]);
+            Assert.AreEqual(123, wires["y"]);
+
+        }
+
     }
 }
