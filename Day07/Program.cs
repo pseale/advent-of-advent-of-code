@@ -84,33 +84,39 @@ namespace Day07
                 signals.Add(gate.Wire, gate.Signal);
             }
 
+            int attempts = 0;
             while (signals.Count < lines.Length)
             {
                 // unary
-                var gatesToAdd = gates.Where(x => signals.ContainsKey(x.UnaryOperand));
+                var gatesToAdd = gates.Where(x => !signals.ContainsKey(x.Wire) && signals.ContainsKey(x.UnaryOperand));
                 foreach (var gate in gatesToAdd)
                     signals[gate.Wire] = signals[gate.UnaryOperand];
 
-                var notGatesToAdd = notGates.Where(x => signals.ContainsKey(x.UnaryOperand));
+                var notGatesToAdd = notGates.Where(x => !signals.ContainsKey(x.Wire) && signals.ContainsKey(x.UnaryOperand));
                 foreach (var gate in notGatesToAdd)
                     signals[gate.Wire] = (ushort)~signals[gate.UnaryOperand];
 
-                var lShiftGatesToAdd = lShiftGates.Where(x => signals.ContainsKey(x.LeftOperand));
+                // single-wire
+                var lShiftGatesToAdd = lShiftGates.Where(x => !signals.ContainsKey(x.Wire) && signals.ContainsKey(x.LeftOperand));
                 foreach (var gate in lShiftGatesToAdd)
                     signals[gate.Wire] = (ushort) (signals[gate.LeftOperand] << gate.RightOperand);
 
-                var rShiftGatesToAdd = rShiftGates.Where(x => signals.ContainsKey(x.LeftOperand));
+                var rShiftGatesToAdd = rShiftGates.Where(x => !signals.ContainsKey(x.Wire) && signals.ContainsKey(x.LeftOperand));
                 foreach (var gate in rShiftGatesToAdd)
                     signals[gate.Wire] = (ushort) (signals[gate.LeftOperand] >> gate.RightOperand);
 
-                // binary
-                var andGatesToAdd = andGates.Where(x => signals.ContainsKey(x.LeftOperand) && signals.ContainsKey(x.RightOperand));
+                // multi-wire
+                var andGatesToAdd = andGates.Where(x => !signals.ContainsKey(x.Wire) && signals.ContainsKey(x.LeftOperand) && signals.ContainsKey(x.RightOperand));
                 foreach (var gate in andGatesToAdd)
                     signals[gate.Wire] = (ushort) (signals[gate.LeftOperand] & signals[gate.RightOperand]);
 
-                var orGatesToAdd = orGates.Where(x => signals.ContainsKey(x.LeftOperand) && signals.ContainsKey(x.RightOperand));
+                var orGatesToAdd = orGates.Where(x => !signals.ContainsKey(x.Wire) && signals.ContainsKey(x.LeftOperand) && signals.ContainsKey(x.RightOperand));
                 foreach (var gate in orGatesToAdd)
                     signals[gate.Wire] = (ushort) (signals[gate.LeftOperand] | signals[gate.RightOperand]);
+
+                if (attempts > lines.Length)
+                    throw new Exception($"Looped too many times: we should have finished after {attempts} attempts");
+                attempts++;
             }
 
             return signals;
