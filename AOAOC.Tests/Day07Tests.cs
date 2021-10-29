@@ -33,6 +33,8 @@ namespace AOAOC.Tests
         [Test]
         public void PartASecretRequirementsFromInput()
         {
+            // I didn't understand that the intention was, anywhere an operand was, it could be
+            // EITHER a wire OR a number
             var input = @"123 -> x
                 x -> y";
 

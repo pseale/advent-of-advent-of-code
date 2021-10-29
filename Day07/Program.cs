@@ -20,7 +20,6 @@ namespace Day07
         {
             var signals = new Dictionary<string, ushort>();
 
-            var signalGates = new List<SignalGate>();
             var gates = new List<Gate>();
             var notGates = new List<NotGate>();
             var andGates = new List<AndGate>();
@@ -38,13 +37,9 @@ namespace Day07
             {
                 var words = line.Split(" ");
 
-                if (Regex.IsMatch(line, @"^\d+"))
+                if (words.Length == 3)
                 {
                     // 123 -> x
-                    signalGates.Add(new SignalGate(words[2], ushort.Parse(words[0])));
-                }
-                else if (words.Length == 3)
-                {
                     // lx -> a
                     gates.Add(new Gate(words[2], words[0]));
                 }
@@ -79,40 +74,43 @@ namespace Day07
                 }
             }
 
-            foreach (var gate in signalGates)
-            {
-                signals.Add(gate.Wire, gate.Signal);
-            }
-
             int attempts = 0;
             while (signals.Count < lines.Length)
             {
                 // unary
-                var gatesToAdd = gates.Where(x => !signals.ContainsKey(x.Wire) && signals.ContainsKey(x.UnaryOperand));
+                var gatesToAdd = gates.Where(x => !signals.ContainsKey(x.Wire) && HasKnownValue(signals, x.UnaryOperand));
                 foreach (var gate in gatesToAdd)
-                    signals[gate.Wire] = signals[gate.UnaryOperand];
+                {
+                    signals[gate.Wire] = Resolve(signals, gate.UnaryOperand);
+                }
 
-                var notGatesToAdd = notGates.Where(x => !signals.ContainsKey(x.Wire) && signals.ContainsKey(x.UnaryOperand));
+                var notGatesToAdd = notGates.Where(x => !signals.ContainsKey(x.Wire) && HasKnownValue(signals, x.UnaryOperand));
                 foreach (var gate in notGatesToAdd)
-                    signals[gate.Wire] = (ushort)~signals[gate.UnaryOperand];
+                {
+                    signals[gate.Wire] = (ushort)~Resolve(signals, gate.UnaryOperand);
+                }
 
                 // single-wire
-                var lShiftGatesToAdd = lShiftGates.Where(x => !signals.ContainsKey(x.Wire) && signals.ContainsKey(x.LeftOperand));
+                var lShiftGatesToAdd = lShiftGates.Where(x => !signals.ContainsKey(x.Wire) && HasKnownValue(signals, x.LeftOperand));
                 foreach (var gate in lShiftGatesToAdd)
-                    signals[gate.Wire] = (ushort) (signals[gate.LeftOperand] << gate.RightOperand);
+                    signals[gate.Wire] = (ushort)(Resolve(signals, gate.LeftOperand) << gate.RightOperand);
 
-                var rShiftGatesToAdd = rShiftGates.Where(x => !signals.ContainsKey(x.Wire) && signals.ContainsKey(x.LeftOperand));
+                var rShiftGatesToAdd = rShiftGates.Where(x => !signals.ContainsKey(x.Wire) && HasKnownValue(signals, x.LeftOperand));
                 foreach (var gate in rShiftGatesToAdd)
-                    signals[gate.Wire] = (ushort) (signals[gate.LeftOperand] >> gate.RightOperand);
+                    signals[gate.Wire] = (ushort)(Resolve(signals, gate.LeftOperand) >> gate.RightOperand);
 
                 // multi-wire
-                var andGatesToAdd = andGates.Where(x => !signals.ContainsKey(x.Wire) && signals.ContainsKey(x.LeftOperand) && signals.ContainsKey(x.RightOperand));
+                var andGatesToAdd = andGates.Where(x =>
+                    !signals.ContainsKey(x.Wire) && HasKnownValue(signals, x.LeftOperand) &&
+                    HasKnownValue(signals, x.RightOperand));
                 foreach (var gate in andGatesToAdd)
-                    signals[gate.Wire] = (ushort) (signals[gate.LeftOperand] & signals[gate.RightOperand]);
+                    signals[gate.Wire] = (ushort)(Resolve(signals, gate.LeftOperand) & Resolve(signals, gate.RightOperand));
 
-                var orGatesToAdd = orGates.Where(x => !signals.ContainsKey(x.Wire) && signals.ContainsKey(x.LeftOperand) && signals.ContainsKey(x.RightOperand));
+                var orGatesToAdd = orGates.Where(x =>
+                    !signals.ContainsKey(x.Wire) && HasKnownValue(signals, x.LeftOperand) &&
+                    HasKnownValue(signals, x.RightOperand));
                 foreach (var gate in orGatesToAdd)
-                    signals[gate.Wire] = (ushort) (signals[gate.LeftOperand] | signals[gate.RightOperand]);
+                    signals[gate.Wire] = (ushort)(Resolve(signals, gate.LeftOperand) | Resolve(signals, gate.RightOperand));
 
                 if (attempts > lines.Length)
                 {
@@ -132,7 +130,27 @@ namespace Day07
             return signals;
         }
 
-        record SignalGate(string Wire, ushort Signal);
+        private static ushort Resolve(Dictionary<string,ushort> signals, string operand)
+        {
+            if (IsANumber(operand))
+                return ushort.Parse(operand);
+
+            return signals[operand];
+        }
+
+        private static bool HasKnownValue(Dictionary<string,ushort> signals, string operand)
+        {
+            if (IsANumber(operand))
+                return true;
+
+            return signals.ContainsKey(operand);
+        }
+
+        private static bool IsANumber(string operand)
+        {
+            return Regex.IsMatch(operand, @"^\d+$");
+        }
+
         record Gate(string Wire, string UnaryOperand);
         record NotGate(string Wire, string UnaryOperand);
         record AndGate(string Wire, string LeftOperand, string RightOperand);
