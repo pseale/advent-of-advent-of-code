@@ -1,4 +1,4 @@
-# Advent of Code, 2015
+﻿# Advent of Code, 2015
 
 Welcome! These are my solutions in C#, constructed in JetBrains Rider.
 
@@ -19,6 +19,13 @@ This is not an exhaustive list. I have many things of which to be sorrowful.
 
 - Usually I'll make an inline apology comment, especially if I'm making a particularly intense (intensely unnecessary, and possibly harmful) abstraction. The best example so far is `Day06`'s `Do<T>(Func<T,T>)`. Just know that I won't subject a team to this kind of thing.
 - I am not trying for efficiency. E.g. `Day05`'s `HasPairWithoutOverlapping()` - I'm aware that my implementation is VERY inefficient.
+- I'm enjoying writing unnecessary LINQ pipelines. I am neither extremely for, nor extremely against using LINQ over foreach/if. I do care, rarely, in some cases. I can write the code however is preferred. I'm not crazy! I can be just as crazy as needed--no more, no less. If you're crazy about LINQ--I can pretend! If you hate LINQ--I can also pretend!
+
+### Notes
+
+- I've been pleasantly surprised by how many times I actually (truly!) solved the problem on the first try, after compiling and passing the basic end-to-end tests.
+- With that said, I have made many, many, many mistakes, and most of those mistakes were due to me misunderstanding the problem.
+- I am exercising my 'problem solving with code' muscle, and it hurts.
 
 ### Complaints about Rider
 
