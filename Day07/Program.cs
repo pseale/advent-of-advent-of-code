@@ -13,7 +13,11 @@ namespace Day07
             var input = File.ReadAllText("input.txt");
 
             var partA = SolvePartA(input);
-            Console.WriteLine($"Signal provided to wire a: {partA["a"]}");
+            var wireA = partA["a"];
+            Console.WriteLine($"Signal provided to wire a: {wireA}");
+
+            var partB = SolvePartB(input, wireA);
+            Console.WriteLine($"After override to wire b, signal provided to wire a: {partB}");
         }
 
         public static Dictionary<string, ushort> SolvePartA(string input)
@@ -116,6 +120,27 @@ namespace Day07
             }
 
             return signals;
+        }
+
+        // I am aware this is ugly. In theory, the 'maintainable' thing to do is:
+        // 1. convert input to C# objects
+        // 2. work 90% with those C# objects
+        // 3. Not do string manipulation
+        // ... anyway I solved the problem, quickly. Advent of Code: gives me an excuse to write garbage 👍
+        private static int SolvePartB(string input, ushort wireBOverride)
+        {
+            var originalLines = input
+                .Split("\n")
+                .Select(x => x.Trim())
+                .Where(x => !string.IsNullOrWhiteSpace(x))
+                .ToArray();
+
+            var overriddenLines = originalLines
+                .Where(x => !x.EndsWith("-> b")) // filter out the original 'b' wire
+                .Concat(new[] { $"{wireBOverride} -> b"})
+                .ToArray();
+
+            return SolvePartA(string.Join("\n", overriddenLines))["a"];
         }
 
         private static ushort Resolve(Dictionary<string, ushort> signals, string operand)
