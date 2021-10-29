@@ -8,7 +8,7 @@ namespace Day07
 {
     public static class Program
     {
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             var input = File.ReadAllText("input.txt");
 
@@ -38,79 +38,65 @@ namespace Day07
                 var words = line.Split(" ");
 
                 if (words.Length == 3)
-                {
                     // 123 -> x
                     // lx -> a
                     gates.Add(new Gate(words[2], words[0]));
-                }
                 else if (words[0] == "NOT")
-                {
                     // NOT e -> f
                     notGates.Add(new NotGate(words[3], words[1]));
-                }
                 else if (words[1] == "AND")
-                {
                     // x AND y -> z
                     andGates.Add(new AndGate(words[4], words[0], words[2]));
-                }
                 else if (words[1] == "OR")
-                {
                     // x OR y -> e
                     orGates.Add(new OrGate(words[4], words[0], words[2]));
-                }
                 else if (words[1] == "LSHIFT")
-                {
                     // x LSHIFT 2 -> f
                     lShiftGates.Add(new LShiftGate(words[4], words[0], int.Parse(words[2])));
-                }
                 else if (words[1] == "RSHIFT")
-                {
                     // y RSHIFT 2 -> g
                     rShiftGates.Add(new RShiftGate(words[4], words[0], int.Parse(words[2])));
-                }
                 else
-                {
                     throw new Exception($"Invalid input: '{line}'");
-                }
             }
 
-            int attempts = 0;
+            var attempts = 0;
             while (signals.Count < lines.Length)
             {
                 // unary
-                var gatesToAdd = gates.Where(x => !signals.ContainsKey(x.Wire) && HasKnownValue(signals, x.UnaryOperand));
-                foreach (var gate in gatesToAdd)
-                {
-                    signals[gate.Wire] = Resolve(signals, gate.UnaryOperand);
-                }
+                var gatesToAdd =
+                    gates.Where(x => !signals.ContainsKey(x.Wire) && HasKnownValue(signals, x.UnaryOperand));
+                foreach (var gate in gatesToAdd) signals[gate.Wire] = Resolve(signals, gate.UnaryOperand);
 
-                var notGatesToAdd = notGates.Where(x => !signals.ContainsKey(x.Wire) && HasKnownValue(signals, x.UnaryOperand));
-                foreach (var gate in notGatesToAdd)
-                {
-                    signals[gate.Wire] = (ushort)~Resolve(signals, gate.UnaryOperand);
-                }
+                var notGatesToAdd = notGates.Where(x =>
+                    !signals.ContainsKey(x.Wire) && HasKnownValue(signals, x.UnaryOperand));
+                foreach (var gate in notGatesToAdd) signals[gate.Wire] = (ushort) ~Resolve(signals, gate.UnaryOperand);
 
                 // single-wire
-                var lShiftGatesToAdd = lShiftGates.Where(x => !signals.ContainsKey(x.Wire) && HasKnownValue(signals, x.LeftOperand));
+                var lShiftGatesToAdd = lShiftGates.Where(x =>
+                    !signals.ContainsKey(x.Wire) && HasKnownValue(signals, x.LeftOperand));
                 foreach (var gate in lShiftGatesToAdd)
-                    signals[gate.Wire] = (ushort)(Resolve(signals, gate.LeftOperand) << gate.RightOperand);
+                    signals[gate.Wire] = (ushort) (Resolve(signals, gate.LeftOperand) << gate.RightOperand);
 
-                var rShiftGatesToAdd = rShiftGates.Where(x => !signals.ContainsKey(x.Wire) && HasKnownValue(signals, x.LeftOperand));
+                var rShiftGatesToAdd = rShiftGates.Where(x =>
+                    !signals.ContainsKey(x.Wire) && HasKnownValue(signals, x.LeftOperand));
                 foreach (var gate in rShiftGatesToAdd)
-                    signals[gate.Wire] = (ushort)(Resolve(signals, gate.LeftOperand) >> gate.RightOperand);
+                    signals[gate.Wire] = (ushort) (Resolve(signals, gate.LeftOperand) >> gate.RightOperand);
 
                 // multi-wire
                 var andGatesToAdd = andGates.Where(x =>
                     !signals.ContainsKey(x.Wire) && HasKnownValue(signals, x.LeftOperand) &&
                     HasKnownValue(signals, x.RightOperand));
                 foreach (var gate in andGatesToAdd)
-                    signals[gate.Wire] = (ushort)(Resolve(signals, gate.LeftOperand) & Resolve(signals, gate.RightOperand));
+                    signals[gate.Wire] =
+                        (ushort) (Resolve(signals, gate.LeftOperand) & Resolve(signals, gate.RightOperand));
 
                 var orGatesToAdd = orGates.Where(x =>
                     !signals.ContainsKey(x.Wire) && HasKnownValue(signals, x.LeftOperand) &&
                     HasKnownValue(signals, x.RightOperand));
                 foreach (var gate in orGatesToAdd)
-                    signals[gate.Wire] = (ushort)(Resolve(signals, gate.LeftOperand) | Resolve(signals, gate.RightOperand));
+                    signals[gate.Wire] =
+                        (ushort) (Resolve(signals, gate.LeftOperand) | Resolve(signals, gate.RightOperand));
 
                 if (attempts > lines.Length)
                 {
@@ -122,15 +108,17 @@ namespace Day07
                         .Concat(orGates.Select(x => x.Wire))
                         .Where(x => !signals.ContainsKey(x));
 
-                    throw new Exception($"Looped too many times: we should have finished after {attempts} attempts.\nSolved wires: {string.Join(",", signals.Keys)} Unsolved wires: {string.Join(",", unsolved)}");
+                    throw new Exception(
+                        $"Looped too many times: we should have finished after {attempts} attempts.\nSolved wires: {string.Join(",", signals.Keys)} Unsolved wires: {string.Join(",", unsolved)}");
                 }
+
                 attempts++;
             }
 
             return signals;
         }
 
-        private static ushort Resolve(Dictionary<string,ushort> signals, string operand)
+        private static ushort Resolve(Dictionary<string, ushort> signals, string operand)
         {
             if (IsANumber(operand))
                 return ushort.Parse(operand);
@@ -138,7 +126,7 @@ namespace Day07
             return signals[operand];
         }
 
-        private static bool HasKnownValue(Dictionary<string,ushort> signals, string operand)
+        private static bool HasKnownValue(Dictionary<string, ushort> signals, string operand)
         {
             if (IsANumber(operand))
                 return true;
@@ -151,11 +139,16 @@ namespace Day07
             return Regex.IsMatch(operand, @"^\d+$");
         }
 
-        record Gate(string Wire, string UnaryOperand);
-        record NotGate(string Wire, string UnaryOperand);
-        record AndGate(string Wire, string LeftOperand, string RightOperand);
-        record OrGate(string Wire, string LeftOperand, string RightOperand);
-        record LShiftGate(string Wire, string LeftOperand, int RightOperand);
-        record RShiftGate(string Wire, string LeftOperand, int RightOperand);
+        private record Gate(string Wire, string UnaryOperand);
+
+        private record NotGate(string Wire, string UnaryOperand);
+
+        private record AndGate(string Wire, string LeftOperand, string RightOperand);
+
+        private record OrGate(string Wire, string LeftOperand, string RightOperand);
+
+        private record LShiftGate(string Wire, string LeftOperand, int RightOperand);
+
+        private record RShiftGate(string Wire, string LeftOperand, int RightOperand);
     }
 }
