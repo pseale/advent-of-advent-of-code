@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Text.RegularExpressions;
 
 namespace Day08
@@ -85,19 +87,45 @@ namespace Day08
                 .Where(x => !string.IsNullOrWhiteSpace(x))
                 .ToArray();
 
-            int difference = 0;
 
-            foreach (var line in lines)
+            var encodedLines = lines.Select(x => Encode(x));
+
+            return encodedLines.Sum(x => x.Length) - lines.Sum(x => x.Length);
+        }
+
+        private static char[] EncodedQuote = new[] {'\\', '\"'};
+        private static char[] EncodedSlash = new[] {'\\', '\\'};
+
+        public static string Encode(string line)
+        {
+            var q = new Queue<char>(line.ToCharArray());
+            var encoded = new List<char>();
+
+            // add opening quote
+            char openingQuote = q.Dequeue();
+            if (openingQuote != '"') throw new Exception($"Invalid input: missing opening \" in line: '{line}'");
+            encoded.Add('"');
+            encoded.AddRange(EncodedQuote);
+
+            while (q.Count > 1)
             {
-                var unquoted = line.Substring(1, line.Length - 2);
-                difference += 4;
+                char c = q.Dequeue();
 
-                difference += Regex.Matches(unquoted, @"\\x\d\d").Count * 1;
-
-                difference +=Regex.Matches(unquoted, @"\\[^x]").Count * 2;
+                if (c == '"')
+                    encoded.AddRange(EncodedQuote);
+                else if (c == '\\')
+                    encoded.AddRange(EncodedSlash);
+                else
+                    encoded.Add(c);
             }
 
-            return difference;
+            // add ending quote
+            char closingQuote = q.Dequeue();
+            if (closingQuote != '"') throw new Exception($"Invalid input: missing opening \" in line: '{line}'");
+            encoded.AddRange(EncodedQuote);
+            encoded.Add('"');
+
+            return new string(encoded.ToArray());
         }
     }
 }
