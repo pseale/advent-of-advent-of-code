@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace Day08
 {
@@ -14,7 +16,57 @@ namespace Day08
 
         public static int SolvePartA(string input)
         {
-            return -1;
+            var lines = input
+                .Split("\n")
+                .Select(x => x.Trim())
+                .Where(x => !string.IsNullOrWhiteSpace(x))
+                .ToArray();
+
+            int extraChars = 0;
+
+            foreach (var line in lines)
+            {
+                var chars = line.ToCharArray();
+                var q = new Queue<char>(chars);
+
+                // first character must be "
+                q.Dequeue();
+                extraChars++;
+
+                while (q.Count > 0)
+                {
+                    char c = q.Dequeue();
+                    if (c == '\\')
+                    {
+                        extraChars++;
+                        if (q.Count == 0)
+                            throw new Exception($"Invalid input: \\ at the end of a line: '{line}'");
+
+                        var next = q.Dequeue();
+                        if (next == 'x')
+                        {
+                            var ascii1 = q.Dequeue();
+                            var ascii2 = q.Dequeue();
+                            extraChars += 2;
+                        }
+                        else if (next == '\\' || next == '"')
+                        {
+                            // legal
+                        }
+                        else
+                        {
+                            throw new Exception($"invalid character following a '\\': '{next}' in line {line}");
+                        }
+                    }
+                    else if (c == '"')
+                    {
+                        if (q.Count == 0)
+                            throw new Exception($"Invalid input: Expected '\"', got '{c}' at the end of a line: '{line}'");
+                    }
+                }
+            }
+
+            return extraChars;
         }
     }
 }
