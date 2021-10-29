@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace Day08
 {
@@ -16,11 +17,6 @@ namespace Day08
 
             var partB = SolvePartB(input);
             Console.WriteLine($"Difference between encoded characters and characters of code: {partB}");
-        }
-
-        public static int SolvePartB(string input)
-        {
-            return -1;
         }
 
         public static int SolvePartA(string input)
@@ -77,6 +73,31 @@ namespace Day08
             }
 
             return extraChars;
+        }
+
+        // extremely lazy solution -- I'm aware it is lazy and not a proper escape() because it
+        // assumes legal input
+        public static int SolvePartB(string input)
+        {
+            var lines = input
+                .Split("\n")
+                .Select(x => x.Trim())
+                .Where(x => !string.IsNullOrWhiteSpace(x))
+                .ToArray();
+
+            int difference = 0;
+
+            foreach (var line in lines)
+            {
+                var unquoted = line.Substring(1, line.Length - 2);
+                difference += 4;
+
+                difference += Regex.Matches(unquoted, @"\\x\d\d").Count * 1;
+
+                difference +=Regex.Matches(unquoted, @"\\[^x]").Count * 2;
+            }
+
+            return difference;
         }
     }
 }
