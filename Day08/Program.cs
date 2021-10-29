@@ -10,8 +10,17 @@ namespace Day08
         static void Main(string[] args)
         {
             var input = File.ReadAllText("input.txt");
+
             var partA = SolvePartA(input);
             Console.WriteLine($"Difference between characters of code and characters in memory: {partA}");
+
+            var partB = SolvePartB(input);
+            Console.WriteLine($"Difference between encoded characters and characters of code: {partB}");
+        }
+
+        public static int SolvePartB(string input)
+        {
+            return -1;
         }
 
         public static int SolvePartA(string input)

@@ -15,6 +15,15 @@ namespace AOAOC.Tests
             Assert.AreEqual(6 - 1, Program.SolvePartA(Quote("\\x27"))); // \x27
         }
 
+        [Test]
+        public void PartB()
+        {
+            Assert.AreEqual(6 - 2, Program.SolvePartB(Quote("")));
+            Assert.AreEqual(9 - 5, Program.SolvePartB(Quote("abc")));
+            Assert.AreEqual(16 - 10, Program.SolvePartB(Quote("aaa\\\"aaa"))); // aaa\"aaa
+            Assert.AreEqual(11 - 6, Program.SolvePartB(Quote("\\x27"))); // \x27
+        }
+
         private string Quote(string s)
         {
             return '"' + s + '"';
