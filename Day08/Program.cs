@@ -60,8 +60,9 @@ namespace Day08
                     }
                     else if (c == '"')
                     {
-                        if (q.Count == 0)
-                            throw new Exception($"Invalid input: Expected '\"', got '{c}' at the end of a line: '{line}'");
+                        if (q.Count > 0)
+                            throw new Exception($"Invalid input: '\"' in line: '{line}'");
+                        extraChars++;
                     }
                 }
             }
