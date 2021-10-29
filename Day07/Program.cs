@@ -115,7 +115,17 @@ namespace Day07
                     signals[gate.Wire] = (ushort) (signals[gate.LeftOperand] | signals[gate.RightOperand]);
 
                 if (attempts > lines.Length)
-                    throw new Exception($"Looped too many times: we should have finished after {attempts} attempts");
+                {
+                    var unsolved = gates.Select(x => x.Wire)
+                        .Concat(notGates.Select(x => x.Wire))
+                        .Concat(lShiftGates.Select(x => x.Wire))
+                        .Concat(rShiftGates.Select(x => x.Wire))
+                        .Concat(andGates.Select(x => x.Wire))
+                        .Concat(orGates.Select(x => x.Wire))
+                        .Where(x => !signals.ContainsKey(x));
+
+                    throw new Exception($"Looped too many times: we should have finished after {attempts} attempts.\nSolved wires: {string.Join(",", signals.Keys)} Unsolved wires: {string.Join(",", unsolved)}");
+                }
                 attempts++;
             }
 
