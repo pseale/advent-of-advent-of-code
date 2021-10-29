@@ -35,4 +35,5 @@ These are mostly small nitpicks:
 - 2021-10-27: Missing "Close Other Editors" hotkey, like I can run in VS Code. To be fair, Visual Studio can't do this either, and I'm guessing because (in both JetBrains and Visual Studio's case) the user is allowed to do this on any file.
 - Window management is awkward. I've bound a keystroke to `Hide All Tool Windows`, but I think it should be easier? Honestly, I don't understand what the 'docked/undocked' toggle does. It seems to do nothing. So chalk this one up to general confusion.
 - Rider fighting Rider in `.CSPROJ` files - create a New Project using Rider's wizard, which uses 4 space indentation, then run Cleanup, which changes the 4 to 2.
+- I assume we're stuck with Rider's known (expected) behavior, but it sure seems that C# formatting is waging a war against itself. Most notable: Rider adds braces to an if statement, and then on cleanup, remove them. Yes, I guess I can remove that behavior.
 - I know I'm in the Complaints section, but I must give Rider kudos for being fast. Kudos JetBrains, kudos.
