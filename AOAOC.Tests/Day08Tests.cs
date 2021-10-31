@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using Day08;
+﻿using Day08;
 using NUnit.Framework;
 
 namespace AOAOC.Tests
@@ -30,22 +28,25 @@ namespace AOAOC.Tests
         public void Encode()
         {
             // "" encodes to "\"\""
-            Assert.AreEqual(S('"', '\\', '"', '\\', '"', '"'), Day08.Program.Encode(Quote("")));
+            Assert.AreEqual(S('"', '\\', '"', '\\', '"', '"'), Program.Encode(Quote("")));
 
             // "abc" encodes to "\"abc\""
-            Assert.AreEqual(S('"', '\\', '"', 'a', 'b', 'c', '\\', '"', '"'), Day08.Program.Encode(Quote("abc")));
+            Assert.AreEqual(S('"', '\\', '"', 'a', 'b', 'c', '\\', '"', '"'), Program.Encode(Quote("abc")));
 
             // "aaa\"aaa" encodes to "\"aaa\\\"aaa\""
-            Assert.AreEqual(S('"', '\\', '"', 'a', 'a', 'a', '\\', '\\', '\\', '"', 'a', 'a', 'a', '\\', '"', '"'), Day08.Program.Encode(Quote("aaa\\\"aaa")));
+            Assert.AreEqual(S('"', '\\', '"', 'a', 'a', 'a', '\\', '\\', '\\', '"', 'a', 'a', 'a', '\\', '"', '"'),
+                Program.Encode(Quote("aaa\\\"aaa")));
 
             // "\x27" encodes to "\"\\x27\""
-            Assert.AreEqual(S('"', '\\', '"', '\\', '\\', 'x', '2', '7',       '\\', '"', '"'), Day08.Program.Encode(Quote("\\x27")));
+            Assert.AreEqual(S('"', '\\', '"', '\\', '\\', 'x', '2', '7', '\\', '"', '"'),
+                Program.Encode(Quote("\\x27")));
         }
 
         private string S(params char[] chars)
         {
             return new string(chars);
         }
+
         private string Quote(string s)
         {
             return '"' + s + '"';

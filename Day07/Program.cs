@@ -137,7 +137,7 @@ namespace Day07
 
             var overriddenLines = originalLines
                 .Where(x => !x.EndsWith("-> b")) // filter out the original 'b' wire
-                .Concat(new[] { $"{wireBOverride} -> b"})
+                .Concat(new[] {$"{wireBOverride} -> b"})
                 .ToArray();
 
             return SolvePartA(string.Join("\n", overriddenLines))["a"];

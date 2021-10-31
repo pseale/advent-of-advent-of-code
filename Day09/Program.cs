@@ -7,36 +7,52 @@ namespace Day09
 {
     public static class Program
     {
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             var input = File.ReadAllText("input.txt");
 
             var partA = SolvePartA(input);
-            Console.WriteLine($"Difference between characters of code and characters in memory: {partA}");
+            Console.WriteLine($"Distance of the shortest route: {partA}");
+
+            var partB = SolvePartB(input);
+            Console.WriteLine($"Distance of the longest route: {partB}");
+        }
+
+        private static int SolvePartB(string input)
+        {
+            var combinations = GetRoutes(input);
+            var sums = combinations.Select(x => x.Sum(leg => leg.Distance));
+            return sums.Max();
         }
 
         public static int SolvePartA(string input)
         {
-        var lines = input
-            .Split("\n")
-            .Select(x => x.Trim())
-            .Where(x => !string.IsNullOrWhiteSpace(x))
-            .ToArray();
-
-        var legs = new List<Leg>();
-        foreach (var line in lines)
-        {
-            var words = line.Split(" ");
-            legs.Add(new Leg(words[0],words[2], int.Parse(words[4])));
+            var combinations = GetRoutes(input);
+            var sums = combinations.Select(x => x.Sum(leg => leg.Distance));
+            return sums.Min();
         }
 
-        var reversedLegs = legs.Select(x => new Leg(x.Finish, x.Start, x.Distance)).ToArray();
-        legs.AddRange(reversedLegs);
+        private static IEnumerable<List<Leg>> GetRoutes(string input)
+        {
+            var lines = input
+                .Split("\n")
+                .Select(x => x.Trim())
+                .Where(x => !string.IsNullOrWhiteSpace(x))
+                .ToArray();
 
-        var combinations = GetAllCombinations(legs);
-        var sums = combinations.Select(x => x.Sum(leg => leg.Distance));
-        return sums.Min();
-    }
+            var legs = new List<Leg>();
+            foreach (var line in lines)
+            {
+                var words = line.Split(" ");
+                legs.Add(new Leg(words[0], words[2], int.Parse(words[4])));
+            }
+
+            var reversedLegs = legs.Select(x => new Leg(x.Finish, x.Start, x.Distance)).ToArray();
+            legs.AddRange(reversedLegs);
+
+            var combinations = GetAllCombinations(legs);
+            return combinations;
+        }
 
         private static IEnumerable<List<Leg>> GetAllCombinations(List<Leg> legs)
         {
@@ -57,10 +73,8 @@ namespace Day09
             if (visited.Length == legs.Select(x => x.Start).Distinct().Count()) // apology: inefficient
             {
                 var route = new List<Leg>();
-                for (int i = 0; i < visited.Length - 1; i++)
-                {
-                    route.Add(legs.Single(x => x.Start == visited[i] && x.Finish == visited[i+1]));
-                }
+                for (var i = 0; i < visited.Length - 1; i++)
+                    route.Add(legs.Single(x => x.Start == visited[i] && x.Finish == visited[i + 1]));
 
                 return new[] {route};
             }
@@ -69,7 +83,7 @@ namespace Day09
             var destinations = GetAllPossibleDestinations(legs, visited);
             foreach (var location in destinations)
             {
-                var legsForThisRoute = visited.Concat(new [] {location}).ToArray();
+                var legsForThisRoute = visited.Concat(new[] {location}).ToArray();
                 combinations.AddRange(GetCombinationsFor(legs, legsForThisRoute));
             }
 

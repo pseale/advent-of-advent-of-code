@@ -42,8 +42,6 @@ namespace AOAOC.Tests
 
             Assert.AreEqual(123, wires["x"]);
             Assert.AreEqual(123, wires["y"]);
-
         }
-
     }
 }

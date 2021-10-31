@@ -6,7 +6,7 @@ namespace Day06
 {
     public static class Program
     {
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             var input = File.ReadAllText("input.txt");
             var partA = SolvePartA(input);
@@ -26,32 +26,20 @@ namespace Day06
             {
                 var words = line.Split(" ");
                 if (line.StartsWith("toggle"))
-                {
                     Do(lights, ParsePoint(words[1]), ParsePoint(words[3]), isLit => !isLit);
-                }
                 else if (line.StartsWith("turn on"))
-                {
                     Do(lights, ParsePoint(words[2]), ParsePoint(words[4]), _ => true);
-                }
                 else if (line.StartsWith("turn off"))
-                {
                     Do(lights, ParsePoint(words[2]), ParsePoint(words[4]), _ => false);
-                }
                 else
-                {
                     throw new Exception($"Invalid input: '{line}'");
-                }
             }
 
-            int lit = 0;
-            for (int y = 0; y < 1000; y++)
-            {
-                for (int x = 0; x < 1000; x++)
-                {
-                    if (lights[x, y])
-                        lit++;
-                }
-            }
+            var lit = 0;
+            for (var y = 0; y < 1000; y++)
+            for (var x = 0; x < 1000; x++)
+                if (lights[x, y])
+                    lit++;
             return lit;
         }
 
@@ -65,31 +53,19 @@ namespace Day06
             {
                 var words = line.Split(" ");
                 if (line.StartsWith("toggle"))
-                {
                     Do(lights, ParsePoint(words[1]), ParsePoint(words[3]), current => current + 2);
-                }
                 else if (line.StartsWith("turn on"))
-                {
                     Do(lights, ParsePoint(words[2]), ParsePoint(words[4]), current => current + 1);
-                }
                 else if (line.StartsWith("turn off"))
-                {
                     Do(lights, ParsePoint(words[2]), ParsePoint(words[4]), current => current > 0 ? current - 1 : 0);
-                }
                 else
-                {
                     throw new Exception($"Invalid input: '{line}'");
-                }
             }
 
-            int brightness = 0;
-            for (int y = 0; y < 1000; y++)
-            {
-                for (int x = 0; x < 1000; x++)
-                {
-                    brightness += lights[x, y];
-                }
-            }
+            var brightness = 0;
+            for (var y = 0; y < 1000; y++)
+            for (var x = 0; x < 1000; x++)
+                brightness += lights[x, y];
             return brightness;
         }
 
@@ -106,13 +82,9 @@ namespace Day06
         // is this a little too much abstraction? OR TOO LITTLE 🤔
         private static void Do<T>(T[,] lights, Point topLeft, Point bottomRight, Func<T, T> func)
         {
-            for (int y = topLeft.Y; y <= bottomRight.Y; y++)
-            {
-                for (int x = topLeft.X; x <= bottomRight.X; x++)
-                {
-                    lights[x, y] = func(lights[x, y]);
-                }
-            }
+            for (var y = topLeft.Y; y <= bottomRight.Y; y++)
+            for (var x = topLeft.X; x <= bottomRight.X; x++)
+                lights[x, y] = func(lights[x, y]);
         }
 
         private static Point ParsePoint(string coordinates)
@@ -121,6 +93,6 @@ namespace Day06
             return new Point(int.Parse(split[0]), int.Parse(split[1]));
         }
 
-        record Point(int X, int Y);
+        private record Point(int X, int Y);
     }
 }

@@ -43,7 +43,8 @@ namespace AOAOC.Tests
             Assert.AreEqual(1 + 1, Program.SolvePartB("turn on 0,0 through 0,0\nturn on 0,0 through 0,0"));
 
             // test 'turn off'
-            Assert.AreEqual(1 + 1 - 1, Program.SolvePartB("turn on 0,0 through 0,0\nturn on 0,0 through 0,0\nturn off 0,0 through 0,0"));
+            Assert.AreEqual(1 + 1 - 1,
+                Program.SolvePartB("turn on 0,0 through 0,0\nturn on 0,0 through 0,0\nturn off 0,0 through 0,0"));
         }
     }
 }

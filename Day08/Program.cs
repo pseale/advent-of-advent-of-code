@@ -1,16 +1,16 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
 
 namespace Day08
 {
     public static class Program
     {
-        static void Main(string[] args)
+        private static readonly char[] EncodedQuote = {'\\', '\"'};
+        private static readonly char[] EncodedSlash = {'\\', '\\'};
+
+        private static void Main(string[] args)
         {
             var input = File.ReadAllText("input.txt");
 
@@ -29,7 +29,7 @@ namespace Day08
                 .Where(x => !string.IsNullOrWhiteSpace(x))
                 .ToArray();
 
-            int extraChars = 0;
+            var extraChars = 0;
 
             foreach (var line in lines)
             {
@@ -42,7 +42,7 @@ namespace Day08
 
                 while (q.Count > 0)
                 {
-                    char c = q.Dequeue();
+                    var c = q.Dequeue();
                     if (c == '\\')
                     {
                         extraChars++;
@@ -93,23 +93,20 @@ namespace Day08
             return encodedLines.Sum(x => x.Length) - lines.Sum(x => x.Length);
         }
 
-        private static char[] EncodedQuote = new[] {'\\', '\"'};
-        private static char[] EncodedSlash = new[] {'\\', '\\'};
-
         public static string Encode(string line)
         {
             var q = new Queue<char>(line.ToCharArray());
             var encoded = new List<char>();
 
             // add opening quote
-            char openingQuote = q.Dequeue();
+            var openingQuote = q.Dequeue();
             if (openingQuote != '"') throw new Exception($"Invalid input: missing opening \" in line: '{line}'");
             encoded.Add('"');
             encoded.AddRange(EncodedQuote);
 
             while (q.Count > 1)
             {
-                char c = q.Dequeue();
+                var c = q.Dequeue();
 
                 if (c == '"')
                     encoded.AddRange(EncodedQuote);
@@ -120,7 +117,7 @@ namespace Day08
             }
 
             // add ending quote
-            char closingQuote = q.Dequeue();
+            var closingQuote = q.Dequeue();
             if (closingQuote != '"') throw new Exception($"Invalid input: missing opening \" in line: '{line}'");
             encoded.AddRange(EncodedQuote);
             encoded.Add('"');
