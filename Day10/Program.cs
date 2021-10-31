@@ -11,6 +11,9 @@ namespace Day10
 
             var partA = SolvePartA(input, 40);
             Console.WriteLine($"Length of the (very long) look-and-say result: {partA.Length}");
+
+            var partB = SolvePartA(input, 50);
+            Console.WriteLine($"Length of the (very long) look-and-say result: {partB.Length}");
         }
 
         public static string SolvePartA(string input, int iterations)
