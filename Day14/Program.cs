@@ -12,6 +12,9 @@ namespace Day14
 
             var partA = SolvePartA(input, 2503);
             Console.WriteLine($"Winning reindeer has traveled: {partA}");
+
+            var partB = SolvePartB(input, 2503);
+            Console.WriteLine($"Winning reindeer has this many points: {partB}");
         }
 
         private static int SolvePartA(string input, int seconds)
@@ -24,6 +27,18 @@ namespace Day14
 
             var distances = lines.Select(line => DistanceTraveled(line, seconds));
             return distances.Max();
+        }
+
+        private static int SolvePartB(string input, int seconds)
+        {
+            var lines = input
+                .Split("\n")
+                .Select(x => x.Trim())
+                .Where(x => !string.IsNullOrWhiteSpace(x))
+                .ToArray();
+
+            var points = lines.Select(line => PointsScored(line, seconds));
+            return points.Max();
         }
 
         public static int DistanceTraveled(string line, int seconds)
@@ -41,6 +56,11 @@ namespace Day14
             var partialCycleDistance = partialCycleFlightTime * cycle.FlyingSpeed;
 
             return fullCyclesDistance + partialCycleDistance;
+        }
+
+        public static int PointsScored(string line, int seconds)
+        {
+            return -1;
         }
 
         private static FlyingRestingCycle GetCycle(string line)

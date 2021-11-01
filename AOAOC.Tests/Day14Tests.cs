@@ -45,5 +45,29 @@ namespace AOAOC.Tests
                 1000));
         }
 
+        [Test]
+        public void PartB()
+        {
+            Assert.AreEqual(0, Program.PointsScored(
+                "Comet can fly 14 km/s for 10 seconds, but then must rest for 127 seconds.",
+                1));
+            Assert.AreEqual(1, Program.PointsScored(
+                "Dancer can fly 16 km/s for 11 seconds, but then must rest for 162 seconds.",
+                1));
+
+            Assert.AreEqual(1, Program.PointsScored(
+                "Comet can fly 14 km/s for 10 seconds, but then must rest for 127 seconds.",
+                140));
+            Assert.AreEqual(139, Program.PointsScored(
+                "Dancer can fly 16 km/s for 11 seconds, but then must rest for 162 seconds.",
+                140));
+
+            Assert.AreEqual(689, Program.PointsScored(
+                "Comet can fly 14 km/s for 10 seconds, but then must rest for 127 seconds.",
+                1000));
+            Assert.AreEqual(312, Program.PointsScored(
+                "Dancer can fly 16 km/s for 11 seconds, but then must rest for 162 seconds.",
+                1000));
+        }
     }
 }
