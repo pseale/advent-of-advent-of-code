@@ -28,9 +28,10 @@ namespace Day12
             return CalculateSum(jToken);
         }
 
-        private static int SolvePartB(string input)
+        public static int SolvePartB(string input)
         {
-            return -1;
+            var jToken = JToken.Parse(input);
+            return CalculateSumExcludingRed(jToken);
         }
 
         private static int CalculateSum(JToken jToken)
@@ -41,6 +42,28 @@ namespace Day12
                 case JTokenType.Object:
                 case JTokenType.Property:
                     return jToken.Children().Sum(x => CalculateSum(x));
+                case JTokenType.Integer:
+                    return (int) jToken;
+                case JTokenType.String:
+                    return 0;
+                default:
+                    throw new NotImplementedException($"We have not implemented handling for: {jToken.Type}");
+            }
+        }
+
+        private static int CalculateSumExcludingRed(JToken jToken)
+        {
+            switch (jToken.Type)
+            {
+                case JTokenType.Array:
+                case JTokenType.Property:
+                    return jToken.Children().Sum(x => CalculateSumExcludingRed(x));
+                case JTokenType.Object:
+                {
+                    if (((JObject)jToken).Properties().Any(x => x.Value.Type == JTokenType.String && (string)x.Value == "red"))
+                        return 0;
+                    return jToken.Children().Sum(x => CalculateSumExcludingRed(x));
+                }
                 case JTokenType.Integer:
                     return (int) jToken;
                 case JTokenType.String:
