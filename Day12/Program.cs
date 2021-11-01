@@ -13,12 +13,24 @@ namespace Day12
 
             var partA = SolvePartA(input);
             Console.WriteLine($"Sum of all numbers: {partA}");
+
+            var partB = SolvePartB(input);
+            Console.Write("Sum, ignoring all ");
+            Console.ForegroundColor = ConsoleColor.DarkRed;
+            Console.Write("red");
+            Console.ResetColor();
+            Console.WriteLine($": {partB}");
         }
 
         public static int SolvePartA(string input)
         {
             var jToken = JToken.Parse(input);
             return CalculateSum(jToken);
+        }
+
+        private static int SolvePartB(string input)
+        {
+            return -1;
         }
 
         private static int CalculateSum(JToken jToken)
