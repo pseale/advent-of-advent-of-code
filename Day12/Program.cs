@@ -7,7 +7,7 @@ namespace Day12
 {
     public static class Program
     {
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             var input = File.ReadAllText("input.json");
 
@@ -60,7 +60,8 @@ namespace Day12
                     return jToken.Children().Sum(x => CalculateSumExcludingRed(x));
                 case JTokenType.Object:
                 {
-                    if (((JObject)jToken).Properties().Any(x => x.Value.Type == JTokenType.String && (string)x.Value == "red"))
+                    if (((JObject) jToken).Properties()
+                        .Any(x => x.Value.Type == JTokenType.String && (string) x.Value == "red"))
                         return 0;
                     return jToken.Children().Sum(x => CalculateSumExcludingRed(x));
                 }

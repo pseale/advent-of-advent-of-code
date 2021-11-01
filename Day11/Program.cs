@@ -5,9 +5,9 @@ namespace Day11
 {
     public static class Program
     {
-        const int LettersInAlphabet = 26;
+        private const int LettersInAlphabet = 26;
 
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             var input = "cqjxjnds";
 
@@ -49,13 +49,11 @@ namespace Day11
 
         private static bool IncludesAStraight(string candidate)
         {
-            int thirdLetter = 2; // start at third letter
-            for (int i = thirdLetter; i < candidate.Length; i++)
-            {
+            var thirdLetter = 2; // start at third letter
+            for (var i = thirdLetter; i < candidate.Length; i++)
                 if (NumericValue(candidate[i]) - 1 == NumericValue(candidate[i - 1])
                     && NumericValue(candidate[i]) - 2 == NumericValue(candidate[i - 2]))
                     return true;
-            }
 
             return false;
         }
@@ -91,18 +89,16 @@ namespace Day11
         private static int FindPair(string candidate)
         {
             var secondLetter = 1;
-            for (int i = secondLetter; i < candidate.Length; i++)
-            {
+            for (var i = secondLetter; i < candidate.Length; i++)
                 if (candidate[i] == candidate[i - 1])
                     return i - 1;
-            }
 
             return -1;
         }
 
         private static Stack<char> ConvertFromLettersToNumeric(string input, ref long passwordAsNumber)
         {
-            int powerOf = 0;
+            var powerOf = 0;
             var stack = new Stack<char>(input.ToCharArray());
             while (stack.Count > 0)
             {
@@ -138,7 +134,7 @@ namespace Day11
 
         private static int NumericValue(char c)
         {
-            return (int) c - (int) 'a';
+            return c - 'a';
         }
 
         private static char LetterValue(long passwordAsNumber)

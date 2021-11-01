@@ -39,6 +39,5 @@ namespace AOAOC.Tests
             Assert.AreEqual(0, Program.SolvePartB("{\"d\":\"red\",\"e\":[1,2,3,4],\"f\":5}"));
             Assert.AreEqual(6, Program.SolvePartB("[1,\"red\",5]"));
         }
-
     }
 }

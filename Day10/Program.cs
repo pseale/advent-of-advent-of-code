@@ -5,7 +5,7 @@ namespace Day10
 {
     public static class Program
     {
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             var input = "1113222113";
 
@@ -18,9 +18,9 @@ namespace Day10
 
         public static string SolvePartA(string input, int iterations)
         {
-            string digits = input;
+            var digits = input;
 
-            for (int i = 0; i < iterations; i++)
+            for (var i = 0; i < iterations; i++)
                 digits = LookAndSay(digits);
 
             return digits;
@@ -31,7 +31,7 @@ namespace Day10
             var digits = input.ToCharArray();
             var lookAndSay = new List<char>();
 
-            int index = 0;
+            var index = 0;
             while (index < digits.Length)
             {
                 var runOfDigits = GetRunOfDigits(digits, index);
@@ -47,11 +47,10 @@ namespace Day10
 
         private static int GetRunOfDigits(char[] digits, int startingIndex)
         {
-            int index = startingIndex + 1;
-            int run = 1;
+            var index = startingIndex + 1;
+            var run = 1;
 
             while (index < digits.Length)
-            {
                 if (digits[index] == digits[startingIndex])
                 {
                     run++;
@@ -61,7 +60,6 @@ namespace Day10
                 {
                     return run;
                 }
-            }
 
             return run;
         }
@@ -71,8 +69,7 @@ namespace Day10
             if (digit <= 0) throw new Exception($"Invalid digit: {digit}");
             if (digit > 9) throw new Exception($"Didn't expect digit this large: {digit}");
 
-            return (char) (digit + (int) '0');
-
+            return (char) (digit + '0');
         }
     }
 }
