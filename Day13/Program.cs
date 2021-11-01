@@ -13,26 +13,30 @@ namespace Day13
 
             var partA = SolvePartA(input);
             Console.WriteLine($"Total change in happiness for the optimal seating arrangement: {partA}");
+
+            var partB = SolvePartB(input);
+            Console.WriteLine($"Total change in happiness, including yourself: {partB}");
         }
 
         public static int SolvePartA(string input)
         {
-            var lines = input
-                .Split("\n")
-                .Select(x => x.Trim())
-                .Where(x => !string.IsNullOrWhiteSpace(x))
-                .ToArray();
+            var affinities = GetAffinitiesFromInput(input);
 
-            var affinities = new List<Affinity>();
-            foreach (var line in lines)
-            {
-                var words = line.Split(" ");
-                var from = words[0];
-                var to = words[10].TrimEnd('.');
-                var happiness = words[2] == "gain" ? int.Parse(words[3]) : -1 * int.Parse(words[3]);
-                affinities.Add(new Affinity(from, to, happiness));
-            }
+            return Solve(affinities);
+        }
 
+        private static int SolvePartB(string input)
+        {
+            var guestOnlyAffinities = GetAffinitiesFromInput(input);
+            var attendees = guestOnlyAffinities.Select(x => x.From).Distinct().ToArray();
+            var newAffinities = attendees.Select(x => new Affinity("it's me, ur brother", x, 0));
+            var affinities = guestOnlyAffinities.Concat(newAffinities).ToList();
+
+            return Solve(affinities);
+        }
+
+        private static int Solve(List<Affinity> affinities)
+        {
             var seatingHappiness = new Dictionary<string, int>();
             foreach (var affinity in affinities)
             {
@@ -50,6 +54,27 @@ namespace Day13
                 .Select(x => new Combination(x, CalculateHappiness(seatingHappiness, x)))
                 .ToList();
             return combinations.OrderByDescending(x => x.Happiness).First().Happiness;
+        }
+
+        private static List<Affinity> GetAffinitiesFromInput(string input)
+        {
+            var lines = input
+                .Split("\n")
+                .Select(x => x.Trim())
+                .Where(x => !string.IsNullOrWhiteSpace(x))
+                .ToArray();
+
+            var affinities = new List<Affinity>();
+            foreach (var line in lines)
+            {
+                var words = line.Split(" ");
+                var from = words[0];
+                var to = words[10].TrimEnd('.');
+                var happiness = words[2] == "gain" ? int.Parse(words[3]) : -1 * int.Parse(words[3]);
+                affinities.Add(new Affinity(@from, to, happiness));
+            }
+
+            return affinities;
         }
 
         private static string GetKey(string from, string to)
