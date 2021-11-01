@@ -1,5 +1,7 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
+using Newtonsoft.Json.Linq;
 
 namespace Day12
 {
@@ -15,7 +17,25 @@ namespace Day12
 
         public static int SolvePartA(string input)
         {
-            return -1;
+            var jToken = JToken.Parse(input);
+            return CalculateSum(jToken);
+        }
+
+        private static int CalculateSum(JToken jToken)
+        {
+            switch (jToken.Type)
+            {
+                case JTokenType.Array:
+                case JTokenType.Object:
+                case JTokenType.Property:
+                    return jToken.Children().Sum(x => CalculateSum(x));
+                case JTokenType.Integer:
+                    return (int) jToken;
+                case JTokenType.String:
+                    return 0;
+                default:
+                    throw new NotImplementedException($"We have not implemented handling for: {jToken.Type}");
+            }
         }
     }
 }
