@@ -1,4 +1,5 @@
-﻿using Day14;
+﻿using System.Linq;
+using Day14;
 using NUnit.Framework;
 
 namespace AOAOC.Tests
@@ -48,26 +49,24 @@ namespace AOAOC.Tests
         [Test]
         public void PartB()
         {
-            Assert.AreEqual(0, Program.PointsScored(
-                "Comet can fly 14 km/s for 10 seconds, but then must rest for 127 seconds.",
-                1));
-            Assert.AreEqual(1, Program.PointsScored(
-                "Dancer can fly 16 km/s for 11 seconds, but then must rest for 162 seconds.",
-                1));
+            var input = @"Comet can fly 14 km/s for 10 seconds, but then must rest for 127 seconds.
+                Dancer can fly 16 km/s for 11 seconds, but then must rest for 162 seconds.";
+            var cycles = input
+                .Split("\n")
+                .Select(x => x.Trim())
+                .Where(x => !string.IsNullOrWhiteSpace(x))
+                .Select(x => Program.GetCycle(x))
+                .ToArray();
 
-            Assert.AreEqual(1, Program.PointsScored(
-                "Comet can fly 14 km/s for 10 seconds, but then must rest for 127 seconds.",
-                140));
-            Assert.AreEqual(139, Program.PointsScored(
-                "Dancer can fly 16 km/s for 11 seconds, but then must rest for 162 seconds.",
-                140));
+            var pointsAt1 = Program.PointsScored(cycles, 1);
+            Assert.AreEqual(0, Program.PointsScored(cycles, 1)["Comet"]);
+            Assert.AreEqual(1, Program.PointsScored(cycles, 1)["Dancer"]);
 
-            Assert.AreEqual(689, Program.PointsScored(
-                "Comet can fly 14 km/s for 10 seconds, but then must rest for 127 seconds.",
-                1000));
-            Assert.AreEqual(312, Program.PointsScored(
-                "Dancer can fly 16 km/s for 11 seconds, but then must rest for 162 seconds.",
-                1000));
+            Assert.AreEqual(1, Program.PointsScored(cycles, 140)["Comet"]);
+            Assert.AreEqual(139, Program.PointsScored(cycles, 140)["Dancer"]);
+
+            Assert.AreEqual(312, Program.PointsScored(cycles, 1000)["Comet"]);
+            Assert.AreEqual(689, Program.PointsScored(cycles, 1000)["Dancer"]);
         }
     }
 }

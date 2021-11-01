@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
@@ -29,23 +30,17 @@ namespace Day14
             return distances.Max();
         }
 
-        private static int SolvePartB(string input, int seconds)
-        {
-            var lines = input
-                .Split("\n")
-                .Select(x => x.Trim())
-                .Where(x => !string.IsNullOrWhiteSpace(x))
-                .ToArray();
-
-            var points = lines.Select(line => PointsScored(line, seconds));
-            return points.Max();
-        }
-
         public static int DistanceTraveled(string line, int seconds)
         {
             var cycle = GetCycle(line);
 
             // count how many FULL cycles
+            return DistanceTraveledInternal(cycle, seconds);
+        }
+
+        // apology: I don't like this name
+        private static int DistanceTraveledInternal(FlyingRestingCycle cycle, int seconds)
+        {
             var interval = (cycle.FlyingSeconds + cycle.RestingSeconds);
             var fullCycles = seconds / interval;
             var fullCyclesDistance = fullCycles * cycle.FlyingSeconds * cycle.FlyingSpeed;
@@ -58,12 +53,45 @@ namespace Day14
             return fullCyclesDistance + partialCycleDistance;
         }
 
-        public static int PointsScored(string line, int seconds)
+        private static int SolvePartB(string input, int seconds)
         {
-            return -1;
+            var lines = input
+                .Split("\n")
+                .Select(x => x.Trim())
+                .Where(x => !string.IsNullOrWhiteSpace(x))
+                .ToArray();
+
+            var cycles = lines.Select(line => GetCycle(line)).ToArray();
+
+            var points = PointsScored(cycles, seconds);
+
+            return points.Max(x => x.Value);
         }
 
-        private static FlyingRestingCycle GetCycle(string line)
+        public static Dictionary<string, int> PointsScored(FlyingRestingCycle[] cycles, int seconds)
+        {
+            var points = new Dictionary<string, int>();
+            foreach (var cycle in cycles)
+                points.Add(cycle.Reindeer, 0);
+
+            for (int i = 0; i < seconds; i++)
+            {
+                var distances = cycles.
+                    Select(x => new { Reindeer = x.Reindeer, Distance = DistanceTraveledInternal(x, i + 1) })
+                    .ToArray();
+
+                var winners = distances.GroupBy(x => x.Distance)
+                    .OrderByDescending(x => x.Key)
+                    .First();
+
+                foreach (var winner in winners)
+                    points[winner.Reindeer]++;
+            }
+
+            return points;
+        }
+
+        public static FlyingRestingCycle GetCycle(string line)
         {
             var words = line.Split(" ");
             return new FlyingRestingCycle(
@@ -74,5 +102,5 @@ namespace Day14
         }
     }
 
-    record FlyingRestingCycle(string Reindeer, int FlyingSpeed, int FlyingSeconds, int RestingSeconds);
+    public record FlyingRestingCycle(string Reindeer, int FlyingSpeed, int FlyingSeconds, int RestingSeconds);
 }
