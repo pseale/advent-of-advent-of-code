@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace Day11
 {
@@ -15,6 +13,9 @@ namespace Day11
 
             var partA = SolvePartA(input);
             Console.WriteLine($"Santa's next password should be: {partA}");
+
+            var partB = SolvePartA(partA);
+            Console.WriteLine($"After the above password expired, Santa's next password should be: {partB}");
         }
 
         public static string SolvePartA(string input)
