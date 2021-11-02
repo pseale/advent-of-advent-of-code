@@ -12,12 +12,14 @@ namespace Day15
         {
             var input = File.ReadAllText("input.txt");
 
-            var partA = SolvePartA(input);
+            var (partA, partB) = Solve(input);
             Console.WriteLine($"Highest-scoring cookie: {partA}");
+
+            Console.WriteLine($"Highest-scoring cookie with 500 calories: {partB}");
         }
 
         // NOTE: I cheated and looked up solutions. I figured: no way people would brute force this, right? (They did.)
-        public static int SolvePartA(string input)
+        public static (int, int) Solve(string input)
         {
             var lines = input
                 .Split("\n")
@@ -33,6 +35,7 @@ namespace Day15
             var chocolate = ingredients.Single(x => x.Name == "Chocolate");
 
             var scores = new List<int>();
+            var fiveHundredCalorieScores = new List<int>();
 
             // NOTE: IT BOTHERS ME DEEPLY that other people's similar solutions (from
             // which I cheated 👍) ASSUME you have 4 ingredients. And ALSO handwave over
@@ -66,6 +69,12 @@ namespace Day15
                                    + sprinkles.Texture * tspSprinkles
                                    + candy.Texture * tspCandy
                                    + chocolate.Texture * tspChocolate;
+
+                    var calories = sugar.Calories * tspSugar
+                                   + sprinkles.Calories * tspSprinkles
+                                   + candy.Calories * tspCandy
+                                   + chocolate.Calories * tspChocolate;
+
                     var score = Math.Max(0, capacity)
                                 * Math.Max(0, durability)
                                 * Math.Max(0, flavor)
@@ -73,9 +82,11 @@ namespace Day15
 
                     if (score > 0)
                         scores.Add(score);
+                    if (score > 0 && calories == 500)
+                        fiveHundredCalorieScores.Add(score);
                 }
 
-            return scores.Max();
+            return (scores.Max(), fiveHundredCalorieScores.Max());
         }
 
         private static Ingredient Parse(string line)
