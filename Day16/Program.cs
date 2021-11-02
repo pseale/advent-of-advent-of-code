@@ -7,20 +7,60 @@ namespace Day16
 {
     public static class Program
     {
+
         static void Main(string[] args)
         {
             var input = File.ReadAllText("input.txt");
 
             var partA = SolvePartA(input);
             Console.WriteLine($"Aunt Sue #: {partA}");
+
+            var partB = SolvePartB(input);
+            // ReSharper disable once StringLiteralTypo
+            Console.WriteLine($"Real Aunt Sue # (accounting for outdated retroencabulator): {partB}");
         }
 
         public static int SolvePartA(string input)
         {
             var sues = Parse(input);
 
-            var mfcsamOutput = GetMfcsamOutput();
-            return sues.Single(x => Matches(mfcsamOutput, x)).SueNumber;
+            var compoundReadings = GetMfcsamOutput();
+            return sues.Single(x => Matches(compoundReadings, x)).SueNumber;
+        }
+
+        public static int SolvePartB(string input)
+        {
+            var sues = Parse(input);
+
+            var compoundReadings = GetMfcsamOutput();
+            return sues.Single(x => MatchesAccountingForOutdatedRetroencabulator(compoundReadings, x)).SueNumber;
+        }
+
+        private static readonly string[] CompoundsGreaterThanReading = new[] {"cats", "trees"};
+        private static readonly string[] CompoundsLessThanReading = new[] {"pomeranians", "goldfish"};
+        // ReSharper disable once IdentifierTypo
+        private static bool MatchesAccountingForOutdatedRetroencabulator(Dictionary<string,int> compoundReadings, Sue sue)
+        {
+            foreach (var compound in sue.Compounds)
+            {
+                if (CompoundsGreaterThanReading.Contains(compound.Key))
+                {
+                    if (compound.Value <= compoundReadings[compound.Key])
+                        return false;
+                }
+                else if (CompoundsLessThanReading.Contains(compound.Key))
+                {
+                    if (compound.Value >= compoundReadings[compound.Key])
+                        return false;
+                }
+                else
+                {
+                    if (compoundReadings[compound.Key] != compound.Value)
+                        return false;
+                }
+            }
+
+            return true;
         }
 
         private static bool Matches(Dictionary<string,int> compounds, Sue sue)
