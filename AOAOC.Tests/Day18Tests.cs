@@ -17,7 +17,7 @@ namespace AOAOC.Tests
                           #.#..#
                           ####..";
 
-            var frames = Day18Solution.GetFrames(input);
+            var frames = Day18Solution.GetFrames(input, 4);
 
             var expectedFrames = new List<string>() {
 @".#.#.#

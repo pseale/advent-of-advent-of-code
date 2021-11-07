@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Terminal.Gui;
@@ -13,7 +14,7 @@ namespace Day18
         static void Main(string[] args)
         {
             _currentFrame = 0;
-            _frames = Day18Solution.GetDummyFrames();
+            (_frames, _lit) = Day18Solution.GetFrames(File.ReadAllText("input.txt"), 100);
 
             Application.Init();
             _menu = new MenuBar(new MenuBarItem[]
@@ -36,32 +37,34 @@ namespace Day18
         private static async Task PlayAnimation()
         {
             _menu.Visible = false;
-            var frames = Day18Solution.GetDummyFrames();
+
             _progressIndicator = new Label(38,0, "");
             Application.Top.Add(_progressIndicator);
 
             await Task.Delay(500); // give a little delay before the first frame
-            for (int i = 0; i < frames.Count(); i++)
+            for (int i = 0; i < _frames.Count(); i++)
             {
                 _currentFrame = i;
 
                 DrawCurrentFrame();
-                await Task.Delay(400);
-                if (i < frames.Count - 1)
+                await Task.Delay(100);
+                if (i < _frames.Count - 1)
                     HideCurrentFrame(); // don't remove the last frame
             }
 
             Application.Top.Remove(_progressIndicator);
-            var border = new Border() { Padding = new Thickness(1), BorderThickness = new Thickness(1), BorderBrush = Color.White };
-            var finalMessage = new Label(25, 25, "TODO: Place the final answer of Part A here.\nCTRL+Q to quit");
+            var border = new Border() { Padding = new Thickness(3), BorderThickness = new Thickness(1), BorderBrush = Color.White };
+            var finalMessage = new Label(12, 12, $"Lights on after 100 steps: {_lit}\nPress CTRL+Q to quit");
             finalMessage.Border = border;
             border.Child = finalMessage;
             Application.Top.Add(finalMessage);
             _menu.Visible = true;
         }
 
-        private static int _currentFrame;
         private static List<string> _frames;
+        private static int _lit;
+
+        private static int _currentFrame;
         private static Label _progressIndicator;
         private static Label _frameLabel;
 
