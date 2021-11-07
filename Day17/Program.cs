@@ -33,7 +33,7 @@ namespace Day17
                 .Count();
         }
 
-        private static object SolvePartB(string input, int target)
+        private static int SolvePartB(string input, int target)
         {
             var lines = input
                 .Split("\n")
@@ -51,6 +51,7 @@ namespace Day17
                 .Length;
 
 
+            // ReSharper disable once ReplaceWithSingleCallToCount
             var combinationsWithMinimumContainers = combinations
                 .Select(x => x.Split("-"))
                 .Where(x => x.Length == minimumContainers)
