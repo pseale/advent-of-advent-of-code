@@ -15,6 +15,9 @@ namespace Day17
 
             var partA = SolvePartA(input, 150);
             Console.WriteLine($"Combinations of containers: {partA}");
+
+            var partB = SolvePartB(input, 150);
+            Console.WriteLine($"Combinations of minimum number of containers: {partB}");
         }
 
         public static int SolvePartA(string input, int target)
@@ -28,6 +31,32 @@ namespace Day17
             var containers = lines.Select(line => int.Parse(line)).ToList();
             return Combinations(containers, target)
                 .Count();
+        }
+
+        private static object SolvePartB(string input, int target)
+        {
+            var lines = input
+                .Split("\n")
+                .Select(x => x.Trim())
+                .Where(x => !string.IsNullOrWhiteSpace(x))
+                .ToArray();
+
+            var containers = lines.Select(line => int.Parse(line)).ToList();
+            var combinations = Combinations(containers, target);
+
+            var minimumContainers = combinations
+                .Select(x => x.Split("-"))
+                .OrderBy(x => x.Length)
+                .First()
+                .Length;
+
+
+            var combinationsWithMinimumContainers = combinations
+                .Select(x => x.Split("-"))
+                .Where(x => x.Length == minimumContainers)
+                .Count();
+
+            return combinationsWithMinimumContainers;
         }
 
         public static IEnumerable<string> Combinations(List<int> containers, int target)
