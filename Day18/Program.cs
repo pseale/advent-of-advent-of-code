@@ -14,7 +14,7 @@ namespace Day18
         static void Main(string[] args)
         {
             _currentFrame = 0;
-            (_frames, _lit) = Day18Solution.GetFrames(File.ReadAllText("input.txt"), 100);
+            (_frames, _lit) = Day18Solution.GetFrames(File.ReadAllText("input.txt"), 100, false);
 
             Application.Init();
             _menu = new MenuBar(new MenuBarItem[]
@@ -23,7 +23,8 @@ namespace Day18
                 {
                     // TODO: learn about .NET console apps and why the only async thing I can get working is this. WHY!?!?!?
                     // ReSharper disable AsyncVoidLambda
-                    new("_Play", "", async () => await PlayAnimation()),
+                    new("Play Part _A", "", async () => await PlayAnimation()),
+                    new("Play Part _B", "", async () => await HackyPlayPartBAnimation()),
                     new("_Step through", "", () => StepThroughAnimation()),
                     new("_Quit", "", () => Application.RequestStop()),
                 })
@@ -32,6 +33,12 @@ namespace Day18
             Application.Top.Width = Math.Max(100, Application.Driver.Clip.Width);
             Application.Top.Add(_menu);
             Application.Run(Application.Top);
+        }
+
+        private static async Task HackyPlayPartBAnimation()
+        {
+            (_frames, _lit) = Day18Solution.GetFrames(File.ReadAllText("input.txt"), 100, true);
+            await PlayAnimation();
         }
 
         private static async Task PlayAnimation()

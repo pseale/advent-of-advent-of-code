@@ -17,7 +17,7 @@ namespace AOAOC.Tests
                           #.#..#
                           ####..";
 
-            var frames = Day18Solution.GetFrames(input, 4);
+            var (frames, lit) = Day18Solution.GetFrames(input, 4, false);
 
             var expectedFrames = new List<string>() {
 @".#.#.#
@@ -58,6 +58,7 @@ namespace AOAOC.Tests
             };
 
             CollectionAssert.AreEqual(expectedFrames, frames);
+            Assert.AreEqual(4, lit);
         }
     }
 }
