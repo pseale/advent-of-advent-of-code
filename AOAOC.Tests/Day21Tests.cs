@@ -8,23 +8,16 @@ namespace AOAOC.Tests
     public class Day21Tests
     {
         [Test]
-        public void PartA()
-        {
-            var input = @"Hit Points: 109
-                          Damage: 8
-                          Armor: 2";
-            // boss' stats are hardcoded
-            Assert.AreEqual(0, Program.SolvePartA(input));
-        }
-
-        [Test]
         public void BattleLogShouldBeAccurate()
         {
-            var input = @"Hit Points: 109
-                          Damage: 8
-                          Armor: 2";
-            var log = Program.SimulateBattle(input);
+            // Arrange
+            var player = new Stats(8, 5, 5);
+            var boss = new Stats(12, 7, 2);
 
+            // Act
+            var log = Program.SimulateBattle(player, boss);
+
+            // Assert
             var expected = @"The player deals 5-2 = 3 damage; the boss goes down to 9 hit points.
                              The boss deals 7-5 = 2 damage; the player goes down to 6 hit points.
                              The player deals 5-2 = 3 damage; the boss goes down to 6 hit points.
