@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace Day21
 {
@@ -8,6 +9,7 @@ namespace Day21
     {
         private static readonly Item[] ShopItems = new[]
         {
+            // ReSharper disable StringLiteralTypo
             new Item(ItemType.Weapon, "Dagger", 8, 4, 0),
             new Item(ItemType.Weapon, "Shortsword", 10, 5, 0),
             new Item(ItemType.Weapon, "Warhammer", 25, 6, 0),
@@ -32,16 +34,93 @@ namespace Day21
             var input = File.ReadAllText("input.txt");
             var playerHitPoints = 100;
 
-            var partA = SolvePartA(100, input);
+            var partA = SolvePartA(playerHitPoints, input);
             Console.WriteLine($"Least amount of gold you can spend: {partA}");
         }
 
-        public static int SolvePartA(int playerHitPoints, string input)
+        private static int SolvePartA(int playerHitPoints, string input)
         {
-            return -1;
+            var boss = Parse(input);
+            var combinations = Combinations(playerHitPoints);
+            return combinations
+                .Where(x => Victorious(x, boss))
+                .Select(x => x.Cost)
+                .Min();
         }
 
-        public static string[] SimulateBattle(Stats player, Stats boss)
+        private static bool Victorious(Loadout x, Stats boss)
+        {
+            var (result, _) = SimulateBattle(new Stats(x.HitPoints, x.Damage, x.Armor), boss);
+            return result == BattleResult.Victory;
+        }
+
+        private static List<Loadout> Combinations(int playerHitPoints)
+        {
+            // combination rules: exactly 1 weapon
+            // optional armor (maximum of 1)
+            // optional rings (maximum of 2)
+            var weapons = ShopItems.Where(x => x.Type == ItemType.Weapon).ToArray();
+            var armors = ShopItems.Where(x => x.Type == ItemType.Armor).ToArray();
+            var rings = ShopItems.Where(x => x.Type == ItemType.Ring).ToArray();
+
+            var weaponChoices = weapons;
+            var armorChoices = armors
+                .Select(x => new Item[] { x })
+                .Append(Array.Empty<Item>())
+                .ToArray();
+            var ringChoices = GetKCombs(rings, 2)
+                .Concat(GetKCombs(rings, 1))
+                .Append(Array.Empty<Item>())
+                .ToArray();
+
+            var loadouts = new List<Loadout>();
+
+            foreach (var weaponChoice in weaponChoices)
+            foreach (var armorChoice in armorChoices)
+            foreach (var ringChoice in ringChoices)
+            {
+                var damage = weaponChoice.Damage
+                             + armorChoice.Sum(x => x.Damage)
+                             + ringChoice.Sum(x => x.Damage);
+
+                var armor = weaponChoice.Armor
+                            + armorChoice.Sum(x => x.Armor)
+                            + ringChoice.Sum(x => x.Armor);
+
+                var cost = weaponChoice.Cost
+                           + armorChoice.Sum(x => x.Cost)
+                           + ringChoice.Sum(x => x.Cost);
+
+                loadouts.Add(new Loadout(playerHitPoints, damage, armor, cost));
+            }
+
+            return loadouts;
+        }
+
+        // Adapted from https://stackoverflow.com/a/10629938
+        static IEnumerable<IEnumerable<Item>> GetKCombs(IEnumerable<Item> list, int length)
+        {
+            if (length == 1) return list.Select(t => new Item[] { t });
+            return GetKCombs(list, length - 1)
+                .SelectMany(t => list.Where(o => String.CompareOrdinal(o.Name, t.Last()?.Name) > 0),
+                    (t1, t2) => t1.Concat(new Item[] { t2 }));
+        }
+
+        private static Stats Parse(string input)
+        {
+            var stats = input
+                .Split("\n")
+                .Select(x => x.Trim())
+                .Where(x => !string.IsNullOrWhiteSpace(x))
+                .ToDictionary(x => x.Split(":")[0], x => x.Split(" ")[^1]);
+
+            var hitPoints = int.Parse(stats["Hit Points"]);
+            var damage = int.Parse(stats["Damage"]);
+            var armor = int.Parse(stats["Armor"]);
+            return new Stats(hitPoints, damage, armor);
+        }
+
+        public static (BattleResult, string[]) SimulateBattle(Stats player, Stats boss)
         {
             var log = new List<string>();
             int playerHitPoints = player.HitPoints;
@@ -70,10 +149,16 @@ namespace Day21
                 playerTurn = !playerTurn;
             }
 
-            return log.ToArray();
+            var result = playerHitPoints > 0 ? BattleResult.Victory : BattleResult.Defeat;
+
+            return (result, log.ToArray());
         }
+    }
 
-
+    public enum BattleResult
+    {
+        Victory,
+        Defeat
     }
 
     public enum ItemType
@@ -86,4 +171,5 @@ namespace Day21
     public record Item(ItemType Type, string Name, int Cost, int Damage, int Armor);
 
     public record Stats(int HitPoints, int Damage, int Armor);
+    public record Loadout(int HitPoints, int Damage, int Armor, int Cost);
 }

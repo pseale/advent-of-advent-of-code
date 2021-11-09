@@ -15,7 +15,7 @@ namespace AOAOC.Tests
             var boss = new Stats(12, 7, 2);
 
             // Act
-            var log = Program.SimulateBattle(player, boss);
+            var (result, log) = Program.SimulateBattle(player, boss);
 
             // Assert
             var expected = @"The player deals 5-2 = 3 damage; the boss goes down to 9 hit points.
@@ -31,6 +31,7 @@ namespace AOAOC.Tests
                 .Where(x => !string.IsNullOrWhiteSpace(x))
                 .ToArray();
             CollectionAssert.AreEqual(expectedLog, log);
+            Assert.AreEqual(BattleResult.Victory, result);
         }
     }
 }
