@@ -9,13 +9,20 @@ namespace AOAOC.Tests
         [Test]
         public void PartA()
         {
-            var input = @"H => HO
+            var example1 = @"H => HO
                           H => OH
                           O => HH
 
                           HOH";
 
-            Assert.AreEqual(4, Program.SolvePartA(input));
+            Assert.AreEqual(4, Program.SolvePartA(example1));
+
+            var example2 = @"H => HO
+                          H => OH
+                          O => HH
+
+                          HOHOHO";
+            Assert.AreEqual(9, Program.SolvePartA(example2));
         }
     }
 }
