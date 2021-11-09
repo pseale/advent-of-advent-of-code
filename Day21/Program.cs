@@ -36,6 +36,19 @@ namespace Day21
 
             var partA = SolvePartA(playerHitPoints, input);
             Console.WriteLine($"Least amount of gold you can spend: {partA}");
+
+            var partB = SolvePartB(playerHitPoints, input);
+            Console.WriteLine($"Most amount of gold you can spend (and still lose): {partB}");
+        }
+
+        private static int SolvePartB(int playerHitPoints, string input)
+        {
+            var boss = Parse(input);
+            var combinations = Combinations(playerHitPoints);
+            return combinations
+                .Where(x => !Victorious(x, boss))
+                .Select(x => x.Cost)
+                .Max();
         }
 
         private static int SolvePartA(int playerHitPoints, string input)
