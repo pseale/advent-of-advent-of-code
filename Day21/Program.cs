@@ -10,7 +10,7 @@ namespace Day21
             var input = File.ReadAllText("input.txt");
 
             var partA = SolvePartA(input);
-            Console.WriteLine($"Distinct molecules: {partA}");
+            Console.WriteLine($"Least amount of gold you can spend: {partA}");
         }
 
         public static int SolvePartA(string input)
