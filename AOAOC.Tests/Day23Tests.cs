@@ -14,7 +14,7 @@ namespace AOAOC.Tests
                           tpl a
                           inc a";
 
-            var result = Program.SolvePartA(input, "a");
+            var result = Program.Solve(input, "a", 0);
 
             Assert.AreEqual(2, result);
         }

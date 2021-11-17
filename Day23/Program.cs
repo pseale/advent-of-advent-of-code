@@ -11,18 +11,21 @@ namespace Day23
         {
             var input = File.ReadAllText("input.txt");
 
-            var partA = SolvePartA(input, "b");
+            var partA = Solve(input, "b", 0);
             Console.WriteLine($"Value of register b: {partA}");
+
+            var partB = Solve(input, "b", 1);
+            Console.WriteLine($"Value of register b when register a starts as 1: {partB}");
         }
 
-        public static uint SolvePartA(string input, string register)
+        public static uint Solve(string input, string register, uint startingValueForRegisterA)
         {
             var instructions = input
                 .Split("\n")
                 .Select(x => x.Trim())
                 .Where(x => !string.IsNullOrWhiteSpace(x))
                 .ToArray();
-            var state = new State(new Dictionary<string, uint>() { { "a", 0 }, { "b", 0 }}, 0);
+            var state = new State(new Dictionary<string, uint>() { { "a", startingValueForRegisterA }, { "b", 0 }}, 0);
             while (state.Location >= 0 && state.Location < instructions.Length)
             {
                 var instruction = instructions[state.Location];
