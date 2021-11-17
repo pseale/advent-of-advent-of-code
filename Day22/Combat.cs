@@ -10,13 +10,13 @@ namespace Day22
         public int PlayerHitPoints { get; set; }
         public int PlayerManaPoints { get; set; }
         public int PlayerArmor { get; set; }
-        public Queue<string> PlayerSpells { get; set; } = new();
-        public List<ISpell> ActiveSpells { get; } = new();
-
+        public List<ISpell> ActiveSpells { get; set; } = new();
+        public List<string> SpellsCast { get; set; } = new();
         public int BossHitPoints { get; set; }
         public int BossDamage { get; set; }
+        public bool IsPlayerTurn { get; set; } = true; // starts with player turn
 
-        public List<string> Log { get; } = new();
+        public List<string> Log { get; set; } = new();
 
         // apology: it feels icky to have some (but not most) of the logic encapsulated here in this mostly-just-a-dumb-DTO object
         public string PlayerStatusLog()

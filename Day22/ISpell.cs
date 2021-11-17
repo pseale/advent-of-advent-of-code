@@ -42,9 +42,12 @@ namespace Day22
             }
         }
 
+        private static SpellCatalogItem[] _spellCatalog = null;
         public static SpellCatalogItem[] GetSpellCatalog()
         {
-            var spells = new string[]
+            if (_spellCatalog != null)
+                return _spellCatalog;
+            var spells = new[]
             {
                 "Magic Missile",
                 "Drain",
@@ -60,7 +63,8 @@ namespace Day22
                 catalog.Add(new SpellCatalogItem(spell.Name, spell.ManaCost, spell.Duration));
             }
 
-            return catalog.ToArray();
+            _spellCatalog = catalog.ToArray();
+            return _spellCatalog;
         }
     }
 
