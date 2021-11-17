@@ -61,6 +61,7 @@ namespace Day22
             return new BossStats(hitPoints, damage);
         }
 
+        // inspired by https://github.com/CameronAavik/AdventOfCode/blob/master/csharp/2015/Solvers/Day22.cs
         private static void RunCombatRound(Combat combat, Queue<Combat> queue, List<CombatResult> combatResults)
         {
             var playerOrBoss = combat.IsPlayerTurn ? "Player" : "Boss";
