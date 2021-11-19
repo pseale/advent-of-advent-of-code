@@ -22,7 +22,7 @@ namespace AOAOC.Tests
 
             var result = Program.SolvePartA(input);
 
-            Assert.AreEqual(90, result);
+            Assert.AreEqual(99, result);
         }
     }
 }
