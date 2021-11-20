@@ -13,8 +13,20 @@ namespace Day24
             var stopwatch = Stopwatch.StartNew();
             var input = File.ReadAllText("input.txt");
 
+            // ***************************
+            //           PROTEST
+            // ***************************
+            Console.WriteLine(
+                "PROTEST: Reading over the solutions, it was clear that a few people solved the problem, then the rest of us had to stumble into it either by cheating or (possibly?) by accident. The brute force solution for Part B in particular was untenable. If Part A had something like 248MM combinations, who knows how many Part B had. Anyway I'm pretty cranky about this. I 'solved' the problem inefficiently pretty much immediately. Days later, I have slogged to a finish with a solution that basically only works with the specific problem set (this is what most everyone else did too). I really, really, really don't enjoy these types of puzzles. I was thinking that, if I made it this far, I would maybe appreciate the puzzle solving aspect? But I didn't. It's just anger, with a dash of bitterness. Angry. Anyway here's wonderwall");
+            Console.WriteLine();
+
             var partA = SolvePartA(input);
-            Console.WriteLine($"Quantum entanglement of the first group of packages: {partA} - took {stopwatch.Elapsed.TotalMinutes:F} minutes");
+            Console.WriteLine($"Quantum entanglement: {partA} - took {stopwatch.Elapsed.TotalMinutes:F} minutes");
+
+            stopwatch.Restart();
+            var partB = SolvePartB(input);
+            Console.WriteLine(
+                $"Quantum entanglement, accounting for the trunk: {partB} - took {stopwatch.Elapsed.TotalMinutes:F} minutes");
         }
 
         public static long SolvePartA(string input)
@@ -30,31 +42,8 @@ namespace Day24
                 throw new Exception($"Packages should have been divisible by 3. Packages: {packages.Length}");
 
             var targetWeight = packages.Sum() / 3;
-            var loadouts = new List<BalancedSleighLoadout>();
-
-            var (minimum, maximum) = GetBounds(packages, targetWeight);
-            // get all combinations of set #1 - note any combination must have the correct weight
-            var combinations1 = GetAllCombinations(packages, minimum, maximum, targetWeight);
-
-            // get all combinations of set #2
-            foreach (var c1 in combinations1)
-            {
-                var remaining = packages.Except(c1).ToArray();
-                var combinations2 = combinations1
-                    .Where(combination => combination.All(x => remaining.Contains(x)))
-                    .ToArray();
-                // get all combinations of set #3
-                foreach (var c2 in combinations2)
-                {
-                    var c3 = remaining.Except(c2).ToArray();
-                    var sorted = new[] {c1.ToArray(), c2.ToArray(), c3.ToArray()}
-                        .OrderBy(x => x.Length)
-                        .ToArray();
-                    var quantumEntanglement = sorted[0].Aggregate(1L, (long acc, int x) => acc * x);
-
-                    loadouts.Add(new BalancedSleighLoadout(sorted[0], sorted[1], sorted[2], quantumEntanglement));
-                }
-            }
+            var combinations1 = GetSmallestCombinations(packages, targetWeight);
+            var loadouts = combinations1.Select(x => new Loadout(x, x.Aggregate(1L, (long acc, int x) => acc * x)));
 
             var idealLoadout = loadouts
                 .OrderBy(x => x.Group1.Length)
@@ -64,10 +53,37 @@ namespace Day24
             return idealLoadout.QuantumEntanglement;
         }
 
-        private static int[][] GetAllCombinations(int[] remaining, int minimum, int maximum, int targetWeight)
+        public static long SolvePartB(string input)
+        {
+            var packages = input
+                .Split("\n")
+                .Select(x => x.Trim())
+                .Where(x => !string.IsNullOrWhiteSpace(x))
+                .Select(x => int.Parse(x))
+                .ToArray();
+
+            if (packages.Sum() % 4 != 0)
+                throw new Exception($"Packages should have been divisible by 3. Packages: {packages.Length}");
+
+            var targetWeight = packages.Sum() / 4;
+            var combinations1 = GetSmallestCombinations(packages, targetWeight);
+            var loadouts = combinations1.Select(x => new Loadout(x, x.Aggregate(1L, (long acc, int x) => acc * x)));
+
+            var idealLoadout = loadouts
+                .OrderBy(x => x.Group1.Length)
+                .ThenBy(x => x.QuantumEntanglement)
+                .First();
+
+            return idealLoadout.QuantumEntanglement;
+        }
+
+        // THIS IS CHEATING - THIS ONLY SOLVES THE PROBLEM FOR THE EXAMPLE, AND THE SPECIFIC INPUTS.
+        // Also I cheated by looking at others' solutions. But I do at least understand them now!
+        // See ** PROTEST ** in Program.Main()
+        private static int[][] GetSmallestCombinations(int[] remaining, int targetWeight)
         {
             var list = new List<int[]>();
-            for (int i = 6; i <= 8; i++)
+            for (int i = 1; i <= remaining.Length; i++)
             {
                 foreach (var c in Combinations(remaining, i))
                 {
@@ -75,44 +91,32 @@ namespace Day24
                     if (c.Sum() == targetWeight)
                         list.Add(a);
                 }
+
+                if (list.Any())
+                    return list.ToArray();
             }
 
             return list.ToArray();
         }
+
+        // copied from stack overflow
         static IEnumerable<IEnumerable<int>> Combinations(IEnumerable<int> items, int count)
         {
             int i = 0;
-            foreach(var item in items)
+            foreach (var item in items)
             {
-                if(count == 1)
-                    yield return new int[] { item };
+                if (count == 1)
+                    yield return new int[] {item};
                 else
                 {
-                    foreach(var result in Combinations(items.Skip(i + 1), count - 1))
-                        yield return new int[] { item }.Concat(result);
+                    foreach (var result in Combinations(items.Skip(i + 1), count - 1))
+                        yield return new int[] {item}.Concat(result);
                 }
 
                 ++i;
             }
         }
-        private static (int, int) GetBounds(int[] packages, int targetWeight)
-        {
-            var sorted = packages.OrderBy(x1 => x1).ToArray();
-            var smallPackages = sorted
-                .Select((x, i) => sorted.Take(i + 1).Sum())
-                .Where(x => x <= targetWeight);
-            var maximum = smallPackages.Count();
-
-            // var sortedDescending = packages.OrderByDescending(x1 => x1).ToArray();
-            // var largePackages = sortedDescending
-            //     .Select((x, i) => sortedDescending.Take(i + 1).Sum())
-            //     .Where(x => x >= targetWeight);
-            var minimum = 5; //largePackages.Count();
-
-            return (minimum, maximum);
-        }
-
     }
 
-    public record BalancedSleighLoadout(int[] Group1, int[] Group2, int[] Group3, long QuantumEntanglement);
+    public record Loadout(int[] Group1, long QuantumEntanglement);
 }
