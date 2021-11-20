@@ -7,11 +7,11 @@ namespace Day25
     {
         public static void Main(string[] args)
         {
-            var partA = SolvePartA(20151125, 2947, 3029);
+            var partA = SolvePartA(20151125, 3029,2947);
             Console.WriteLine($"Code: {partA}");
         }
 
-        private static int SolvePartA(int topLeftCode, int row, int column)
+        public static int SolvePartA(int topLeftCode, int column, int row)
         {
             return -1;
         }
