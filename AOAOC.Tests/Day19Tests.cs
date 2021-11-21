@@ -1,4 +1,5 @@
-﻿using Day19;
+﻿using System.Linq;
+using Day19;
 using NUnit.Framework;
 
 namespace AOAOC.Tests
@@ -22,7 +23,21 @@ namespace AOAOC.Tests
                           O => HH
 
                           HOHOHO";
-            Assert.AreEqual(9, Program.SolvePartA(example2));
+            Assert.AreEqual(7, Program.SolvePartA(example2));
+        }
+
+        [Test]
+        public void GetReplacementMoleculesShouldWork()
+        {
+            var example1 = @"H => HO
+                          H => OH
+                          O => HH
+
+                          HOH";
+
+            var result = Program.GetReplacementMolecules(example1);
+            var expected = new[] {"HOOH", "HOHO", "OHOH", "HOOH", "HHHH"};
+            CollectionAssert.AreEqual(expected.OrderBy(x => x), result.OrderBy(x => x));
         }
     }
 }

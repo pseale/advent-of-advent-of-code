@@ -16,7 +16,19 @@ namespace Day19
             Console.WriteLine($"Distinct molecules: {partA}");
         }
 
+        // apology: I'm pretty aware this function doesn't deserve to exist.
+        // Inline it I guess? BIG SHRUG. Welcome to Advent of Code!
+        // I'm pretty sure Advent of Code requires all submitted solutions as integer values because
+        // it's easy to verify. Anyway, welcome!
         public static long SolvePartA(string input)
+        {
+            var combinations = GetReplacementMolecules(input);
+
+            var distinct = combinations.Distinct().ToArray();
+            return distinct.Length;
+        }
+
+        public static List<string> GetReplacementMolecules(string input)
         {
             var replacements = new Dictionary<string, List<string>>();
             var lines = input.Split("\n")
@@ -27,7 +39,7 @@ namespace Day19
                 var words = line.Split(" ");
                 var key = words[0];
                 if (!replacements.ContainsKey(key))
-                    replacements.Add(key, new List<string>() { words[2] });
+                    replacements.Add(key, new List<string>() {words[2]});
                 else
                     replacements[key].Add(words[2]);
             }
@@ -41,41 +53,20 @@ namespace Day19
 
             var tokens = Tokenize(calibrationMolecule);
 
-            // int options = 0;
-            // foreach (var token in tokens)
-            // {
-            //     if (replacements.ContainsKey(token))
-            //         options += replacements[token].Count;
-            // }
-            //
-            // return options;
-            var combinations = Combinations(replacements, tokens, Array.Empty<string>());
-            var distinct = combinations.ToArray().Distinct().ToArray();
-            return distinct.Length;
-        }
-
-        private static IEnumerable<string> Combinations(Dictionary<string,List<string>> replacements, List<string> tokens, string[] currentChoices)
-        {
-            if (currentChoices.Length == tokens.Count)
-                return new[] { string.Join("", currentChoices) };
-
-            var choiceIndex = currentChoices.Length;
-            var atom = tokens[choiceIndex];
-            var list = new List<string>();
-            foreach (var choice in GetReplacements(replacements, atom))
+            var combinations = new List<string>();
+            for (int i = 0; i < tokens.Count; i++)
             {
-                list.AddRange(Combinations(replacements, tokens, currentChoices.Append(choice).ToArray()));
+                if (!replacements.ContainsKey(tokens[i]))
+                    continue;
+
+                var left = string.Join("", tokens.Take(i + 1 - 1));
+                var right = string.Join("", tokens.Skip(i + 1));
+
+                foreach (var replacement in replacements[tokens[i]])
+                    combinations.Add(left + replacement + right);
             }
 
-            return list;
-        }
-
-        private static List<string> GetReplacements(Dictionary<string, List<string>> replacements, string atom)
-        {
-            if (replacements.ContainsKey(atom))
-                return replacements[atom];
-
-            return new List<string>() {atom};
+            return combinations;
         }
 
         private static List<string> Tokenize(string molecule)
