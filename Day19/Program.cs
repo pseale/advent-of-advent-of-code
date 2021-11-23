@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Xml;
 
 namespace Day19
@@ -14,12 +15,19 @@ namespace Day19
 
             var partA = SolvePartA(input);
             Console.WriteLine($"Distinct molecules: {partA}");
+
+            var partB = SolvePartB(input);
+            Console.WriteLine($"Fewest steps: {partB}");
         }
 
         // apology: I'm pretty aware this function doesn't deserve to exist.
+
         // Inline it I guess? BIG SHRUG. Welcome to Advent of Code!
+
         // I'm pretty sure Advent of Code requires all submitted solutions as integer values because
+
         // it's easy to verify. Anyway, welcome!
+
         public static long SolvePartA(string input)
         {
             var combinations = GetReplacementMolecules(input);
@@ -98,6 +106,26 @@ namespace Day19
 
             // e.g. C
             return molecule.Substring(0, 1);
+        }
+
+        private static int SolvePartB(string input)
+        {
+
+            // ReSharper disable once ReplaceWithSingleCallToLast
+            var calibrationMolecule = input
+                .Split("\n")
+                .Where(x => !string.IsNullOrWhiteSpace(x))
+                .Last()
+                .Trim();
+
+            // from https://old.reddit.com/r/adventofcode/comments/3xflz8/comment/cy4f77o/
+            // #NumSymbols - #Rn - #Ar - 2 * #Y - 1
+            var numSymbols = Regex.Matches(calibrationMolecule, "[A-Z]").Count;
+            var rn = Regex.Matches(calibrationMolecule, "Rn").Count;
+            var ar = Regex.Matches(calibrationMolecule, "Ar").Count;
+            var y = Regex.Matches(calibrationMolecule, "Y").Count;
+            var answerToPartB = numSymbols - rn - ar - 2 * y - 1;
+            return answerToPartB;
         }
     }
 }
