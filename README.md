@@ -1,6 +1,9 @@
-﻿# Advent of Code, 2015 and 2021
+# Advent of Code, 2015 and 2021
 
-Welcome! These are my solutions in C#, constructed in JetBrains Rider.
+Welcome! These are:
+
+* my 2015 solutions in C#, constructed with JetBrains Rider
+* my 2021 solutions in C# 10, constructed with JetBrains Rider EAP.
 
 ### 2015 Goals
 
@@ -14,7 +17,7 @@ Welcome! These are my solutions in C#, constructed in JetBrains Rider.
 
 ### Apologies
 
-This is not an exhaustive list. I have many things of which to be sorrowful.
+This is not an exhaustive list. I have many things of which to be sorrowful; some are listed below.
 
 - Usually I'll make an inline apology comment, especially if I'm making a particularly intense (intensely unnecessary, and possibly harmful) abstraction. The best example so far is 2015's `Day06`'s `Do<T>(Func<T,T>)`. Just know that I won't subject a team to this kind of madness (unless instructed).
 - I am not trying for efficiency. E.g. `Day05`'s `HasPairWithoutOverlapping()` - I'm aware that my implementation is VERY inefficient. If it works and is not slow enough to be noticeable by humans, I'll leave it alone.
