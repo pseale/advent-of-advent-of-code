@@ -11,6 +11,9 @@ namespace Day01
             var input = File.ReadAllText("input.txt");
             var partA = SolvePartA(input);
             Console.WriteLine($"Measurements larger than the previous measurement: {partA}");
+
+            var partB = SolvePartB(input);
+            Console.WriteLine($"Sums (of measurements) larger than the previous sum: {partB}");
         }
 
         public static int SolvePartA(string input)
@@ -30,6 +33,18 @@ namespace Day01
                     increasing++;
 
             return increasing;
+        }
+
+        public static int SolvePartB(string input)
+        {
+            var depths = input
+                         .Split("\n")
+                         .Select(x => x.Trim())
+                         .Where(x => !string.IsNullOrWhiteSpace(x))
+                         .Select(x => int.Parse(x))
+                         .ToArray();
+
+            return -1;
         }
     }
 }
