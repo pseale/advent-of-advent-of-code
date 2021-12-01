@@ -1,4 +1,4 @@
-# Slow cooked Advent of Code 2020
+# Slow-cooked Advent of Code 2020
 
 Welcome!
 
