@@ -25,7 +25,6 @@ namespace Day01
                          .Select(x => int.Parse(x))
                          .ToArray();
 
-            // loop until end - if depth > depth - 1, add to the 'increasing' count
             int increasing = 0;
 
             for (int i = 1; i < depths.Length; i++)
