@@ -159,7 +159,7 @@ namespace AOAOC.Tests
             while (queue.Any())
             {
                 combat = queue.Dequeue();
-                Program.RunCombatRound(combat, queue, results, (_) => new[] {spellQueue.Dequeue()});
+                Program.RunCombatRound(combat, queue, results, false, (_) => new[] {spellQueue.Dequeue()});
             }
 
             return results.Single();

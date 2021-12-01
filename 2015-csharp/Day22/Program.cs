@@ -13,11 +13,15 @@ namespace Day22
             var input = File.ReadAllText("input.txt");
             var player = new PlayerStats(50, 500);
 
-            var partA = SolvePartA(player, input);
+            Console.WriteLine("EDITOR'S NOTE: solved this with a horrible hack! You have been warned! Also: even with the horrible hack (which is horrible), it takes a full minute to run.");
+            var partA = SimulateBattle(player, input, false);
             Console.WriteLine($"Least amount of mana you can spend: {partA}");
+
+            var partB = SimulateBattle(player, input, true);
+            Console.WriteLine($"Least amount of mana you can spend (hard mode): {partB}");
         }
 
-        private static int SolvePartA(PlayerStats player, string input)
+        private static int SimulateBattle(PlayerStats player, string input, bool hardMode)
         {
             var boss = Parse(input);
             var queue = new Queue<Combat>();
@@ -35,8 +39,29 @@ namespace Day22
             queue.Enqueue(combat);
             while (queue.Any())
             {
+                // ********************************************************************
+                // ********************************************************************
+                // ********************************************************************
+                // ******************        HORRIBLE HACK         ********************
+                // ********************************************************************
+                // ********************************************************************
+                // ********************************************************************
+                if (results.Where(x => x.Victory).Count() > (hardMode ? 9 : 30))
+                    break;
+                // ********************************************************************
+                // ********************************************************************
+                // ********************************************************************
+                // ******************      END HORRIBLE HACK       ********************
+                // ********************************************************************
+                // ********************************************************************
+                // ********************************************************************
+
+                var lowestManaCost = CalculateLowestManaCostSoFar(results);
                 combat = queue.Dequeue();
-                RunCombatRound(combat, queue, results, GetAvailableSpells);
+                if (combat.ManaSpent >= lowestManaCost)
+                    continue;
+
+                RunCombatRound(combat, queue, results, hardMode, GetAvailableSpells);
             }
 
             var victories = results
@@ -47,6 +72,18 @@ namespace Day22
             return victories
                 .Select(x => x.ManaCost)
                 .Min();
+        }
+
+        private static int CalculateLowestManaCostSoFar(List<CombatResult> combatResults)
+        {
+            var victories = combatResults
+                .Where(x => x.Victory)
+                .ToArray();
+
+            if (!victories.Any())
+                return int.MaxValue;
+
+            return victories.Min(x => x.ManaCost);
         }
 
         private static BossStats Parse(string input)
@@ -63,12 +100,14 @@ namespace Day22
         }
 
         // inspired by https://github.com/CameronAavik/AdventOfCode/blob/master/csharp/2015/Solvers/Day22.cs
-        public static void RunCombatRound(Combat combat, Queue<Combat> queue, List<CombatResult> combatResults, Func<Combat, IEnumerable<string>> getAvailableSpellsFunc)
+        public static void RunCombatRound(Combat combat, Queue<Combat> queue, List<CombatResult> combatResults,
+            bool hardMode, Func<Combat, IEnumerable<string>> getAvailableSpellsFunc)
         {
             var playerOrBoss = combat.IsPlayerTurn ? "Player" : "Boss";
             combat.Log.Add($"-- {playerOrBoss} turn --");
             combat.Log.Add(combat.PlayerStatusLog());
             combat.Log.Add(combat.BossStatusLog());
+
 
             foreach (var activeSpell in combat.ActiveSpells)
             {
@@ -79,7 +118,6 @@ namespace Day22
                     combatResults.Add(new CombatResult(true, combat.ManaSpent, combat.Log.ToArray()));
                     return;
                 }
-
             }
 
             var wornOff = combat.ActiveSpells.Where(x => x.RoundCast + x.Duration <= combat.Round).ToArray();
@@ -91,9 +129,20 @@ namespace Day22
 
             if (combat.IsPlayerTurn)
             {
+                if (hardMode)
+                {
+                    combat.PlayerHitPoints--;
+                    if (combat.PlayerHitPoints <= 0)
+                    {
+                        combat.Log.Add("This kills the player, and the player loses.");
+                        combatResults.Add(new CombatResult(false, combat.ManaSpent, combat.Log.ToArray()));
+                        return;
+                    }
+                }
+
                 var availableSpells = getAvailableSpellsFunc(combat).ToArray();
                 if (!availableSpells.Any())
-                    return; // Don't think the player is supposed to run out of mana.
+                    return;
                 foreach (var spellName in availableSpells)
                 {
                     var c = Clone(combat);
