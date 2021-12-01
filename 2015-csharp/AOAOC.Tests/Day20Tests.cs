@@ -9,15 +9,15 @@ namespace AOAOC.Tests
         [Test]
         public void PartA()
         {
-            Assert.AreEqual(10, Program.SolvePartA(1));
-            Assert.AreEqual(30, Program.SolvePartA(2));
-            Assert.AreEqual(40, Program.SolvePartA(3));
-            Assert.AreEqual(70, Program.SolvePartA(4));
-            Assert.AreEqual(60, Program.SolvePartA(5));
-            Assert.AreEqual(120, Program.SolvePartA(6));
-            Assert.AreEqual(80, Program.SolvePartA(7));
-            Assert.AreEqual(150, Program.SolvePartA(8));
-            Assert.AreEqual(130, Program.SolvePartA(9));
+            Assert.AreEqual(1, Program.SolvePartA(10));
+            Assert.AreEqual(2, Program.SolvePartA(30));
+            Assert.AreEqual(3, Program.SolvePartA(40));
+            Assert.AreEqual(4, Program.SolvePartA(70));
+            Assert.AreEqual(5, Program.SolvePartA(60));
+            Assert.AreEqual(6, Program.SolvePartA(120));
+            Assert.AreEqual(7, Program.SolvePartA(80));
+            Assert.AreEqual(8, Program.SolvePartA(150));
+            Assert.AreEqual(9, Program.SolvePartA(130));
         }
     }
 }

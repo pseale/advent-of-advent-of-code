@@ -9,7 +9,7 @@ namespace Day20
             var input = 34000000;
 
             var partA = SolvePartA(input);
-            Console.WriteLine($"Distinct molecules: {partA}");
+            Console.WriteLine($"Lowest house number: {partA}");
         }
 
         public static int SolvePartA(int input)
