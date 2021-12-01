@@ -43,7 +43,17 @@ namespace Day01
                          .Select(x => int.Parse(x))
                          .ToArray();
 
-            return -1;
+            int increasing = 0;
+
+            for (int i = 3; i < depths.Length; i++)
+            {
+                var previousSum = depths[i - 3] + depths[i - 2] + depths[i - 1];
+                var sum = depths[i - 2] + depths[i - 1] + depths[i];
+                if (sum > previousSum)
+                    increasing++;
+            }
+
+            return increasing;
         }
     }
 }
