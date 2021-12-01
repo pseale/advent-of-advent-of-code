@@ -35,7 +35,8 @@ namespace Day22
             queue.Enqueue(combat);
             while (queue.Any())
             {
-                RunCombatRound(combat, queue, results);
+                combat = queue.Dequeue();
+                RunCombatRound(combat, queue, results, GetAvailableSpells);
             }
 
             var victories = results
@@ -62,7 +63,7 @@ namespace Day22
         }
 
         // inspired by https://github.com/CameronAavik/AdventOfCode/blob/master/csharp/2015/Solvers/Day22.cs
-        private static void RunCombatRound(Combat combat, Queue<Combat> queue, List<CombatResult> combatResults)
+        public static void RunCombatRound(Combat combat, Queue<Combat> queue, List<CombatResult> combatResults, Func<Combat, IEnumerable<string>> getAvailableSpellsFunc)
         {
             var playerOrBoss = combat.IsPlayerTurn ? "Player" : "Boss";
             combat.Log.Add($"-- {playerOrBoss} turn --");
@@ -79,50 +80,73 @@ namespace Day22
                     return;
                 }
 
-                var wornOff = combat.ActiveSpells.Where(x => x.RoundCast + x.Duration <= combat.Round).ToArray();
-                foreach (var spell in wornOff)
-                {
-                    spell.OnWearsOff(combat);
-                    combat.ActiveSpells.Remove(spell);
-                }
+            }
 
-                if (combat.IsPlayerTurn)
-                {
-                    foreach (var spellNames in GetAvailableSpells(combat))
-                    {
-                        var spell = ISpell.Cast(spellNames, combat.Round);
-                        combat.SpellsCast.Add(spellNames);
-                        spell.OnCast(combat);
-                        if (combat.BossHitPoints <= 0)
-                        {
-                            combat.Log.Add("This kills the boss, and the player wins.");
-                            combatResults.Add(new CombatResult(true, combat.ManaSpent, combat.Log.ToArray()));
-                            return;
-                        }
+            var wornOff = combat.ActiveSpells.Where(x => x.RoundCast + x.Duration <= combat.Round).ToArray();
+            foreach (var spell in wornOff)
+            {
+                spell.OnWearsOff(combat);
+                combat.ActiveSpells.Remove(spell);
+            }
 
-                        if (!spell.Immediate)
-                            combat.ActiveSpells.Add(spell);
-                    }
-                }
-                else
+            if (combat.IsPlayerTurn)
+            {
+                var availableSpells = getAvailableSpellsFunc(combat).ToArray();
+                if (!availableSpells.Any())
+                    return; // Don't think the player is supposed to run out of mana.
+                foreach (var spellName in availableSpells)
                 {
-                    var netDamage = combat.BossDamage - combat.PlayerArmor;
-                    combat.PlayerHitPoints -= netDamage;
-                    var damageCalculation = combat.PlayerArmor > 0
-                        ? $"{combat.BossDamage} - {combat.PlayerArmor} = {netDamage}"
-                        : combat.BossDamage.ToString();
-                    combat.Log.Add($"Boss attacks for {damageCalculation} damage!");
-                    if (combat.PlayerHitPoints <= 0)
+                    var c = Clone(combat);
+                    var spell = ISpell.Cast(spellName, c.Round);
+                    c.SpellsCast.Add(spellName);
+                    spell.OnCast(c);
+                    if (c.BossHitPoints <= 0)
                     {
-                        combat.Log.Add("This kills the player, and the player loses.");
-                        combatResults.Add(new CombatResult(false, combat.ManaSpent, combat.Log.ToArray()));
+                        c.Log.Add("This kills the boss, and the player wins.");
+                        combatResults.Add(new CombatResult(true, c.ManaSpent, c.Log.ToArray()));
                         return;
                     }
+
+                    if (!spell.Immediate)
+                        c.ActiveSpells.Add(spell);
+                    queue.Enqueue(NextRound(c));
+                }
+            }
+            else
+            {
+                var netDamage = combat.BossDamage - combat.PlayerArmor;
+                combat.PlayerHitPoints -= netDamage;
+                var damageCalculation = combat.PlayerArmor > 0
+                    ? $"{combat.BossDamage} - {combat.PlayerArmor} = {netDamage}"
+                    : combat.BossDamage.ToString();
+                combat.Log.Add($"Boss attacks for {damageCalculation} damage!");
+                if (combat.PlayerHitPoints <= 0)
+                {
+                    combat.Log.Add("This kills the player, and the player loses.");
+                    combatResults.Add(new CombatResult(false, combat.ManaSpent, combat.Log.ToArray()));
+                    return;
                 }
 
                 queue.Enqueue(NextRound(combat));
             }
+        }
 
+        private static Combat Clone(Combat combat)
+        {
+            return new Combat()
+            {
+                Log = new List<string>(combat.Log),
+                Round = combat.Round,
+                ActiveSpells = new List<ISpell>(combat.ActiveSpells),
+                BossDamage = combat.BossDamage,
+                ManaSpent = combat.ManaSpent,
+                PlayerArmor = combat.PlayerArmor,
+                SpellsCast = new List<string>(combat.SpellsCast),
+                BossHitPoints = combat.BossHitPoints,
+                IsPlayerTurn = combat.IsPlayerTurn,
+                PlayerHitPoints = combat.PlayerHitPoints,
+                PlayerManaPoints = combat.PlayerManaPoints
+            };
         }
 
         private static IEnumerable<string> GetAvailableSpells(Combat combat)
