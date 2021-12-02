@@ -17,7 +17,7 @@ Original codepen: note you will have to edit the source html (top-left pane) to 
  ██  █    ████ ████ ████  ██    █  █     ██  ███
 ```
 
-## Highlight: 2015 Day 18 TUI (Text UI) animation, featuring the rarest appearance of Terminal.Gui
+## Highlight: 2015 Day 18 TUI (Text-based UI) animation, featuring the rarest appearance of Terminal.Gui
 
 Click through to watch the short video: https://i.imgur.com/GHQQcVv.mp4
 
