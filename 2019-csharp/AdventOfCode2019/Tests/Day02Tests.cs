@@ -6,21 +6,6 @@ namespace Tests;
 public class Day02Tests
 {
     [Test]
-    public void PartASampleData()
-    {
-        // main example
-        var input = "1,9,10,3,2,3,11,0,99,30,40,50";
-
-        Assert.AreEqual(3500, Program.SolvePartA(input));
-
-        // smaller samples
-        Assert.AreEqual(2, Program.SolvePartA("1,0,0,0,99"));
-        Assert.AreEqual(2, Program.SolvePartA("2,3,0,3,99"));
-        Assert.AreEqual(2, Program.SolvePartA("2,4,4,5,99,0"));
-        Assert.AreEqual(30, Program.SolvePartA("1,1,1,4,99,5,6,0,99"));
-    }
-
-    [Test]
     public void PartARealData()
     {
         // main example
