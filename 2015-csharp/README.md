@@ -1,11 +1,8 @@
-# Advent of Code, 2015 and 2021
+# Advent of Code 2015
 
-Welcome! These are:
+Welcome! These are my 2015 solutions in C#, constructed with JetBrains Rider.
 
-- my 2015 solutions in C#, constructed with JetBrains Rider
-- my 2021 solutions in C# 10, constructed with JetBrains Rider EAP.
-
-### 2015 Goals
+### Goals
 
 - Become comfortable with JetBrains Rider, and harvest keybinds and settings once I'm comfortable
 - Familiarize myself with C# 9.0 (.NET Core 5.0) - in practical terms, this means using records. I'm dubious on the value of the pattern matching syntactic sugar in C#, but in theory all that's on the table too.
@@ -22,6 +19,7 @@ This is not an exhaustive list. I have many things of which to be sorrowful; som
 - Usually I'll make an inline apology comment, especially if I'm making a particularly intense (intensely unnecessary, and possibly harmful) abstraction. The best example so far is 2015's `Day06`'s `Do<T>(Func<T,T>)`. Just know that I won't subject a team to this kind of madness (unless instructed).
 - I am not trying for efficiency. E.g. `Day05`'s `HasPairWithoutOverlapping()` - I'm aware that my implementation is VERY inefficient. If it works and is not slow enough to be noticeable by humans, I'll leave it alone.
 - I'm enjoying writing unnecessary LINQ pipelines. I am neither extremely in favor of, nor extremely opposed to using LINQ over foreach/if. I can write the code either way--whichever you prefer. I'm not crazy! I can be precisely as crazy as desired. If you're crazy about LINQ--I can pretend to be as crazy as you! If you hate LINQ--I can also pretend to be that specific kind of crazy!
+- Apologies for Day 22 solution. Two roads diverged in a wood, and I--I took the one less traveled by, with a HORRENDOUS DIRTY HACK that only works for the problem set given to me. And that has made all the difference!
 
 ### Interesting, Sometimes Surprising, Thoughts
 
@@ -43,38 +41,3 @@ These are mostly small nitpicks:
 - `CTRL-T, D` hotkey only works some of the time? Hotkeys should work all of the time, especially if sibling hotkeys (such at `CTRL+T, T` `CTRL-T, Y`, `CTRL-T, L`) work all the time?
 - I assume we're stuck with Rider's known (expected) behavior, but it sure seems that C# formatting is waging a war against itself. Most notable: Rider adds braces to an if statement, and then on cleanup, removes them. Yes, I guess I can customize Rider's braces behavior. It also fights itself in CSPROJ file spacing.
 - I know I'm in the Complaints section, but I must give Rider kudos for being fast. Kudos JetBrains, kudos.
-
-# Advent of Code 2020
-
-Advent of Code 2020 is imminent! Prepare ye the way!
-
-## Goals
-
-- [✔]To stream, as early as January 2020.
-- [❌❌❌❌🟡]To familiarize myself with .NET 5.
-- [✔✔✔🟡🟡]During this special time of Advent, in which we celebrate the coming of Advent of Code 2020, in the spirit of reverence and fastidious self-contemplation, solve as many as five (5) Advent of Code 2018 challenges.
-  - [✔]Clarifying rule: I may choose any of the 2018 problems, and I may choose to solve one or both stars. It's not my fault if I declare vendetta against some of the more frustrating "fun puzzles".
-  - [✔✔❌✔🟡]Do something different!
-  - [✔✔✔✔✔]Code golf is garbage (❌⛳❌). Let's not do code golf.
-
-## Reflecting on estimation
-
-Nobody is good at estimation. Even me, superman. I've logged my estimates that prove Hofstadter's Law: It always takes longer than you expect, even when you take into account Hofstadter's Law.
-
-- Day 01 (cheating)
-  - Estimate: 5 minutes
-  - Actual: 30 minutes
-  - Unexpected landmine: cheating is harder than it seems. You have to work surprisingly hard to cheat, because code samples don't run without some tweaking!
-  - Expected landmine, but I stepped on it anyway: why did I believe I could possibly get a naked TypeScript code snippet compiling in less than 17 hours? I wasted a few minutes trying.
-- Day 02 (hacking in PowerShell)
-  - Estimate: 60 minutes
-  - Actual: 85 minutes
-  - Unexpected landmine: didn't understand part A problem until I had solved the problem wrong 2x-3x
-- Day 05 (cheating)
-  - Estimate: 10 minutes
-  - Actual: 4 minutes
-- Day 03 (heavy visualization)
-  - Estimate: 1 hour?
-  - Actual: 4 hours and counting
-  - Unexpected landmine: honestly, I had no idea what I was even going to build. So 🤷‍♀️.
-  - Unexpected landmine: major bug with part A solution (the bug having nothing to do with visualization)
