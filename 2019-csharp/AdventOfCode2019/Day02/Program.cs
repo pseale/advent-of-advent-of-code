@@ -13,4 +13,9 @@ public static class Program
     {
         return -1;
     }
+
+    public static int[] ExecuteIntcode(string input)
+    {
+        return new int[0];
+    }
 }
