@@ -1,14 +1,14 @@
 using Day01;
 using NUnit.Framework;
 
-namespace Tests
+namespace Tests;
+
+public class Day01Tests
 {
-    public class Day01Tests
+    [Test]
+    public void PartA()
     {
-        [Test]
-        public void PartA()
-        {
-            var input = @"199
+        var input = @"199
                           200
                           208
                           210
@@ -19,13 +19,13 @@ namespace Tests
                           260
                           263";
 
-            Assert.AreEqual(7, Program.SolvePartA(input));
-        }
+        Assert.AreEqual(7, Program.SolvePartA(input));
+    }
 
-        [Test]
-        public void PartB()
-        {
-            var input = @"199
+    [Test]
+    public void PartB()
+    {
+        var input = @"199
                           200
                           208
                           210
@@ -36,7 +36,6 @@ namespace Tests
                           260
                           263";
 
-            Assert.AreEqual(5, Program.SolvePartB(input));
-        }
+        Assert.AreEqual(5, Program.SolvePartB(input));
     }
 }
