@@ -5,16 +5,17 @@ public static class Program
     private static void Main(string[] args)
     {
         var input = File.ReadAllText("input.txt");
-        var partA = SolvePartA(input);
+        var partA = SolvePartA(input, 1);
         Console.WriteLine($"Diagnostic code: {partA}");
     }
 
-    private static int SolvePartA(string input)
+    private static int SolvePartA(string input, int inputValue)
     {
-        return -1;
+        var (memory, outputValue) = ExecuteIntcode(input, inputValue);
+        return outputValue;
     }
 
-    public static int[] ExecuteIntcode(string input)
+    public static (int[] memory, int outputValue) ExecuteIntcode(string input, int inputValue)
     {
         var memory = input
              .Split(",")
@@ -25,13 +26,15 @@ public static class Program
 
         int position = 0;
 
-        ExecuteIntcodeLoop(memory, position);
+        var outputValue = ExecuteIntcodeLoop(memory, position, inputValue);
 
-        return memory;
+        return (memory, outputValue);
     }
 
-    private static void ExecuteIntcodeLoop(int[] memory, int position)
+    private static int ExecuteIntcodeLoop(int[] memory, int position, int inputValue)
     {
+        int outputValue = -1;
+
         while (true)
         {
             var rawOpcode = memory[position];
@@ -56,8 +59,18 @@ public static class Program
                     memory[multiplyOutputPosition] = multiply1 * multiply2;
                     position += 4;
                     break;
+                case 3:
+                    var save1 = Get(memory, position + 1, parameter1Mode, false);
+                    memory[save1] = inputValue;
+                    position += 2;
+                    break;
+                case 4:
+                    var outputValue1 = Get(memory, position + 1, parameter1Mode, false);
+                    outputValue = outputValue1;
+                    position += 2;
+                    break;
                 case 99:
-                    return;
+                    return outputValue;
                 default:
                     throw new NotImplementedException($"Opcode {opcode} at position {position}");
             }
