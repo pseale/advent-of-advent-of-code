@@ -11,7 +11,7 @@ public static class Program
 
     private static int SolvePartA(string input, int inputValue)
     {
-        var (memory, outputValue) = ExecuteIntcode(input, inputValue);
+        var (_, outputValue) = ExecuteIntcode(input, inputValue);
         return outputValue;
     }
 
@@ -65,8 +65,7 @@ public static class Program
                     position += 2;
                     break;
                 case 4:
-                    var outputValue1 = Get(memory, position + 1, parameter1Mode);
-                    outputValue = outputValue1;
+                    outputValue = Get(memory, position + 1, parameter1Mode);
                     position += 2;
                     break;
                 case 99:
