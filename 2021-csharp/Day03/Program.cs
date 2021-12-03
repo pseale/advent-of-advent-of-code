@@ -22,6 +22,8 @@ public static class Program
             .Select(x => x.ToCharArray())
             .ToArray();
 
+        // apology: I'm aware that oneBits can be inferred from zeroBits, and don't need to
+        // be stored. But, it felt great and I'm honestly not apologizing.
         var zeroBits = new int[diagnosticReport[0].Length];
         var oneBits = new int[diagnosticReport[0].Length];
 
@@ -36,8 +38,8 @@ public static class Program
             }
         }
 
-        // apology: I'm aware that leastCommonBits can be inferred from mostCommonBits,
-        // and don't need to be stored. But, it felt great and I'm honestly not apologizing.
+        // apology: see above. I'm aware that leastCommonBits can be inferred from mostCommonBits,
+        // and am choosing to double down on the duplication. 👍👍
         var mostCommonBits = new char[diagnosticReport[0].Length];
         var leastCommonBits = new char[diagnosticReport[0].Length];
         for (int i = 0; i < diagnosticReport[0].Length; i++)
@@ -46,7 +48,7 @@ public static class Program
             leastCommonBits[i] = oneBits[i] > zeroBits[i] ? '0' : '1';
         }
 
-        // apology: see above. Doubling down on storing values that could be inferred instead. 👍
+        // apology: see above. Tripling down on storing values that could be inferred instead. 👍👍👍
         var gammaRate = Convert.ToInt32(string.Join("", mostCommonBits), 2);
         var epsilonRate = Convert.ToInt32(string.Join("", leastCommonBits), 2);
 
