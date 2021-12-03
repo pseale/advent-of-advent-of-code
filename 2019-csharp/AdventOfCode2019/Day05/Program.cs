@@ -65,7 +65,7 @@ public static class Program
                     position += 2;
                     break;
                 case 4:
-                    var outputValue1 = Get(memory, position + 1, parameter1Mode, false);
+                    var outputValue1 = Get(memory, position + 1, parameter1Mode);
                     outputValue = outputValue1;
                     position += 2;
                     break;
