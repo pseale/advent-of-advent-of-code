@@ -1,0 +1,41 @@
+#!csharp
+
+    private static List<int[,]> ParseBingoBoards(string[] lines)
+    {
+        if (lines.Length % 5 != 0) throw new Exception($"Expected lines to be a multiple of 5, but was {lines.Length}");
+
+        var bingoBoards = new List<int[,]>();
+
+        var b = lines.Chunk(5);
+
+        // one chunk is:
+        //
+        // 22 13 17 11  0
+        // 8  2 23  4 24
+        // 21  9 14 16  7
+        // 6 10  3 18  5
+        // 1 12 20 15 19
+        foreach (var chunk in b)
+        {
+            var board = new int[5, 5];
+            for (var row = 0; row < 5; row++)
+            {
+                var numbers = chunk[row]
+                    .Split(" ", StringSplitOptions.RemoveEmptyEntries)
+                    .Select(x => int.Parse(x))
+                    .ToArray();
+
+                for (var col = 0; col < 5; col++)
+                {
+                    board[col, row] = numbers[col];
+                }
+            }
+
+            bingoBoards.Add(board);
+        }
+
+        return bingoBoards;
+    }
+
+    ParseBingoBoards(new[] { "22 13 17 11 0", "8  2 23  4 24", "21  9 14 16  7", "6 10  3 18  5", "1 12 20 15 19" })
+        .Display()
