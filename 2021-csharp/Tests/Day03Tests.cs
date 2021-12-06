@@ -22,7 +22,7 @@ public class Day03Tests
                       00010
                       01010";
 
-        Assert.AreEqual(22*9, Program.SolvePartA(input));
+        Assert.AreEqual(22 * 9, Program.SolvePartA(input));
     }
 
     [Test]
@@ -41,6 +41,6 @@ public class Day03Tests
                       00010
                       01010";
 
-        Assert.AreEqual(10*23, Program.SolvePartB(input));
+        Assert.AreEqual(10 * 23, Program.SolvePartB(input));
     }
 }

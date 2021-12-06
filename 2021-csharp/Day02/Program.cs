@@ -4,7 +4,7 @@ namespace Day02;
 
 public static class Program
 {
-    static void Main()
+    private static void Main()
     {
         var input = File.ReadAllText("input.txt");
 
@@ -30,10 +30,9 @@ public static class Program
             instructions.Add(new SubmarineInstruction(words[0], int.Parse(words[1])));
         }
 
-        int depth = 0;
-        int horizontalPosition = 0;
+        var depth = 0;
+        var horizontalPosition = 0;
         foreach (var instruction in instructions)
-        {
             switch (instruction.Direction)
             {
                 case "forward":
@@ -50,7 +49,7 @@ public static class Program
                 default:
                     throw new Exception($"Invalid submarine instruction: {instruction.Direction}");
             }
-        }
+
         return depth * horizontalPosition;
     }
 
@@ -69,11 +68,10 @@ public static class Program
             instructions.Add(new SubmarineInstruction(words[0], int.Parse(words[1])));
         }
 
-        int aim = 0;
-        int depth = 0;
-        int horizontalPosition = 0;
+        var aim = 0;
+        var depth = 0;
+        var horizontalPosition = 0;
         foreach (var instruction in instructions)
-        {
             switch (instruction.Direction)
             {
                 case "forward":
@@ -91,7 +89,7 @@ public static class Program
                 default:
                     throw new Exception($"Invalid submarine instruction: {instruction.Direction}");
             }
-        }
+
         return depth * horizontalPosition;
     }
 

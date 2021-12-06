@@ -16,7 +16,7 @@ public class Day02Tests
                       down 8
                       forward 2";
 
-        Assert.AreEqual(15*10, Program.SolvePartA(input));
+        Assert.AreEqual(15 * 10, Program.SolvePartA(input));
     }
 
     [Test]
@@ -29,6 +29,6 @@ public class Day02Tests
                       down 8
                       forward 2";
 
-        Assert.AreEqual(15*60, Program.SolvePartB(input));
+        Assert.AreEqual(15 * 60, Program.SolvePartB(input));
     }
 }

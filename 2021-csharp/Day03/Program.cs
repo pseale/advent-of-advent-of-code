@@ -3,7 +3,7 @@
 public static class Program
 {
     // general apology: There is a LOT (A LOT) of duplicated code here. You have been warned.
-    static void Main()
+    private static void Main()
     {
         var input = File.ReadAllText("input.txt");
 
@@ -32,21 +32,17 @@ public static class Program
         var oneBits = new int[diagnosticReport[0].Length];
 
         foreach (var line in diagnosticReport)
-        {
-            for (int i = 0; i < line.Length; i++)
-            {
+            for (var i = 0; i < line.Length; i++)
                 if (line[i] == '0')
                     zeroBits[i]++;
                 else
                     oneBits[i]++;
-            }
-        }
 
         // apology: see above. I'm aware that leastCommonBits can be inferred from mostCommonBits,
         // and am choosing to double down on the duplication. 👍👍
         var mostCommonBits = new char[diagnosticReport[0].Length];
         var leastCommonBits = new char[diagnosticReport[0].Length];
-        for (int i = 0; i < diagnosticReport[0].Length; i++)
+        for (var i = 0; i < diagnosticReport[0].Length; i++)
         {
             mostCommonBits[i] = oneBits[i] > zeroBits[i] ? '1' : '0';
             leastCommonBits[i] = oneBits[i] > zeroBits[i] ? '0' : '1';
@@ -76,7 +72,7 @@ public static class Program
         (mostCommonBits, _) = Get(diagnosticReport);
         var oxygenGeneratorRatingBits = new List<char>();
         var remaining = diagnosticReport;
-        for (int i = 0; i < diagnosticReport[0].Length; i++)
+        for (var i = 0; i < diagnosticReport[0].Length; i++)
         {
             var bit = mostCommonBits[i];
             oxygenGeneratorRatingBits.Add(bit);
@@ -93,7 +89,7 @@ public static class Program
         (_, leastCommonBits) = Get(diagnosticReport);
         var co2ScrubberRatingBits = new List<char>();
         remaining = diagnosticReport;
-        for (int i = 0; i < diagnosticReport[0].Length; i++)
+        for (var i = 0; i < diagnosticReport[0].Length; i++)
         {
             var bit = leastCommonBits[i];
             co2ScrubberRatingBits.Add(bit);
@@ -104,6 +100,7 @@ public static class Program
                 co2ScrubberRatingBits = remaining[0].ToList();
                 break;
             }
+
             (_, leastCommonBits) = Get(remaining);
         }
 
@@ -125,19 +122,15 @@ public static class Program
         var oneBits = new int[length];
 
         foreach (var line in lines)
-        {
-            for (int i = 0; i < line.Length; i++)
-            {
+            for (var i = 0; i < line.Length; i++)
                 if (line[i] == '0')
                     zeroBits[i]++;
                 else
                     oneBits[i]++;
-            }
-        }
 
         // apology: see above. I'm aware that leastCommonBits can be inferred from mostCommonBits,
         // and am choosing to double down on the duplication. 👍👍
-        for (int i = 0; i < length; i++)
+        for (var i = 0; i < length; i++)
         {
             mostCommonBits[i] = oneBits[i] >= zeroBits[i] ? '1' : '0';
             leastCommonBits[i] = zeroBits[i] <= oneBits[i] ? '0' : '1';
