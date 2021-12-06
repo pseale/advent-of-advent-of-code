@@ -1,17 +1,18 @@
-﻿using System.Collections;
-
-namespace Day04;
+﻿namespace Day04;
 
 public static class Program
 {
     private const int Size = 5;
 
-    static void Main()
+    private static void Main()
     {
         var input = File.ReadAllText("input.txt");
 
         var partA = SolvePartA(input);
         Console.WriteLine($"Final score: {partA}");
+
+        var partB = SolvePartB(input);
+        Console.WriteLine($"Final score of last winning board: {partB}");
     }
 
     public static int SolvePartA(string input)
@@ -34,61 +35,96 @@ public static class Program
         {
             var drawn = queue.Dequeue();
             foreach (var board in bingoBoards)
-            {
-                for (int col = 0; col < Size; col++)
-                for (int row = 0; row < Size; row++)
+                for (var col = 0; col < Size; col++)
+                for (var row = 0; row < Size; row++)
                     if (board[col, row].Number == drawn)
                         board[col, row].Drawn = true;
-            }
 
-            var winner = GetWinner(bingoBoards);
-            if (winner != null)
+            var winners = GetWinners(bingoBoards).ToArray();
+            if (winners.Any())
             {
-                var unmarkedNumbers = CountUnmarked(winner);
+                var unmarkedNumbers = CountUnmarked(winners.Single());
                 return unmarkedNumbers * drawn;
             }
         }
     }
 
+    public static int SolvePartB(string input)
+    {
+        var lines = input
+            .Split("\n")
+            .Select(x => x.Trim())
+            .Where(x => !string.IsNullOrWhiteSpace(x))
+            .ToArray();
+
+        var numbers = lines[0]
+            .Split(",")
+            .Select(x => int.Parse(x));
+
+
+        var remaining = ParseBingoBoards(lines.Skip(1).ToArray());
+        (int, BingoSquare[,]) lastWinner = (-1, null);
+
+        var queue = new Queue<int>(numbers);
+        while (queue.Any())
+        {
+            var drawn = queue.Dequeue();
+            foreach (var board in remaining)
+                for (var col = 0; col < Size; col++)
+                for (var row = 0; row < Size; row++)
+                    if (board[col, row].Number == drawn)
+                        board[col, row].Drawn = true;
+
+            var winners = GetWinners(remaining).ToArray();
+            // apology: this is inefficient
+            if (winners.Any())
+            {
+                remaining = remaining
+                    .Where(x => !winners.Contains(x))
+                    .ToList();
+
+                if (winners.Length == 1)
+                    lastWinner = (drawn, winners.Single());
+            }
+        }
+
+        var unmarkedNumbers = CountUnmarked(lastWinner.Item2);
+        return unmarkedNumbers * lastWinner.Item1;
+    }
+
     private static int CountUnmarked(BingoSquare[,] board)
     {
         var sum = 0;
-        for (int col = 0; col < Size; col++)
-            for (int row = 0; row < Size; row++)
-                if (!board[col, row].Drawn)
-                    sum += board[col, row].Number;
+        for (var col = 0; col < Size; col++)
+        for (var row = 0; row < Size; row++)
+            if (!board[col, row].Drawn)
+                sum += board[col, row].Number;
         return sum;
     }
 
     // apology: I hate the 'return null' pattern in general
-    private static BingoSquare[,] GetWinner(List<BingoSquare[,]> bingoBoards)
+
+    private static IEnumerable<BingoSquare[,]> GetWinners(List<BingoSquare[,]> bingoBoards)
     {
         foreach (var board in bingoBoards)
         {
             // vertical winner
-            for (int col = 0; col < Size; col++)
-            {
+            for (var col = 0; col < Size; col++)
                 if (board[0, col].Drawn && board[1, col].Drawn && board[2, col].Drawn && board[3, col].Drawn &&
                     board[4, col].Drawn)
-                    return board;
-
-            }
+                    yield return board;
             // horizontal winner
-            for (int row = 0; row < Size; row++)
-            {
+            for (var row = 0; row < Size; row++)
                 if (board[row, 0].Drawn && board[row, 1].Drawn && board[row, 2].Drawn && board[row, 3].Drawn &&
                     board[row, 4].Drawn)
-                    return board;
-
-            }
+                    yield return board;
         }
-
-        return null;
     }
 
     private static List<BingoSquare[,]> ParseBingoBoards(string[] lines)
     {
-        if (lines.Length % Size != 0) throw new Exception($"Expected lines to be a multiple of 5, but was {lines.Length}");
+        if (lines.Length % Size != 0)
+            throw new Exception($"Expected lines to be a multiple of 5, but was {lines.Length}");
 
         var bingoBoards = new List<BingoSquare[,]>();
 
@@ -111,10 +147,7 @@ public static class Program
                     .Select(x => int.Parse(x))
                     .ToArray();
 
-                for (var col = 0; col < Size; col++)
-                {
-                    board[col, row] = new BingoSquare() {Number = numbers[col]};
-                }
+                for (var col = 0; col < Size; col++) board[col, row] = new BingoSquare {Number = numbers[col]};
             }
 
             bingoBoards.Add(board);
@@ -129,5 +162,3 @@ public static class Program
         public bool Drawn { get; set; }
     }
 }
-
-
