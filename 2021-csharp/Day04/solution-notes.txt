@@ -1,0 +1,19 @@
+add scaffolding - i.e. get a walking skeleton going
+
+parse out input
+ - drawn numbers
+ - bingo boards
+
+loop:
+ - draw a number
+ - apply to boards
+ - check if WE HAVE A WINNER - exit loop if so
+
+Advent of Code "trim answer down to a single non-guessable number":
+ - multiply final drawn number * (sum of all UNMARKED numbers on the board)
+
+
+
+TWO PROBLEMS WITH "TDD-DRIVING" ADVENT OF CODE:
+1. TDD Sudoku Solver experiment proved TDD is not good for math/algorithms
+2. ADVENT OF CODE PROBLEMS ARE SO ARTIFICIAL - single-number outputs are UNREALISTIC
