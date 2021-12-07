@@ -1,5 +1,4 @@
-﻿using System.Collections;
-
+﻿
 namespace Day05;
 
 public static class Program
