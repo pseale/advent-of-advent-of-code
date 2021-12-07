@@ -1,0 +1,33 @@
+Day 05: Part A
+--------------
+- scaffolding
+
+- parse lines: col,row -> col, row
+
+- filter out diagonal lines
+
+- figure out heat map boundaries
+
+- 'map out' lines into heat map:
+    .......1..
+    ..1....1..
+    ..1....1..
+    .......1..
+    .112111211
+    ..........
+    ..........
+    ..........
+    ..........
+    222111....
+
+- count points on the map that are 2+ 
+
+
+
+
+
+
+
+
+Day 06 - Part A
+---------------
