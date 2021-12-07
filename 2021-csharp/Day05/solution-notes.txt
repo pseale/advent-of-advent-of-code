@@ -1,14 +1,16 @@
 Day 05: Part A
 --------------
-- scaffolding
+[x] scaffolding
 
-- parse lines: col,row -> col, row
+x[] parse lines: col,row -> col, row
 
-- filter out diagonal lines
+[x] filter out diagonal lines
 
-- figure out heat map boundaries
+x[] figure out heat map boundaries
 
-- 'map out' lines into heat map:
+- get all points of a line
+
+[x] 'map out' lines into heat map:
     .......1..
     ..1....1..
     ..1....1..
@@ -20,7 +22,27 @@ Day 05: Part A
     ..........
     222111....
 
-- count points on the map that are 2+ 
+[x] count points on the map that are 2+ 
+
+
+Day 05 - Part B
+---------------
+
+[x] CURRENTLY BROODING
+- scaffolding
+
+- steal chunks of Part A (copy/paste - this is called Code Reuse 👍)
+
+- don't filter diagonal
+
+- rewrite/change 'GetAllPoints' for part B
+
+
+
+
+
+
+
 
 
 

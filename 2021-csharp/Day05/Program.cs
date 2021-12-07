@@ -10,6 +10,9 @@ public static class Program
 
         var partA = SolvePartA(input);
         Console.WriteLine($"Points where at least two lines overlap: {partA}");
+
+        var partB = SolvePartB(input);
+        Console.WriteLine($"Points where at least two lines overlap (including diagonal): {partB}");
     }
 
     public static int SolvePartA(string input)
@@ -79,6 +82,11 @@ public static class Program
         }
 
         return points;
+    }
+
+    public static int SolvePartB(string input)
+    {
+        return -1;
     }
 
     public record Vent(int Col1, int Row1, int Col2, int Row2);
