@@ -4,9 +4,9 @@ public static class Program
 {
     private static void Main()
     {
-        string input = File.ReadAllText("input.txt");
+        var input = File.ReadAllText("input.txt");
 
-        int partA = SolvePartA(input);
+        var partA = SolvePartA(input);
         // ReSharper disable once StringLiteralTypo
         Console.WriteLine($"Lanternfish after 80 days: {partA}");
     }
@@ -14,20 +14,20 @@ public static class Program
     public static int SolvePartA(string input)
     {
         // ReSharper disable once ReplaceWithSingleCallToSingle
-        string line = input
+        var line = input
             .Split("\n")
             .Select(x => x.Trim())
             .Where(x => !string.IsNullOrWhiteSpace(x))
             .Single();
 
-        List<int> fish = line.Split(",")
+        var fish = line.Split(",")
             .Select(x => int.Parse(x))
             .ToList();
 
-        for (int day = 0; day < 80; day++)
+        for (var day = 0; day < 80; day++)
         {
-            List<int> newFish = new List<int>();
-            for (int i = 0; i < fish.Count; i++)
+            var newFish = new List<int>();
+            for (var i = 0; i < fish.Count; i++)
             {
                 fish[i]--;
                 if (fish[i] < 0)
