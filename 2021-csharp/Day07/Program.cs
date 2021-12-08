@@ -9,6 +9,10 @@ public static class Program
         var partA = SolvePartA(input);
         // ReSharper disable once StringLiteralTypo
         Console.WriteLine($"Minimum fuel spent: {partA}");
+
+        var partB = SolvePartB(input);
+        // ReSharper disable once StringLiteralTypo
+        Console.WriteLine($"Minimum fuel spent: {partB}");
     }
 
     public static int SolvePartA(string input)
@@ -39,5 +43,10 @@ public static class Program
         return crabSubmarines
             .Select(submarine => Math.Abs(submarine - horizontalPosition))
             .Sum();
+    }
+
+    public static int SolvePartB(string input)
+    {
+        return -1;
     }
 }

@@ -13,4 +13,12 @@ public class Day07Tests
 
         Assert.AreEqual(37, Program.SolvePartA(input));
     }
+
+    [Test]
+    public void PartB()
+    {
+        var input = "16,1,2,0,4,2,7,1,2,14";
+
+        Assert.AreEqual(37, Program.SolvePartB(input));
+    }
 }
