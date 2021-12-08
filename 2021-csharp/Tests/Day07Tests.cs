@@ -11,7 +11,7 @@ public class Day07Tests
     {
         var input = "16,1,2,0,4,2,7,1,2,14";
 
-        Assert.AreEqual(37, Program.SolvePartA(input));
+        Assert.AreEqual(37, Program.Solve(input, false));
     }
 
     [Test]
@@ -19,6 +19,6 @@ public class Day07Tests
     {
         var input = "16,1,2,0,4,2,7,1,2,14";
 
-        Assert.AreEqual(37, Program.SolvePartB(input));
+        Assert.AreEqual(168, Program.Solve(input, true));
     }
 }

@@ -4,7 +4,13 @@ Day 07 - Part A
 [x] read the problem aloud - double-check my assumptions
 [x] protest about combinatorial problems (WILL WE EVER BE SPARED)
 [x] scaffolding
-- parse input: CSV into array of ints
-- loop: for each horizontal position:
-    - calculate fuel costs to move all crab submarines here
-- part A: return minimum fuel cost
+[x] parse input: CSV into array of ints
+[x] calculate max horizontal position
+- loop: for each horizontal position - calculate fuel costs to move all crab submarines here
+[x] part A: return minimum fuel cost
+
+1 1
+2 1 + 2
+3 1 + 2 + 3
+4 1 + 2 + 3 + 4 = 10               4 * 5 / 2 = 10
+5 

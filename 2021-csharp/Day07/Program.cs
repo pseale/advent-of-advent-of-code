@@ -6,16 +6,16 @@ public static class Program
     {
         var input = File.ReadAllText("input.txt");
 
-        var partA = SolvePartA(input);
+        var partA = Solve(input, false);
         // ReSharper disable once StringLiteralTypo
         Console.WriteLine($"Minimum fuel spent: {partA}");
 
-        var partB = SolvePartB(input);
+        var partB = Solve(input, true);
         // ReSharper disable once StringLiteralTypo
         Console.WriteLine($"Minimum fuel spent: {partB}");
     }
 
-    public static int SolvePartA(string input)
+    public static int Solve(string input, bool variableRateFuelCost)
     {
         // ReSharper disable once ReplaceWithSingleCallToSingle
         var line = input
@@ -32,21 +32,26 @@ public static class Program
         var fuelCosts = new int[horizontalPositions];
         for (int i = 0; i < horizontalPositions; i++)
         {
-            fuelCosts[i] = CalculateFuelCosts(crabSubmarines, i);
+            fuelCosts[i] = CalculateFuelCosts(crabSubmarines, i, variableRateFuelCost);
         }
 
         return fuelCosts.Min();
     }
 
-    private static int CalculateFuelCosts(List<int> crabSubmarines, int horizontalPosition)
+    private static int CalculateFuelCosts(List<int> crabSubmarines, int horizontalPosition, bool variableRateFuelCost)
     {
-        return crabSubmarines
-            .Select(submarine => Math.Abs(submarine - horizontalPosition))
-            .Sum();
-    }
+        if (!variableRateFuelCost)
+            return crabSubmarines
+                .Select(submarine => Math.Abs(submarine - horizontalPosition))
+                .Sum();
 
-    public static int SolvePartB(string input)
-    {
-        return -1;
+        return crabSubmarines
+            .Select(submarine =>
+            {
+                var distance = Math.Abs(submarine - horizontalPosition);
+                // harvested formula from https://en.wikipedia.org/wiki/1_%2B_2_%2B_3_%2B_4_%2B_%E2%8B%AF
+                return distance * (distance + 1) / 2;
+            })
+            .Sum();
     }
 }
