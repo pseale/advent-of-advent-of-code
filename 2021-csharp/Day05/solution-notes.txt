@@ -29,11 +29,12 @@ Day 05 - Part B
 ---------------
 
 [x] CURRENTLY BROODING
-- scaffolding
 
-- steal chunks of Part A (copy/paste - this is called Code Reuse 👍)
+[x] scaffolding
 
-- don't filter diagonal
+[x] steal chunks of Part A (copy/paste - this is called Code Reuse 👍)
+
+[x] don't filter diagonal
 
 - rewrite/change 'GetAllPoints' for part B
 
@@ -53,3 +54,56 @@ Day 05 - Part B
 
 Day 06 - Part A
 ---------------
+
+[x] read the problem - actually read it
+
+[x] scaffolding
+
+[x] parse input into fish array
+
+[x] simulate 80 days 👍👎
+
+[x] return # of lanternfish
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+META MOMENT
+-----------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
