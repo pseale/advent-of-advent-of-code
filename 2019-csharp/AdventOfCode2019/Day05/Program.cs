@@ -55,17 +55,11 @@ public static class Program
             switch (opcode)
             {
                 case 1:
-                    var add1 = Get(memory, position + 1, parameter1Mode);
-                    var add2 = Get(memory, position + 2, parameter2Mode);
-                    var addOutputPosition = Get(memory, position + 3, parameter3Mode, false);
-                    memory[addOutputPosition] = add1 + add2;
+                    PerformOperation(memory, position, parameter1Mode, parameter2Mode, parameter3Mode, (operand1, operand2) => operand1 + operand2);
                     position += 4;
                     break;
                 case 2:
-                    var multiply1 = Get(memory, position + 1, parameter1Mode);
-                    var multiply2 = Get(memory, position + 2, parameter2Mode);
-                    var multiplyOutputPosition = Get(memory, position + 3, parameter3Mode, false);
-                    memory[multiplyOutputPosition] = multiply1 * multiply2;
+                    PerformOperation(memory, position, parameter1Mode, parameter2Mode, parameter3Mode, (operand1, operand2) => operand1 * operand2);
                     position += 4;
                     break;
                 case 3:
@@ -83,6 +77,15 @@ public static class Program
                     throw new NotImplementedException($"Opcode {opcode} at position {position}");
             }
         }
+    }
+
+    private static void PerformOperation(int[] memory, int position, int parameter1Mode, int parameter2Mode,
+        int parameter3Mode, Func<int, int, int> operation)
+    {
+        var operand1 = Get(memory, position + 1, parameter1Mode);
+        var operand2 = Get(memory, position + 2, parameter2Mode);
+        var addOutputPosition = Get(memory, position + 3, parameter3Mode, false);
+        memory[addOutputPosition] = operation(operand1, operand2);
     }
 
     private static int Get(int[] memory, int position, int parameterMode, bool dereference = true)
