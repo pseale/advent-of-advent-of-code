@@ -7,9 +7,18 @@ public static class Program
         var input = File.ReadAllText("input.txt");
         var partA = SolvePartA(input, 1);
         Console.WriteLine($"Diagnostic code: {partA}");
+
+        var partB = SolvePartB(input, 5);
+        Console.WriteLine($"Diagnostic code (system ID 5): {partB}");
     }
 
     private static int SolvePartA(string input, int inputValue)
+    {
+        var (_, outputValue) = ExecuteIntcode(input, inputValue);
+        return outputValue;
+    }
+
+    private static int SolvePartB(string input, int inputValue)
     {
         var (_, outputValue) = ExecuteIntcode(input, inputValue);
         return outputValue;

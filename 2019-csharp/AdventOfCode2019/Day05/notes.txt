@@ -1,0 +1,32 @@
+2019 day 5 part b
+-----------------
+
+[x] attempt to read the problem
+[x] scaffolding - multiple tests
+[x] copy/paste from part A - parsing, etc
+[x] provide 5 as the input code
+- Opcode 5 is jump-if-true
+- Opcode 6 is jump-if-false
+- Opcode 7 is less than
+- Opcode 8 is equals
+- make sure we support parameter modes
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
