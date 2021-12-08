@@ -1,0 +1,12 @@
+Day 08 Part A
+-------------
+
+[x] read the problem
+[x] scaffolding
+[-] parse "signal patterns": line left of |
+[x] parse "output values": line right of |
+[x] identify numbers that match 1,4,7,8
+- 1: 2 segments
+- 7: 3 segments
+- 4: 4 segments
+- 8: 7 segments

@@ -12,6 +12,21 @@ public static class Program
 
     public static int SolvePartA(string input)
     {
-        return -1;
+        var lines = input
+            .Split("\n")
+            .Select(x => x.Trim())
+            .Where(x => !string.IsNullOrWhiteSpace(x))
+            .ToArray();
+
+        var entries = lines
+            .Select(x => x.Split(" | ")[1].Split(" "))
+            .ToArray();
+
+        var count = 0;
+        foreach (var entry in entries)
+        {
+            count += entry.Where(x => x.Length is 2 or 3 or 4 or 7).Count();
+        }
+        return count;
     }
 }
