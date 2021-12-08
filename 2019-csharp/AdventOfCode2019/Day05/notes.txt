@@ -5,11 +5,12 @@
 [x] scaffolding - multiple tests
 [x] copy/paste from part A - parsing, etc
 [x] provide 5 as the input code
-- Opcode 5 is jump-if-true
-- Opcode 6 is jump-if-false
-- Opcode 7 is less than
-- Opcode 8 is equals
-- make sure we support parameter modes
+[x] refactor some of the opcode code
+[NO IDEA IF THIS WORKS] Opcode 5 is jump-if-true
+[NO IDEA IF THIS WORKS] Opcode 6 is jump-if-false
+[NO IDEA IF THIS WORKS] Opcode 7 is less than
+[NO IDEA IF THIS WORKS] Opcode 8 is equals
+[NO IDEA IF THIS WORKS] make sure we support parameter modes
 
 
 

@@ -71,6 +71,32 @@ public static class Program
                     outputValue = Get(memory, position + 1, parameter1Mode);
                     position += 2;
                     break;
+                case 5:
+                    var jnz1 = Get(memory, position + 1, parameter1Mode);
+                    var jnz2 = Get(memory, position + 2, parameter2Mode);
+                    if (jnz1 != 0)
+                        position = jnz2;
+                    else
+                        position += 3;
+                    break;
+                case 6:
+                    var jz1 = Get(memory, position + 1, parameter1Mode);
+                    var jz2 = Get(memory, position + 2, parameter2Mode);
+                    if (jz1 == 0)
+                        position = jz2;
+                    else
+                        position += 3;
+                    break;
+                case 7:
+                    Func<int,int,int> lessThanOperation = (operand1, operand2) => operand1 < operand2 ? 1 : 0;
+                    PerformOperation(memory, position, parameter1Mode, parameter2Mode, parameter3Mode, lessThanOperation);
+                    position += 4;
+                    break;
+                case 8:
+                    Func<int,int,int> equalsOperation = (operand1, operand2) => operand1 == operand2 ? 1 : 0;
+                    PerformOperation(memory, position, parameter1Mode, parameter2Mode, parameter3Mode, equalsOperation);
+                    position += 4;
+                    break;
                 case 99:
                     return outputValue;
                 default:
@@ -84,8 +110,8 @@ public static class Program
     {
         var operand1 = Get(memory, position + 1, parameter1Mode);
         var operand2 = Get(memory, position + 2, parameter2Mode);
-        var addOutputPosition = Get(memory, position + 3, parameter3Mode, false);
-        memory[addOutputPosition] = operation(operand1, operand2);
+        var outputPosition = Get(memory, position + 3, parameter3Mode, false);
+        memory[outputPosition] = operation(operand1, operand2);
     }
 
     private static int Get(int[] memory, int position, int parameterMode, bool dereference = true)
