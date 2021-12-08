@@ -19,6 +19,6 @@ public class Day06Tests
     {
         var input = "3,4,3,1,2";
 
-        Assert.AreEqual(26984457539, Program.SolvePartA(input));
+        Assert.AreEqual(26984457539, Program.SolvePartB(input));
     }
 }

@@ -15,7 +15,7 @@ public static class Program
         Console.WriteLine($"Lanternfish after 256 days: {partB}");
     }
 
-    public static long SolvePartA(string input)
+    public static int SolvePartA(string input)
     {
         // ReSharper disable once ReplaceWithSingleCallToSingle
         var line = input
@@ -47,7 +47,11 @@ public static class Program
         return fish.Count;
     }
 
-    private static int SolvePartB(string input)
+    // Thanks to smab - solved the problem by looking at his solution, then attempting
+    // to code it myself AFTER seeing how to solve the problem.
+    //
+    // See https://github.com/smabuk/AdventOfCode/blob/main/Solutions/2021/Day06.cs
+    public static long SolvePartB(string input)
     {
         // ReSharper disable once ReplaceWithSingleCallToSingle
         var line = input
@@ -60,22 +64,23 @@ public static class Program
             .Select(x => int.Parse(x))
             .ToList();
 
-        for (var day = 0; day < 80; day++)
+        // count fish by age (internal timer)
+        var stuff = Enumerable.Range(0, 9)
+            .Select(i => (long)fish.Count(timer => timer == i))
+            .ToArray();
+
+        for (var day = 0; day < 256; day++)
         {
-            var newFish = new List<int>();
-            for (var i = 0; i < fish.Count; i++)
+            var fishThatSpawned = stuff[0];
+            for (int i = 0; i < 9 - 1; i++)
             {
-                fish[i]--;
-                if (fish[i] < 0)
-                {
-                    newFish.Add(8);
-                    fish[i] = 6;
-                }
+                stuff[i] = stuff[i + 1];
             }
 
-            fish.AddRange(newFish);
+            stuff[6] += fishThatSpawned; // for old fish that have spawned a newborn, reset timer to 6
+            stuff[8] = fishThatSpawned;  // for old fish that have spawned a newborn, spawned a newborn fish with timer 8
         }
 
-        return fish.Count;
+        return stuff.Sum();
     }
 }
