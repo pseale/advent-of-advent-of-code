@@ -8,6 +8,9 @@ public static class Program
 
         var partA = SolvePartA(input);
         Console.WriteLine($"digits 1,4,7,8 appear this many times in the outputValue: {partA}");
+
+        var partB = SolvePartB(input);
+        Console.WriteLine($"Sum of all output values: {partB}");
     }
 
     public static int SolvePartA(string input)
@@ -28,5 +31,10 @@ public static class Program
             count += entry.Where(x => x.Length is 2 or 3 or 4 or 7).Count();
         }
         return count;
+    }
+
+    public static int SolvePartB(string input)
+    {
+        return -1;
     }
 }
