@@ -9,9 +9,45 @@ public static class Program
         var partA = SolvePartA(input);
         // ReSharper disable once StringLiteralTypo
         Console.WriteLine($"Lanternfish after 80 days: {partA}");
+
+        var partB = SolvePartB(input);
+        // ReSharper disable once StringLiteralTypo
+        Console.WriteLine($"Lanternfish after 256 days: {partB}");
     }
 
-    public static int SolvePartA(string input)
+    public static long SolvePartA(string input)
+    {
+        // ReSharper disable once ReplaceWithSingleCallToSingle
+        var line = input
+            .Split("\n")
+            .Select(x => x.Trim())
+            .Where(x => !string.IsNullOrWhiteSpace(x))
+            .Single();
+
+        var fish = line.Split(",")
+            .Select(x => int.Parse(x))
+            .ToList();
+
+        for (var day = 0; day < 80; day++)
+        {
+            var newFish = new List<int>();
+            for (var i = 0; i < fish.Count; i++)
+            {
+                fish[i]--;
+                if (fish[i] < 0)
+                {
+                    newFish.Add(8);
+                    fish[i] = 6;
+                }
+            }
+
+            fish.AddRange(newFish);
+        }
+
+        return fish.Count;
+    }
+
+    private static int SolvePartB(string input)
     {
         // ReSharper disable once ReplaceWithSingleCallToSingle
         var line = input
