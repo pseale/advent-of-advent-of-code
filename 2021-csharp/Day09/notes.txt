@@ -14,3 +14,40 @@ TWO "LOWEST" NEIGHBORS ARE NEITHER ONE "LOWEST" - SEE 00 BELOW
 9856789892
 8767896789
 9899965678
+
+
+
+
+Day 09 Part B
+-------------
+
+[x] read
+- scaffolding
+- copy/paste from part A -parsing into grid
+- find low points (also from part A)
+- for each low point, fill the basin with water, so to speak, and get a collection of all points in the basin
+- Sort basins by largest, take 3, sum up the sizes of those 3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

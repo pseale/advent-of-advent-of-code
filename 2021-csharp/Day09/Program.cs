@@ -11,6 +11,9 @@ public static class Program
 
         var partA = SolvePartA(input);
         Console.WriteLine($"Sum of the risk levels of all low points: {partA}");
+
+        var partB = SolvePartB(input);
+        Console.WriteLine($"Sum of the risk levels of all low points: {partB}");
     }
 
     public static int SolvePartA(string input)
@@ -45,6 +48,11 @@ public static class Program
                 totalRiskLevel += 1 + grid[col, row];
         }
         return totalRiskLevel;
+    }
+
+    public static int SolvePartB(string input)
+    {
+        return -1;
     }
 
     private static bool IsLowPoint(int[,] grid, int col, int row)
