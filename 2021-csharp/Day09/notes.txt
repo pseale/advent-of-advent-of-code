@@ -1,0 +1,16 @@
+Day 09 part A
+-------------
+
+[x] read problem statement
+[x] scaffolding
+[x] parse into 2d array of ints
+- loop: for each point,
+    - if IsLowPoint(), add Risk Level
+[x] return total Risk Level
+
+TWO "LOWEST" NEIGHBORS ARE NEITHER ONE "LOWEST" - SEE 00 BELOW
+2199943200
+3987894921
+9856789892
+8767896789
+9899965678
