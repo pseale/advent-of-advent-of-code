@@ -51,14 +51,14 @@ public static class Program
     {
         var height = grid[col, row];
 
-        return IsHigher(grid, col + 1, row, height)
-               && IsHigher(grid, col - 1, row, height)
-               && IsHigher(grid, col, row + 1, height)
-               && IsHigher(grid, col, row - 1, height);
+        return IsHigherAndWithinGrid(grid, col + 1, row, height)
+               && IsHigherAndWithinGrid(grid, col - 1, row, height)
+               && IsHigherAndWithinGrid(grid, col, row + 1, height)
+               && IsHigherAndWithinGrid(grid, col, row - 1, height);
     }
 
     // Returns true if the point is higher, or returns true if the point doesn't exist on the grid
-    private static bool IsHigher(int[,] grid, int col, int row, int height)
+    private static bool IsHigherAndWithinGrid(int[,] grid, int col, int row, int height)
     {
         if (col < 0 || col >= _cols)
             return true;
