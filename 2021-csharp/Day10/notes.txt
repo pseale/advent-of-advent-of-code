@@ -1,0 +1,11 @@
+Day 10 Part A
+-------------
+
+[x] read
+[x] scaffolding
+[ ] parse into array of strings (COPY/PASTE)
+[ ] (FUZZY) categorize lines into incomplete or corrupted
+[ ] ignore incomplete
+[ ] (FUZZY) score each corrupted line
+[ ] return sum of all corrupted lines
+
