@@ -22,11 +22,13 @@ Day 09 Part B
 -------------
 
 [x] read
-- scaffolding
-- copy/paste from part A -parsing into grid
-- find low points (also from part A)
-- for each low point, fill the basin with water, so to speak, and get a collection of all points in the basin
-- Sort basins by largest, take 3, sum up the sizes of those 3
+[x] scaffolding
+[x] copy/paste from part A -parsing into grid
+[x] find low points (also from part A)
+[x] actually read, again
+[x] for each low point, fill the basin with water, so to speak, and get a collection of all points in the basin
+[x] fix mysterious bugs
+[x] Sort basins by largest, take 3, sum up the sizes of those 3
 
 
 
@@ -34,6 +36,29 @@ Day 09 Part B
 
 
 
+
+
+
+
+99999
+92929
+91019
+99999
+
+check all 4 directions
+ - filter out edges
+ - filter out 9s
+ - filter out points ALREADY in the basin
+ - if ALL ADJACENT points are higher, add this point to the basin AND "check all 4 directions" for ALL (eligible) ADJACENT (recurse)
+
+99999
+9999999
+9901219
+9999999
+
+********
+*011101*
+********
 
 
 
