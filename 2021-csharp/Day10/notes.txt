@@ -3,9 +3,33 @@ Day 10 Part A
 
 [x] read
 [x] scaffolding
-[ ] parse into array of strings (COPY/PASTE)
-[ ] (FUZZY) categorize lines into incomplete or corrupted
-[ ] ignore incomplete
-[ ] (FUZZY) score each corrupted line
-[ ] return sum of all corrupted lines
+[x] read character by character
+[x] if newline, start over
+[x] if corruption, add it to the score
+[x] return sum of all corruption
+
+<[}>
+{([(<{}[<>[]}>{[]{[(<()>
+
+Day 10 Part B
+-------------
+[x] read
+[ ] scaffolding
+[ ] score incomplete lines
+[ ] take middle score
+
+
+INCOMPLETE LINES:
+-----------------
+((((((((((((((((
+{<{<{<{<{<{<{<{<
+(()
+
+
+
+
+
+
+
+
 

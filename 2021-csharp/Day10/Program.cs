@@ -8,6 +8,9 @@ public static class Program
 
         var partA = SolvePartA(input);
         Console.WriteLine($"Total syntax error score: {partA}");
+
+        var partB = SolvePartB(input);
+        Console.WriteLine($"Total autocomplete score: {partB}");
     }
 
     public static int SolvePartA(string input)
@@ -43,6 +46,11 @@ public static class Program
             }
         }
         return scores.Sum();
+    }
+
+    public static int SolvePartB(string input)
+    {
+        throw new NotImplementedException();
     }
 
     private static bool LegallyCloses(char opening, char closing)
