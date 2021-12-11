@@ -7,7 +7,7 @@ namespace Tests;
 public class Day11Tests
 {
     [Test]
-    public void PartA()
+    public void TestHarnessForBothPartAAndPartB()
     {
         var input = @"5483143223
                       2745854711
@@ -20,6 +20,6 @@ public class Day11Tests
                       4846848554
                       5283751526";
 
-        Assert.AreEqual(1656, Program.SolvePartA(input));
+        Assert.AreEqual((1656, 195), Program.Solve(input));
     }
 }

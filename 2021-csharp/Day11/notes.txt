@@ -7,3 +7,24 @@ Day 11 Part A
 [x] simulate 100 steps <- ACTUAL WORK IS HERE. SO MUCH HANDWAVING
 [x] GetNeighbors()
 [x] return total flashes
+
+Day 11 Part B
+-------------
+
+[x] READ
+[x] scaffolding
+[ ] IMPLEMENT
+
+
+
+
+
+
+
+
+
+
+
+
+
+

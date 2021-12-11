@@ -6,11 +6,12 @@ public static class Program
     {
         var input = File.ReadAllText("input.txt");
 
-        var partA = SolvePartA(input);
+        var (partA, partB) = Solve(input);
         Console.WriteLine($"Total flashes after 100 steps: {partA}");
+        Console.WriteLine($"First step during which all octopuses flash: {partB}");
     }
 
-    public static int SolvePartA(string input)
+    public static (int, int) Solve(string input)
     {
         var lines = input
             .Split("\n")
@@ -33,7 +34,8 @@ public static class Program
 
         var totalFlashes = 0;
 
-        for (var step = 1; step <= 100; step++)
+        var step = 1;
+        while (true)
         {
             foreach (var point in GetPoints())
             {
@@ -73,8 +75,7 @@ public static class Program
 
             foreach (var point in GetPoints())
             {
-                if (grid[point.col, point.row] > 9)
-                            grid[point.col, point.row] = 0;
+                if (grid[point.col, point.row] > 9) grid[point.col, point.row] = 0;
             }
 
             IEnumerable<(int col, int row)> GetPoints()
@@ -98,10 +99,11 @@ public static class Program
                                                && direction.col < cols
                                                && direction.row >= 0
                                                && direction.row < rows);
-
             }
-        }
 
-        return totalFlashes;
+            if (step == 100)
+                return (totalFlashes, -1);
+            step++;
+        }
     }
 }
