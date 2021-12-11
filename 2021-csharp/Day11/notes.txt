@@ -1,0 +1,9 @@
+Day 11 Part A
+-------------
+
+[x] read
+[x] scaffolding
+[x] parse into 2d array (THANKS ME-FROM-THE-PAST COPILOT)
+[x] simulate 100 steps <- ACTUAL WORK IS HERE. SO MUCH HANDWAVING
+[x] GetNeighbors()
+[x] return total flashes
