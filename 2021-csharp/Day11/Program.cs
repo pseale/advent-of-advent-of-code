@@ -35,25 +35,19 @@ public static class Program
 
         for (var step = 1; step <= 100; step++)
         {
-            for (var col = 0; col < cols; col++)
+            foreach (var point in GetPoints())
             {
-                for (var row = 0; row < rows; row++)
-                {
-                    grid[col, row]++;
-                }
+                grid[point.col, point.row]++;
             }
 
             var newFlashes = new HashSet<(int col, int row)>(); // apology: this could be combined with the Queue below. But I won't 👍👍👍
             var queue = new Queue<(int col, int row)>();
-            for (var col = 0; col < cols; col++)
+            foreach (var point in GetPoints())
             {
-                for (var row = 0; row < rows; row++)
+                if (grid[point.col, point.row] > 9)
                 {
-                    if (grid[col, row] > 9)
-                    {
-                        newFlashes.Add((col, row));
-                        queue.Enqueue((col, row));
-                    }
+                    newFlashes.Add((point.col, point.row));
+                    queue.Enqueue((point.col, point.row));
                 }
             }
 
@@ -66,26 +60,31 @@ public static class Program
                     grid[neighbor.col, neighbor.row]++;
                 }
 
-                for (var col = 0; col < cols; col++)
+                foreach (var point in GetPoints())
                 {
-                    for (var row = 0; row < rows; row++)
+                    if (grid[point.col, point.row] > 9 && !newFlashes.Contains((point.col, point.row)))
                     {
-                        if (grid[col, row] > 9 && !newFlashes.Contains((col, row)))
-                        {
-                            newFlashes.Add((col, row));
-                            queue.Enqueue((col, row));
-                        }
+                        newFlashes.Add((point.col, point.row));
+                        queue.Enqueue((point.col, point.row));
                     }
                 }
             }
 
 
-            for (var col = 0; col < cols; col++)
+            foreach (var point in GetPoints())
             {
-                for (var row = 0; row < rows; row++)
+                if (grid[point.col, point.row] > 9)
+                            grid[point.col, point.row] = 0;
+            }
+
+            IEnumerable<(int col, int row)> GetPoints()
+            {
+                for (var col = 0; col < cols; col++)
                 {
-                    if (grid[col, row] > 9)
-                        grid[col, row] = 0;
+                    for (var row = 0; row < rows; row++)
+                    {
+                        yield return (col, row);
+                    }
                 }
             }
 
