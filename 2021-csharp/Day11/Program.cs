@@ -56,7 +56,8 @@ public static class Program
             while (queue.Any())
             {
                 var flash = queue.Dequeue();
-                totalFlashes++;
+                if (step <= 100) totalFlashes++;
+
                 foreach (var neighbor in GetNeighbors(flash))
                 {
                     grid[neighbor.col, neighbor.row]++;
@@ -72,6 +73,9 @@ public static class Program
                 }
             }
 
+
+            if (GetPoints().All(x => grid[x.col, x.row] > 9))
+                return (totalFlashes, step);
 
             foreach (var point in GetPoints())
             {
@@ -101,8 +105,6 @@ public static class Program
                                                && direction.row < rows);
             }
 
-            if (step == 100)
-                return (totalFlashes, -1);
             step++;
         }
     }
