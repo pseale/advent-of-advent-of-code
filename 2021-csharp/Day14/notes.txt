@@ -1,0 +1,10 @@
+Day 14 Part A
+-------------
+
+[ ] read
+[ ] scaffolding
+[ ] parse input: line 0 -> char array
+[ ] parse input: remaining lines into PairInsertionRule records
+[ ] simulate insertion 10 times
+[ ] find most common, least common elements
+[ ] return most - least

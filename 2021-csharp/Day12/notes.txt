@@ -1,0 +1,14 @@
+Day 12 Part A
+-------------
+
+[ ] read
+[ ] scaffolding
+[ ] parse routes into list of Route records
+    StartCave, StartCaveType, EndCave, EndCaveType
+[ ] Implement inefficient pathfinding algorithms
+[ ] Keep track of all paths (a path is a List<Route>)
+[ ] Filter paths to those that visit small caves at most once, return the count as the Part A answer
+
+// SMELLING FOR PART B
+[ ] Copy/paste A* from StackOverflow 👍
+[ ] TODO
