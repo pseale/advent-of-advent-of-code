@@ -9,6 +9,18 @@ Day 12 Part A
 [x] Keep track of all paths (a path is a List<Route>)
 [x] Filter paths to those that visit small caves at most once, return the count as the Part A answer
 
-// SMELLING FOR PART B
-[ ] Copy/paste A* from StackOverflow 👍
-[ ] TODO
+
+
+
+
+
+
+
+
+
+Day 12 Part B
+------------
+[x] read
+[x] scaffolding
+[x] adjust IsValid function
+

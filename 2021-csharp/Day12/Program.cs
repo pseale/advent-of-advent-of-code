@@ -8,11 +8,14 @@ public static class Program
     {
         var input = File.ReadAllText("input.txt");
 
-        var partA = SolvePartA(input);
+        var partA = Solve(input, false);
         Console.WriteLine($"Paths: {partA}");
+
+        var partB = Solve(input, true);
+        Console.WriteLine($"Paths (visiting a single small cave twice): {partB}");
     }
 
-    public static int SolvePartA(string input)
+    public static int Solve(string input, bool allowDoubleDipping)
     {
         var lines = input
             .Split("\n")
@@ -39,7 +42,7 @@ public static class Program
                 // if we go from start->end, this is a valid 'path', thus store it in 'paths'
                 if (adjacent == "end")
                     paths.Add(visited.Append("end").ToList());
-                else if (IsValid(visited, adjacent))
+                else if (IsValid(visited, adjacent, allowDoubleDipping))
                     queue.Enqueue(visited.Append(adjacent).ToList());
             }
         }
@@ -57,9 +60,24 @@ public static class Program
             }
         }
 
-        bool IsValid(List<string> visited, string adjacent)
+        bool IsValid(List<string> visited, string adjacent, bool allowDoubleDipping)
         {
-            if (IsSmallCave(adjacent) && visited.Contains(adjacent))
+            if (adjacent == "start")
+                return false;
+
+            bool wouldCauseDoubleDipping = IsSmallCave(adjacent) && visited.Contains(adjacent);
+
+            if (!allowDoubleDipping)
+            {
+                return !wouldCauseDoubleDipping;
+            }
+
+            bool hasAlreadyDoubleDipped = visited
+                .Where(x => IsSmallCave(x))
+                .GroupBy(x => x)
+                .Any(x => x.Count() > 1);
+
+            if (hasAlreadyDoubleDipped && wouldCauseDoubleDipping)
                 return false;
 
             return true;
