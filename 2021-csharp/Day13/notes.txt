@@ -1,7 +1,7 @@
 Day 13 Part A
 -------------
 
-[ ] read
+[x] read
 [ ] scaffolding
 [ ] parse input into 2d grid - steal from previous days
 [ ] parse instructions into FoldInstruction records
