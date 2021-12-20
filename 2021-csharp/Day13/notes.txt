@@ -1,6 +1,5 @@
 Day 13 Part A
 -------------
-
 [x] read
 [x] scaffolding
 [x] parse input into 2d grid - steal from previous days
@@ -15,3 +14,16 @@ Day 13 Part A
 .#.#..#.###
 ...........
 ...........
+ZeuC/SMAB FORMULA
+midpoint offset 50
+dot.x offset is 59
+new x is 59 - (2 * (59 - 50)) = 59 - 18 = 41
+
+MY SUPERIOR FORMULUM
+midpoint offset 50
+col is 41
+colDistance = 50 - 41 = 9; old x = 50 + 9; 
+new x = col
+
+
+
