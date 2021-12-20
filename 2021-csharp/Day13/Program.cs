@@ -11,6 +11,40 @@ public static class Program
 
         var partA = SolvePartA(input);
         Console.WriteLine($"Visible dots after first fold: {partA}");
+
+        SolvePartB(input);
+    }
+
+    private static void SolvePartB(string input)
+    {
+        var lines = input
+            .Split("\n")
+            .Select(x => x.Trim())
+            .Where(x => !string.IsNullOrWhiteSpace(x))
+            .ToArray();
+
+        var points = lines
+            .Where(x => !x.Contains("fold along "))
+            .Select(x => new Point(int.Parse(x.Split(",")[0]), int.Parse(x.Split(",")[1])))
+            .ToArray();
+
+        var rows = points.Max(x => x.Row + 1);
+        var cols = points.Max(x => x.Col + 1);
+
+        var grid = new bool[cols, rows];
+        foreach (var point in points)
+            grid[point.Col, point.Row] = true;
+
+        var foldingInstructions = lines
+            .Where(x => x.Contains("fold along "))
+            .Select(x => ParseFoldingInstruction(x))
+            .ToArray();
+
+
+        foreach (var foldingInstruction in foldingInstructions)
+            grid = ApplyFoldingInstruction(grid, foldingInstruction);
+
+        DebugPrintGrid(grid);
     }
 
     public static int SolvePartA(string input)
@@ -56,7 +90,7 @@ public static class Program
             for (int c = 0; c <= cols; c++)
             {
                 if (grid[c, r])
-                    sb.Append("#");
+                    sb.Append("█");
                 else
                     sb.Append("·");
             }
