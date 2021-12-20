@@ -2,9 +2,16 @@ Day 13 Part A
 -------------
 
 [x] read
-[ ] scaffolding
-[ ] parse input into 2d grid - steal from previous days
-[ ] parse instructions into FoldInstruction records
-[ ] foreach: apply FoldInstruction
-[ ] return final count of dots
+[x] scaffolding
+[x] parse input into 2d grid - steal from previous days
+[x] parse instructions into FoldingInstruction records
+[VERY SUSPECT] apply 1 FoldingInstruction
+[x] return final count of dots
 
+#.##..#..#.
+#...#......
+......#...#
+#...#......
+.#.#..#.###
+...........
+...........

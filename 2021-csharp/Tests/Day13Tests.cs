@@ -30,7 +30,6 @@ public class Day13Tests
                       
                       fold along y=7
                       fold along x=5";
-
         Assert.AreEqual(17, Program.SolvePartA(input));
     }
 }
