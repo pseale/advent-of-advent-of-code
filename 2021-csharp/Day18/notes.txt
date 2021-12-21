@@ -5,11 +5,11 @@ WHAT A DOOZY
 
 [x] ~45mins of 'figuring' - staring at screen in silence 👍
 [x] read
-[ ] scaffolding - basic test harness
+[x] scaffolding - basic test harness
+[ ] parse input into trees
 [ ] test & implement explode (BY ITSELF)
 [ ] test & implement split (BY ITSELF)
 [ ] test & implement add (BY ITSELF)
-[ ] parse input into trees
 [ ] loop over each tree and "add" them together
 [ ] find magnitude of the final tree & return
 [ ] get mermaid-js-cli working? https://github.com/mermaid-js/mermaid-cli#run-with-npx
