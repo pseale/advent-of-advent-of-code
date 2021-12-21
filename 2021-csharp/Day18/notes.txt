@@ -6,10 +6,14 @@ WHAT A DOOZY
 [x] ~45mins of 'figuring' - staring at screen in silence 👍
 [x] read
 [x] scaffolding - basic test harness
-[ ] parse input into trees
+[x] parse input into trees
 [ ] test & implement explode (BY ITSELF)
 [ ] test & implement split (BY ITSELF)
 [ ] test & implement add (BY ITSELF)
 [ ] loop over each tree and "add" them together
 [ ] find magnitude of the final tree & return
-[ ] get mermaid-js-cli working? https://github.com/mermaid-js/mermaid-cli#run-with-npx
+[x] get mermaid-js-cli working? https://github.com/mermaid-js/mermaid-cli#run-with-npx
+    [x] add header
+    [x] replace integer leaf nodes, move them up into parent somehow
+    [ ] use the id1[1,1] syntax to identify/distinguish nodes https://github.com/mermaidjs/mermaid-gitbook/blob/master/content/flowchart.md#a-node-with-text
+[ ] fix warnings? null checking errors?

@@ -16,7 +16,7 @@ public static class Program
         }
         else if (args.Length == 2)
         {
-            if (args[0].ToLowerInvariant() == "--parse")
+            if (args[0].ToLowerInvariant() == "--print")
                 Console.WriteLine(Parse(args[1]));
             else if (args[0].ToLowerInvariant() == "--mermaid")
                 Console.WriteLine(PrettyPrintForMermaidJs(Parse(args[1])));
@@ -96,97 +96,3 @@ public static class Program
 }
 
 public record State(LeafType WhereAreWe, Leaf? Left, Leaf? Right);
-
-// apology: I wish I had rust sum types. enum { int or Node }
-public class Leaf
-{
-    public Leaf(Node node)
-    {
-        IsNode = true;
-        NodeValue = node;
-    }
-
-    public Leaf(int value)
-    {
-        IsNode = false;
-        IntValue = value;
-        NodeValue = null;
-    }
-
-    public bool IsNode { get; set; }
-    public int IntValue { get; set; }
-    public Node? NodeValue { get; set; }
-
-    private static int _prettyPrintCounter = 1;
-    public string PrettyPrintId
-    {
-        get
-        {
-           if (IsNode) return NodeValue.PrettyPrintId;
-
-           var invisibleUniqueId = string.Join("", Enumerable.Range(0, _prettyPrintCounter)
-               .Select(x => "\u200B"));
-
-           return IntValue + invisibleUniqueId;
-        }
-    }
-
-    public override string ToString()
-    {
-        if (IsNode)
-            return NodeValue.ToString();
-
-        return IntValue.ToString();
-    }
-
-    public string PrettyPrint()
-    {
-        if (IsNode)
-            return NodeValue.PrettyPrint();
-
-        return "";
-    }
-}
-
-public enum LeafType
-{
-    Left,
-    Right
-}
-public class Node
-{
-    private static int _idCounter = 1;
-
-    public Leaf Left { get; }
-    public Leaf Right { get; }
-
-    public string PrettyPrintId { get; }
-
-    public Node(Leaf left, Leaf? right)
-    {
-        Left = left;
-        Right = right ?? throw new Exception("Right side can't be null");
-        PrettyPrintId = GenerateId();
-    }
-
-    // apology: not thread safe. But it doesn't matter! 👍👍👍👍
-    private static string GenerateId()
-    {
-        return "node" + _idCounter++;
-    }
-
-    public override string ToString()
-    {
-        return "[" + Left + "," + Right + "]";
-    }
-
-    public string PrettyPrint()
-    {
-        var lines = new List<string>();
-        lines.Add(PrettyPrintId + " --> " + Left.PrettyPrintId);
-        lines.Add(PrettyPrintId + " --> " + Right.PrettyPrintId);
-        lines.Add(Left.PrettyPrint());
-        lines.Add(Right.PrettyPrint());
-        return string.Join(Environment.NewLine, lines);
-    }
-}
