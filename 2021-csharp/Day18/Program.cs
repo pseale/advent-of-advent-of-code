@@ -13,15 +13,22 @@ public static class Program
 
             var partA = SolvePartA(input);
             Console.WriteLine($"Magnitude of the final sum: {partA}");
+
+            Console.WriteLine();
+            Console.WriteLine("Additional verbs available: ");
+            Console.WriteLine("print       prints an AOC tree representation. For troubleshooting.");
+            Console.WriteLine("            example:  Day18.exe print '[1,2]'");
+            Console.WriteLine("mermaid     prints a mermaid-js-compatible flowchart. Use with mermaid-js-cli. For troubleshooting.");
+            Console.WriteLine("            example:  Day18.exe mermaid '[1,2]' > a.txt; .\\node_modules\\.bin\\mmdc.cmd -i a.txt -o a.png; ii b.png");
+
         }
         else if (args.Length == 2)
         {
-            if (args[0].ToLowerInvariant() == "--print")
+            if (args[0].ToLowerInvariant() == "print")
                 Console.WriteLine(Parse(args[1]));
-            else if (args[0].ToLowerInvariant() == "--mermaid")
+            else if (args[0].ToLowerInvariant() == "mermaid")
                 Console.WriteLine(PrettyPrintForMermaidJs(Parse(args[1])));
 
-            // assume we're parsing
         }
     }
 
