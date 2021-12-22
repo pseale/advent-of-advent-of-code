@@ -2,16 +2,21 @@
 
 public class Node
 {
-    public Leaf Left { get; }
-    public Leaf Right { get; }
+    private Leaf Left { get; }
+    private Leaf Right { get; }
 
-    public string PrettyPrintId => $"{Left.PrettyPrintId},{Right.PrettyPrintId}";
-
-    public Node(Leaf left, Leaf? right)
+    public Node(Leaf left, Leaf right)
     {
         Left = left;
         Right = right ?? throw new Exception("Right side can't be null");
+
+        _id = _counter.ToString();
+        _counter++;
     }
+
+    private static int _counter = 1;
+    private readonly string _id;
+    public string PrettyPrintId => $"id{_id}[{Left.PrettyPrintId},{Right.PrettyPrintId}]";
 
     public override string ToString()
     {

@@ -13,12 +13,11 @@ public class Leaf
     {
         IsNode = false;
         IntValue = value;
-        NodeValue = null;
     }
 
     public bool IsNode { get; set; }
     public int IntValue { get; set; }
-    public Node? NodeValue { get; set; }
+    public Node NodeValue { get; set; } = null!;
 
     public string PrettyPrintId => IsNode ? NodeValue.PrettyPrintId : IntValue.ToString();
 

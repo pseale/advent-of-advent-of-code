@@ -57,7 +57,7 @@ public static class Program
         var tokens = new Queue<char>(input.ToCharArray());
 
         var stateStack = new Stack<State>();
-        State state = null;
+        State? state = null;
 
         while (tokens.Any()) // ASSUMES valid input 👍
         {
@@ -71,7 +71,7 @@ public static class Program
                     state = new State(LeafType.Left, null, null);
                     break;
                 case ']':
-                    var node = new Node(state.Left, state.Right);
+                    var node = new Node(state.Left!, state.Right!);
                     if (stateStack.Any())
                     {
                         state = stateStack.Pop();
