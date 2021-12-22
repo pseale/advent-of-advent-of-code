@@ -16,7 +16,15 @@ public class Node
 
     private static int _counter = 1;
     private readonly string _id;
-    public string PrettyPrintId => $"id{_id}[{Left.PrettyPrintId},{Right.PrettyPrintId}]";
+    public string PrettyPrintId
+    {
+        get
+        {
+            var left = Left.IsNode ? "*" : Left.IntValue.ToString();
+            var right = Right.IsNode ? "*" : Right.IntValue.ToString();
+            return $"id{_id}[{left},{right}]";
+        }
+    }
 
     public override string ToString()
     {
