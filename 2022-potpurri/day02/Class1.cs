@@ -12,9 +12,21 @@ public enum RPS
     Paper =2,
     Scissors =3
 };
-    public class Round
+    public enum WinLoseDraw
+    {
+        Lose,
+        Win,
+        Draw
+    }
+    public class RoundPartA
     {
         public RPS Them;
         public RPS Us;
+    }
+
+    public class RoundPartB
+    {
+        public RPS Them;
+        public WinLoseDraw WhatShouldWeDo;
     }
 }
