@@ -6,12 +6,13 @@ using System.Threading.Tasks;
 
 namespace Day02
 {
-public enum RPS
-{
-    Rock = 1,
-    Paper =2,
-    Scissors =3
-};
+    public enum RockPaperScissors
+    {
+        Rock = 1,
+        Paper =2,
+        Scissors =3
+    };
+
     public enum WinLoseDraw
     {
         Lose,
@@ -20,13 +21,13 @@ public enum RPS
     }
     public class RoundPartA
     {
-        public RPS Them;
-        public RPS Us;
+        public RockPaperScissors Them;
+        public RockPaperScissors Us;
     }
 
     public class RoundPartB
     {
-        public RPS Them;
+        public RockPaperScissors Them;
         public WinLoseDraw WhatShouldWeDo;
     }
 }
