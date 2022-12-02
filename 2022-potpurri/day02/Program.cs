@@ -1,6 +1,5 @@
-﻿using Day02;
+﻿var input = await File.ReadAllLinesAsync(@".\input.txt");
 
-var input = await File.ReadAllLinesAsync(@".\input.txt");
 
 RockPaperScissors Parse(string v)
 {
@@ -93,3 +92,27 @@ Console.WriteLine($"EXAMPLE Part A: {examplePartA} (expected 15)");
 Console.WriteLine($"Part A: {partA}");
 Console.WriteLine($"EXAMPLE Part B: {examplePartB} (expected 12)");
 Console.WriteLine($"Part B: {partB}");
+
+public enum RockPaperScissors
+{
+    Rock = 1,
+    Paper =2,
+    Scissors =3
+};
+public enum WinLoseDraw
+{
+    Lose,
+    Win,
+    Draw
+}
+public class RoundPartA
+{
+    public RockPaperScissors Them;
+    public RockPaperScissors Us;
+}
+
+public class RoundPartB
+{
+    public RockPaperScissors Them;
+    public WinLoseDraw WhatShouldWeDo;
+}
