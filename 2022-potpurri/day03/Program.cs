@@ -26,7 +26,7 @@ long SolvePartA(string[] input)
     {
         var leftHalf = line.Substring(0, line.Length / 2);
         var rightHalf = line.Substring(line.Length / 2);
-        char c = FindSameCharInAll(new[] { leftHalf, rightHalf });
+        char c = FindSameItemInAll(new[] { leftHalf, rightHalf });
         score += Score(c);
     }
     return score;
@@ -35,24 +35,24 @@ long SolvePartA(string[] input)
 long SolvePartB(string[] input)
 {
     long score = 0;
-    var batches = input.Chunk(3).ToArray();
-    foreach (var batch in batches)
+    var groupsOfThree = input.Chunk(3).ToArray();
+    foreach (var group in groupsOfThree)
     {
-        char c = FindSameCharInAll(batch);
+        char c = FindSameItemInAll(group);
         score += Score(c);
     }
     return score;
 }
 
-char FindSameCharInAll(string[] batch)
+char FindSameItemInAll(string[] rucksacks)
 {
     var dictionary = new Dictionary<char, int>();
 
-    foreach (var b in batch)
+    foreach (var rucksack in rucksacks)
     {
-        b.ToCharArray().Distinct().ToList().ForEach(x => {
-            if (!dictionary.TryAdd(x, 1)) dictionary[x] += 1;
+        rucksack.ToCharArray().Distinct().ToList().ForEach(item => {
+            if (!dictionary.TryAdd(item, 1)) dictionary[item] += 1;
         });
     }
-    return dictionary.Single(x => x.Value == batch.Length).Key;
+    return dictionary.Single(x => x.Value == rucksacks.Length).Key;
 }
