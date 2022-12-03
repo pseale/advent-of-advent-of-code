@@ -38,7 +38,27 @@ char FindSameCharIn(string leftHalf, string rightHalf)
 
 long SolvePartB(string[] input)
 {
-    return 0;
+    long score = 0;
+    var batches = input.Batch(3).ToArray();
+    foreach (var batch in batches)
+    {
+        char c = FindSameCharInBatch(batch);
+        score += Score(c);
+    }
+    return score;
+}
+
+char FindSameCharInBatch(IEnumerable<string> batch)
+{
+    var dictionary = new Dictionary<char, int>();
+
+    foreach (var b in batch)
+    {
+        b.ToCharArray().Distinct().ToList().ForEach(x => {
+            if (!dictionary.TryAdd(x, 1)) dictionary[x] += 1;
+        });
+    }
+    return dictionary.Single(x => x.Value == 3).Key;
 }
 
 
@@ -50,6 +70,16 @@ Console.WriteLine($"Part A: {partA}");
 
 var examplePartB = SolvePartB(exampleInput);
 var partB = SolvePartB(input);
-Console.WriteLine($"EXAMPLE Part B: {examplePartB} (expected TODO)");
+Console.WriteLine($"EXAMPLE Part B: {examplePartB} (expected 70)");
 Console.WriteLine($"Part B: {partB}");
 
+public static class MyExtensions
+{
+    public static IEnumerable<IEnumerable<T>> Batch<T>(this IEnumerable<T> items,
+                                                       int maxItems)
+    {
+        return items.Select((item, inx) => new { item, inx })
+                    .GroupBy(x => x.inx / maxItems)
+                    .Select(g => g.Select(x => x.item));
+    }
+}
