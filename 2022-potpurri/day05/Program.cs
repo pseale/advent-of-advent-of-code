@@ -11,7 +11,7 @@ Console.WriteLine($"Part A: {partA}");
 
 var examplePartB = SolvePartB(exampleInput);
 var partB = SolvePartB(input);
-Console.WriteLine($"EXAMPLE Part B: {examplePartB} (expected TBD)");
+Console.WriteLine($"EXAMPLE Part B: {examplePartB} (expected MCD)");
 Console.WriteLine($"Part B: {partB}");
 
 string SolvePartA(string input)
@@ -98,7 +98,30 @@ List<Procedure> ParseProcedures(string[] lines)
 
 string SolvePartB(string input)
 {
-    return "";
+    var (stacks, procedures) = Parse(input);
+    foreach (var procedure in procedures)
+    {
+        var fromStack = stacks[procedure.from];
+        var toStack = stacks[procedure.to];
+        var tempStack = new Stack<char>();
+        for (int i = 0; i < procedure.quantity; i++)
+        {
+            var crate = fromStack.Pop();
+            tempStack.Push(crate);
+        }
+        while (tempStack.Any())
+        {
+            var crate = tempStack.Pop();
+            toStack.Push(crate);
+        }
+    }
+
+    var topCrate = "";
+    foreach (var stack in stacks)
+    {
+        topCrate += stack.Value.Pop();
+    }
+    return topCrate;
 }
 
 record Procedure(int quantity, int from, int to);
