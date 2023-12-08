@@ -27,6 +27,30 @@ $ ls
 SolvePart1(sampleInput, 95437);
 SolvePart1(File.ReadAllText("input.txt"));
 
+SolvePart2(sampleInput, 24933642);
+SolvePart2(File.ReadAllText("input.txt"));
+
+void SolvePart2(string input, int? expectedAnswer = null)
+{
+    var lines = input.Split("\n").Where(x => !string.IsNullOrWhiteSpace(x)).Select(x => x.Trim()).ToList();
+    var filesystem = Parse(lines);
+    const long TotalAvailableSpace = 70_000_000;
+    const long NeededUnusedSpace = 30_000_000;
+    long CurrentUnusedSpace = TotalAvailableSpace - CalculateSize(filesystem, "");
+    long MinimumSpaceToFreeUp = NeededUnusedSpace - CurrentUnusedSpace;
+
+    long nearestDirectorySize = long.MaxValue;
+    foreach (var directory in GetDirectories(filesystem))
+    {
+        var size = CalculateSize(filesystem, directory);
+        if (size > MinimumSpaceToFreeUp && size < nearestDirectorySize)
+            nearestDirectorySize = size;
+    }
+
+    var expectedString = expectedAnswer != null ? $"\t\tExpected: {expectedAnswer.Value}" : "";
+    Console.WriteLine($"Actual: {nearestDirectorySize} {expectedString}");
+}
+
 void SolvePart1(string input, int? expectedAnswer = null)
 {
     var lines = input.Split("\n").Where(x => !string.IsNullOrWhiteSpace(x)).Select(x => x.Trim()).ToList();
