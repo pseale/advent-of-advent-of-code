@@ -41,60 +41,60 @@ void SolvePart1(string input, int? expected = null)
 bool Visible(int[,] trees, int columns, int rows, int treeColumn, int treeRow)
 {
     var treeHeight = trees[treeColumn, treeRow];
-    // north
-    bool visibleNorth = true;
+    // up
+    bool visibleUp = true;
     for (int row = treeRow - 1; row >= 0; row--)
     {
         if (trees[treeColumn, row] >= treeHeight)
         {
-            visibleNorth = false;
+            visibleUp = false;
             break;
         }
     }
 
-    if (visibleNorth)
+    if (visibleUp)
         return true;
     
-    // south
-    bool visibleSouth = true;
+    // down
+    bool visibleDown = true;
     for (int row = treeRow + 1; row < rows; row++)
     {
         if (trees[treeColumn, row] >= treeHeight)
         {
-            visibleSouth = false;
+            visibleDown = false;
             break;
         }
     }
 
-    if (visibleSouth)
+    if (visibleDown)
         return true;
     
-    // west
-    bool visibleWest = true;
+    // left
+    bool visibleLeft = true;
     for (int column = treeColumn - 1; column >= 0; column--)
     {
         if (trees[column, treeRow] >= treeHeight)
         {
-            visibleWest = false;
+            visibleLeft = false;
             break;
         }
     }
 
-    if (visibleWest)
+    if (visibleLeft)
         return true;
     
-    //east
-    bool visibleEast = true;
+    //right
+    bool visibleRight = true;
     for (int column = treeColumn + 1; column < columns; column++)
     {
         if (trees[column, treeRow] >= treeHeight)
         {
-            visibleEast = false;
+            visibleRight = false;
             break;
         }
     }
 
-    if (visibleEast)
+    if (visibleRight)
         return true;
     
     return false;
